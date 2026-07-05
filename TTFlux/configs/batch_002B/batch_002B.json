@@ -1,0 +1,26 @@
+{
+  "version": "003Q",
+  "batch_id": "batch_002B",
+  "created_at": "2026-07-04T19:32:16",
+  "inventory": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\runs\\inventory_001E\\clip_inventory_001E.json",
+  "exclude_batch": "batch_001E",
+  "used_clip_ids": [
+    "v62_0001_v61_1_M2forQBQaZc_s01",
+    "v62_0003_v61_1_M2forQBQaZc_s03",
+    "v62_0004_v61_1_M2forQBQaZc_s04",
+    "v62_0005_v61_1_M2forQBQaZc_s05",
+    "v62_0016_v61_4_dQSoZh7ZjEQ_s04",
+    "v62_0033_v61_8_cJskrO-DANo_s01",
+    "v62_0034_v61_8_cJskrO-DANo_s02",
+    "v62_0035_v61_8_cJskrO-DANo_s03"
+  ],
+  "eligible_after_exclusion": 16,
+  "offset": 12,
+  "count": 4,
+  "configs": [
+    "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002B\\01_v62_0019_v61_5_-0bM0t0qS8Q_s02.json",
+    "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002B\\02_v62_0023_v61_6_KaVr4kbGZRE_s01.json",
+    "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002B\\03_v62_0024_v61_6_KaVr4kbGZRE_s02.json",
+    "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002B\\04_v62_0009_v61_3_oGrMajgH2Tc_s02.json"
+  ]
+}

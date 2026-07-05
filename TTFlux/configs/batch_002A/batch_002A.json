@@ -1,0 +1,34 @@
+{
+  "version": "003Q",
+  "batch_id": "batch_002A",
+  "created_at": "2026-07-04T18:41:47",
+  "inventory": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\runs\\inventory_001E\\clip_inventory_001E.json",
+  "exclude_batch": "batch_001E",
+  "used_clip_ids": [
+    "v62_0001_v61_1_M2forQBQaZc_s01",
+    "v62_0003_v61_1_M2forQBQaZc_s03",
+    "v62_0004_v61_1_M2forQBQaZc_s04",
+    "v62_0005_v61_1_M2forQBQaZc_s05",
+    "v62_0016_v61_4_dQSoZh7ZjEQ_s04",
+    "v62_0033_v61_8_cJskrO-DANo_s01",
+    "v62_0034_v61_8_cJskrO-DANo_s02",
+    "v62_0035_v61_8_cJskrO-DANo_s03"
+  ],
+  "eligible_after_exclusion": 16,
+  "offset": 0,
+  "count": 12,
+  "configs": [
+    "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002A\\01_v62_0028_v61_7_NQ4qXZsIrx8_s01.json",
+    "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002A\\02_v62_0032_v61_7_NQ4qXZsIrx8_s05.json",
+    "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002A\\03_v62_0037_v61_8_cJskrO-DANo_s05.json",
+    "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002A\\04_v62_0025_v61_6_KaVr4kbGZRE_s03.json",
+    "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002A\\05_v62_0029_v61_7_NQ4qXZsIrx8_s02.json",
+    "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002A\\06_v62_0030_v61_7_NQ4qXZsIrx8_s03.json",
+    "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002A\\07_v62_0021_v61_5_-0bM0t0qS8Q_s04.json",
+    "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002A\\08_v62_0036_v61_8_cJskrO-DANo_s04.json",
+    "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002A\\09_v62_0031_v61_7_NQ4qXZsIrx8_s04.json",
+    "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002A\\10_v62_0002_v61_1_M2forQBQaZc_s02.json",
+    "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002A\\11_v62_0017_v61_4_dQSoZh7ZjEQ_s05.json",
+    "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002A\\12_v62_0018_v61_5_-0bM0t0qS8Q_s01.json"
+  ]
+}

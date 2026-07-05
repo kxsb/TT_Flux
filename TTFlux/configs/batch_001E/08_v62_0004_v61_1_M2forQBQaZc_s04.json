@@ -1,0 +1,14 @@
+{
+  "name": "batch_001E_08_v62_0004_v61_1_M2forQBQaZc_s04",
+  "video_path": "C:\\Users\\micka\\pingcoach_probe\\runs\\dataset2_clips_v62\\clips\\v62_0004_v61_1_M2forQBQaZc_s04.mp4",
+  "track_csv": "C:\\Users\\micka\\pingcoach_probe\\runs\\scene_state_probe_v03\\tracking_rows_v71_motion_segments_enriched.csv",
+  "clip_id": "v62_0004_v61_1_M2forQBQaZc_s04",
+  "fps": 50.0,
+  "frame_width": 1280,
+  "frame_height": 720,
+  "window_span": 80,
+  "min_points": 14,
+  "top_k": 3,
+  "non_overlap_margin": 25,
+  "trail_keep_last": 18
+}

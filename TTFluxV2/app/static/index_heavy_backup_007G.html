@@ -1,0 +1,1184 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TTFlux V2 — Analysis UI</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a2f;
+      --panel2: #0f172a;
+      --line: #26324f;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --bad: #fb7185;
+      --ok: #86efac;
+      --warn: #fbbf24;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 14px;
+    }
+
+    header {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--line);
+      background: #080d1a;
+    }
+
+    header .title {
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+
+    header .status {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 320px 1fr 360px;
+      gap: 10px;
+      height: calc(100vh - 52px);
+      padding: 10px;
+    }
+
+    section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .section-head {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.025);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .section-head h2 {
+      font-size: 13px;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #cbd5e1;
+    }
+
+    .section-body {
+      padding: 12px;
+      overflow: auto;
+      height: calc(100% - 42px);
+    }
+
+    label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin: 10px 0 5px;
+    }
+
+    input, select, button, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--panel2);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 8px 9px;
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      background: #13213d;
+      font-weight: 600;
+    }
+
+    button:hover {
+      border-color: var(--accent);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .row3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .small {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+    }
+
+    .viewer {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 10px;
+      height: 100%;
+    }
+
+    .framebar {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 1fr 90px 90px 90px;
+      gap: 8px;
+      align-items: end;
+    }
+
+    .image-wrap {
+      position: relative;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        linear-gradient(45deg, rgba(255,255,255,.03) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(255,255,255,.03) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(255,255,255,.03) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(255,255,255,.03) 75%);
+      background-size: 24px 24px;
+      background-position: 0 0, 0 12px, 12px -12px, -12px 0px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    #frameImg {
+      max-width: 100%;
+      max-height: 100%;
+      display: none;
+      cursor: crosshair;
+      position: relative;
+      z-index: 1;
+    }
+
+    #markerLayer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .marker-dot {
+      position: absolute;
+      width: 13px;
+      height: 13px;
+      border: 2px solid white;
+      border-radius: 999px;
+      transform: translate(-50%, -50%);
+      background: rgba(56,189,248,.75);
+      box-shadow: 0 0 0 2px rgba(0,0,0,.65);
+    }
+
+    .marker-dot.table_corner { background: rgba(251,191,36,.85); }
+    .marker-dot.ball { background: rgba(56,189,248,.85); }
+    .marker-dot.ball_missing { background: rgba(251,113,133,.85); }
+    .marker-dot.player { background: rgba(134,239,172,.85); }
+    .marker-dot.scoreboard { background: rgba(216,180,254,.85); }
+    .marker-dot.note { background: rgba(148,163,184,.85); }
+
+    .timeline {
+      height: 92px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    .timeline-track {
+      position: relative;
+      height: 34px;
+      border-radius: 7px;
+      background: #0b1226;
+      border: 1px solid var(--line);
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .timeline-cursor {
+      position: absolute;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      background: var(--accent);
+      left: 0%;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+      background: rgba(0,0,0,.12);
+      margin-bottom: 10px;
+    }
+
+    .kv {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 4px 8px;
+      margin-top: 8px;
+    }
+
+    .kv div:nth-child(odd) {
+      color: var(--muted);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--line);
+      background: #0b1226;
+      border-radius: 999px;
+      padding: 2px 8px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .ok { color: var(--ok); }
+    .bad { color: var(--bad); }
+    .warn { color: var(--warn); }
+
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #070b16;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+      overflow: auto;
+      max-height: 220px;
+    }
+
+    .video-list {
+      max-height: 210px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #070b16;
+    }
+
+    .video-item {
+      padding: 8px;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer;
+    }
+
+    .video-item:hover {
+      background: rgba(56,189,248,.08);
+    }
+
+    .video-item:last-child {
+      border-bottom: 0;
+    }
+
+    @media (max-width: 1150px) {
+      main {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+      section {
+        min-height: 360px;
+      }
+      .viewer {
+        height: 70vh;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="title">TTFlux V2 — Analysis UI</div>
+    <div class="status" id="statusLine">initialisation...</div>
+  </div>
+  <div class="badge" id="phaseBadge">007A_ui_shell</div>
+</header>
+
+<main>
+  <section>
+    <div class="section-head">
+      <h2>Contrôle</h2>
+      <span class="badge" id="healthBadge">API</span>
+    </div>
+    <div class="section-body">
+      <div class="card">
+        <div class="small">Projet</div>
+        <div class="mono" id="projectRoot">...</div>
+        <div class="small" style="margin-top:8px;">Legacy</div>
+        <div class="mono" id="legacyRoot">...</div>
+      </div>
+
+      <div class="row">
+        <button onclick="refreshVideos()">Scanner rapide</button>
+        <button onclick="refreshVideoLibrary(true)">Construire index vidéo</button>
+      </div>
+
+      <label>Vidéos détectées</label>
+      <div class="video-list" id="videoList"></div>
+
+      <label>Ou chemin vidéo manuel</label>
+      <input id="videoPath" placeholder="C:\...\rally.mp4" />
+
+      <div class="row" style="margin-top:8px;">
+        <button onclick="loadMeta()">Charger meta</button>
+        <button onclick="loadFrame()">Afficher frame</button>
+      </div>
+
+      <div class="card">
+        <div class="small">Catalogue clips table 005C9B</div>
+        <div class="row3" style="margin-top:8px;">
+          <button onclick="refreshSceneClips('METRIC_TABLE_TRUSTED')">Trusted</button>
+          <button onclick="refreshSceneClips('')">Tous</button>
+          <button onclick="window.open('/debug-scene-clips?t=' + Date.now(), '_blank')">Debug</button>
+        </div>
+        <div id="sceneClipStatus" class="mono small" style="margin-top:8px;">catalogue non chargé</div>
+        <label>Clips table</label>
+        <div class="video-list" id="sceneClipList" style="max-height:260px;"></div>
+      </div>
+
+      <label>Scan roots</label>
+      <pre class="mono" id="scanRoots"></pre>
+    </div>
+  </section>
+
+  <div class="viewer">
+    <div class="framebar">
+      <div>
+        <label>Frame</label>
+        <input id="frameIdx" type="number" value="0" min="0" onkeydown="if(event.key==='Enter'){loadFrame()}" />
+      </div>
+      <button onclick="stepFrame(-25)">-25</button>
+      <button onclick="stepFrame(-1)">-1</button>
+      <button onclick="stepFrame(1)">+1</button>
+    </div>
+
+    <div class="image-wrap">
+      <img id="frameImg" alt="frame" onclick="handleFrameClick(event)" />
+      <div id="markerLayer"></div>
+      <div id="emptyViewer" class="small">Aucune frame chargée.</div>
+    </div>
+
+    <div class="timeline">
+      <div class="row">
+        <div class="small" id="timelineLabel">Timeline inactive</div>
+        <div class="small" style="text-align:right;" id="frameCountLabel">0 frames</div>
+      </div>
+      <div class="timeline-track" onclick="seekTimeline(event)">
+        <div class="timeline-cursor" id="timelineCursor"></div>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <h2>État / Artefacts</h2>
+      <span class="badge">V2</span>
+    </div>
+    <div class="section-body">
+
+      <div class="card">
+        <div class="small">Scene table legacy 005C9B</div>
+        <div class="row" style="margin-top:8px;">
+          <button onclick="refreshSceneSummary(true)">Importer scene table</button>
+          <button onclick="refreshSceneRows()">Rows frame</button>
+        </div>
+
+        <label style="display:flex; gap:8px; align-items:center;">
+          <input id="sceneOverlayToggle" type="checkbox" style="width:auto;" checked onchange="loadFrame()" />
+          Overlay table legacy
+        </label>
+
+        <label style="display:flex; gap:8px; align-items:center;">
+          <input id="serverLabelOverlayToggle" type="checkbox" style="width:auto;" onchange="loadFrame()" />
+          Overlay labels côté serveur
+        </label>
+
+        <div id="sceneSummaryBox" class="mono small" style="margin-top:8px;">...</div>
+        <div id="sceneRowsBox" class="mono small" style="margin-top:8px;"></div>
+      </div>
+
+
+      <div class="card">
+        <div class="small">Meta vidéo</div>
+        <div class="kv mono" id="metaBox">
+          <div>status</div><div>aucune vidéo</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="small">Modules</div>
+        <div class="kv mono" id="stateBox"></div>
+      </div>
+
+
+      <div class="card">
+        <div class="small">Annotation manuelle</div>
+
+        <div class="row" style="margin-top:8px;">
+          <button onclick="createLabelSession()">Nouvelle session</button>
+          <button onclick="refreshLabelSessions()">Sessions</button>
+        </div>
+
+        <label>Session</label>
+        <select id="labelSessionSelect" onchange="selectLabelSession()">
+          <option value="">Aucune session</option>
+        </select>
+
+        <label>Type</label>
+        <select id="labelType">
+          <option value="ball">ball</option>
+          <option value="ball_missing">ball_missing</option>
+          <option value="table_corner">table_corner</option>
+          <option value="table_edge">table_edge</option>
+          <option value="player">player</option>
+          <option value="scoreboard">scoreboard</option>
+          <option value="note">note</option>
+        </select>
+
+        <label>Object ID</label>
+        <input id="labelObjectId" placeholder="ex: ball, c1, player_left" />
+
+        <label>Notes</label>
+        <textarea id="labelNotes" rows="2" placeholder="optionnel"></textarea>
+
+        <div class="row" style="margin-top:8px;">
+          <button onclick="addInvisibleAnnotation()">Ajouter sans point</button>
+          <button onclick="exportCurrentSessionCsv()">Export CSV</button>
+        </div>
+
+        <div class="small mono" id="labelStatus" style="margin-top:8px;">Clique sur l'image pour annoter.</div>
+        <div class="mono small" id="currentAnnotations" style="margin-top:10px;"></div>
+      </div>
+
+
+      <div class="card">
+        <div class="small">Top-down table</div>
+        <div class="row" style="margin-top:8px;">
+          <button onclick="refreshTopdown()">Top-down</button>
+          <button onclick="refreshTopdownData()">Data</button>
+        </div>
+        <img id="topdownImg" alt="topdown" style="display:none; width:100%; margin-top:10px; border:1px solid var(--line); border-radius:10px;" />
+        <div id="topdownDataBox" class="mono small" style="margin-top:8px;"></div>
+      </div>
+
+      <div class="card">
+        <div class="small">Planche de frames</div>
+        <div class="row" style="margin-top:8px;">
+          <button onclick="makeContactSheet(300)">±300 frames</button>
+          <button onclick="makeContactSheet(900)">±900 frames</button>
+        </div>
+        <img id="contactSheetImg" alt="contact sheet" style="display:none; width:100%; margin-top:10px; border:1px solid var(--line); border-radius:10px;" />
+      </div>
+
+      <div class="card">
+        <div class="small">Artefacts legacy clés</div>
+        <div id="legacyBox" class="mono small">...</div>
+        <div style="margin-top:8px;"><button onclick="refreshLegacyDetailed(true)">Reconstruire index legacy</button></div>
+        <div id="legacyDetailedBox" class="mono small" style="margin-top:10px;"></div>
+      </div>
+
+      <div class="card">
+        <div class="small">Runs récents</div>
+        <div id="runsBox" class="mono small">...</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  let currentMeta = null;
+
+  let currentSession = null;
+  let annotations = [];
+
+  async function refreshSceneClips(status="") {
+    const box = qs("sceneClipList");
+    if (!box) return;
+
+    box.innerHTML = "<div class='video-item small'>chargement clips table...</div>";
+    if (qs("sceneClipStatus")) qs("sceneClipStatus").textContent = "chargement...";
+
+    try {
+      const url = "/api/scene/table-clips?status_filter=" + encodeURIComponent(status) + "&only_existing=true&limit=250&t=" + Date.now();
+      const payload = await api(url);
+      const clips = payload.clips || [];
+      if (qs("sceneClipStatus")) {
+        qs("sceneClipStatus").textContent = "clips=" + clips.length + " | statuses=" + JSON.stringify(payload.status_counts || {});
+      }
+
+      if (!clips.length) {
+        let dbg = {};
+        try { dbg = await api("/api/debug/paths"); } catch(e) {}
+        box.innerHTML = `
+          <div class='video-item small'>
+            Aucun clip table trouvé.<br>
+            status_filter=${htmlEscape(status)}<br>
+            legacy=${htmlEscape(dbg.legacy_root || "?")}<br>
+            legacy_exists=${htmlEscape(dbg.legacy_exists)}<br>
+            scene_csv_exists=${htmlEscape(dbg.scene_csv_exists)}<br>
+            env=${htmlEscape(dbg.env_TTFLUX_LEGACY_ROOT || "")}<br>
+            <br>
+            Test direct : ouvre /debug-scene-clips
+          </div>`;
+        if (qs("sceneClipStatus")) qs("sceneClipStatus").textContent = "0 clip — voir Debug";
+        return;
+      }
+
+      box.innerHTML = clips.map(c => `
+        <div class="video-item" onclick="selectSceneClip('${htmlEscape(c.clip_path).replaceAll("\\", "\\\\")}')">
+          <div>${htmlEscape(c.review_id)} <span class="badge">${htmlEscape(c.scene_table_status_005C9B)}</span></div>
+          <div class="small mono">${htmlEscape(c.clip_name)}</div>
+          <div class="small">rating=${htmlEscape(c.human_rating_005C8A || "")} geometry=${htmlEscape(c.has_geometry)} source=${htmlEscape(c.geometry_source || "")}</div>
+        </div>
+      `).join("");
+
+      setStatus("Clips table 005C9B : " + clips.length);
+    } catch (err) {
+      box.innerHTML = "<div class='video-item bad'>" + htmlEscape(err) + "</div>";
+    }
+  }
+
+  async function selectSceneClip(path) {
+    qs("videoPath").value = path;
+    await loadMeta();
+    qs("frameIdx").value = 0;
+    await loadFrame();
+    await refreshSceneRows();
+    await refreshTopdown();
+  }
+
+  function refreshTopdown() {
+    const path = qs("videoPath").value.trim();
+    if (!path) {
+      alert("Charge une vidéo d'abord.");
+      return;
+    }
+
+    const frame = Number(qs("frameIdx").value || 0);
+    const img = qs("topdownImg");
+    img.style.display = "block";
+    img.src = "/api/scene/topdown-image?path=" + encodeURIComponent(path)
+      + "&frame=" + encodeURIComponent(frame)
+      + "&width=900&height=560&t=" + Date.now();
+  }
+
+  async function refreshTopdownData() {
+    const path = qs("videoPath").value.trim();
+    const box = qs("topdownDataBox");
+    if (!path || !box) return;
+
+    try {
+      const payload = await api("/api/scene/topdown-data?path=" + encodeURIComponent(path));
+      box.innerHTML = `
+        <div>ok: ${htmlEscape(payload.ok)}</div>
+        <div>ball_count: ${htmlEscape(payload.ball_count || 0)}</div>
+        <pre>${htmlEscape(JSON.stringify(payload.scene || payload.error || {}, null, 2))}</pre>
+      `;
+    } catch (err) {
+      box.innerHTML = "<span class='bad'>" + htmlEscape(err) + "</span>";
+    }
+  }
+
+
+  async function refreshSceneSummary(rebuild=false) {
+    const box = qs("sceneSummaryBox");
+    if (!box) return;
+
+    box.innerHTML = "chargement scene table...";
+    try {
+      const payload = await api("/api/scene/legacy-table-summary?rebuild=" + (rebuild ? "true" : "false"));
+      const s = payload.scene_table_csv || {};
+      const b = payload.projected_ball_csv || {};
+      const ref = payload.reference_fit_csv || {};
+      const votes = payload.projection_votes_csv || {};
+      const pairs = (s.xy_pairs || []).map(p => `${p.label}:${p.x}/${p.y}`).join(", ");
+      const intervals = (s.interval_cols || []).map(p => `${p.label}:${p.start}->${p.end}`).join(", ");
+      const geomSources = JSON.stringify(s.geometry_sources || {});
+
+      box.innerHTML = `
+        <div>scene rows: <span class="${s.exists ? "ok" : "bad"}">${htmlEscape(s.row_count || 0)}</span></div>
+        <div>frame col: ${htmlEscape(s.frame_col || "none")}</div>
+        <div>range: ${htmlEscape(s.frame_min)}..${htmlEscape(s.frame_max)} (${htmlEscape(s.frame_unique_count)} frames)</div>
+        <div>xy pairs: ${htmlEscape(pairs || "none")}</div>
+        <div>projected ball rows: ${htmlEscape(b.row_count || 0)}</div>
+        <div>report: runs\\007E_scene_table_import</div>
+      `;
+    } catch (err) {
+      box.innerHTML = "<span class='bad'>" + htmlEscape(err) + "</span>";
+    }
+  }
+
+  async function refreshSceneRows() {
+    const box = qs("sceneRowsBox");
+    if (!box) return;
+
+    const frame = Number(qs("frameIdx").value || 0);
+    try {
+      const path = qs("videoPath").value.trim();
+      const payload = await api("/api/scene/legacy-table-rows?frame=" + encodeURIComponent(frame) + "&tol=0&limit=20&path=" + encodeURIComponent(path));
+      const rows = payload.rows || [];
+      box.innerHTML = `
+        <div>frame ${frame}: ${rows.length} row(s) — geometry ${payload.geometry_count || 0} — path filtered ${payload.path_filtered_count || 0}</div>
+        <pre>${htmlEscape(JSON.stringify(rows.slice(0, 3), null, 2))}</pre>
+      `;
+    } catch (err) {
+      box.innerHTML = "<span class='bad'>" + htmlEscape(err) + "</span>";
+    }
+  }
+
+
+  async function refreshLabelSessions() {
+    const select = qs("labelSessionSelect");
+    try {
+      const payload = await api("/api/label-sessions");
+      const sessions = payload.sessions || [];
+      const current = currentSession ? currentSession.session_id : "";
+
+      select.innerHTML = '<option value="">Aucune session</option>' + sessions.map(s => {
+        const label = `${s.session_id} (${s.annotation_count || 0})`;
+        return `<option value="${htmlEscape(s.session_id)}">${htmlEscape(label)}</option>`;
+      }).join("");
+
+      if (current) {
+        select.value = current;
+      }
+    } catch (err) {
+      qs("labelStatus").innerHTML = "<span class='bad'>" + htmlEscape(err) + "</span>";
+    }
+  }
+
+  async function createLabelSession() {
+    const path = qs("videoPath").value.trim();
+    if (!path) {
+      alert("Charge une vidéo d'abord.");
+      return;
+    }
+
+    const name = prompt("Nom court de session ? optionnel", "") || "";
+    try {
+      const res = await fetch("/api/label-session?video_path=" + encodeURIComponent(path) + "&name=" + encodeURIComponent(name), {
+        method: "POST"
+      });
+      if (!res.ok) throw new Error(await res.text());
+      const session = await res.json();
+      currentSession = session;
+      annotations = [];
+      await refreshLabelSessions();
+      qs("labelSessionSelect").value = session.session_id;
+      qs("labelStatus").innerHTML = "<span class='ok'>Session créée : " + htmlEscape(session.session_id) + "</span>";
+      renderMarkers();
+      renderCurrentAnnotations();
+      refreshSceneRows();
+    } catch (err) {
+      qs("labelStatus").innerHTML = "<span class='bad'>" + htmlEscape(err) + "</span>";
+    }
+  }
+
+  async function selectLabelSession() {
+    const sessionId = qs("labelSessionSelect").value;
+    if (!sessionId) {
+      currentSession = null;
+      annotations = [];
+      renderMarkers();
+      renderCurrentAnnotations();
+      return;
+    }
+
+    try {
+      const payload = await api("/api/label-session/" + encodeURIComponent(sessionId));
+      currentSession = payload.session;
+      annotations = payload.annotations || [];
+
+      if (currentSession.video_path && !qs("videoPath").value.trim()) {
+        qs("videoPath").value = currentSession.video_path;
+        await loadMeta();
+        await loadFrame();
+      }
+
+      qs("labelStatus").innerHTML = "<span class='ok'>Session chargée : " + htmlEscape(sessionId) + "</span>";
+      renderMarkers();
+      renderCurrentAnnotations();
+    } catch (err) {
+      qs("labelStatus").innerHTML = "<span class='bad'>" + htmlEscape(err) + "</span>";
+    }
+  }
+
+  async function addAnnotationAt(x, y, visible=true) {
+    if (!currentSession) {
+      alert("Crée ou charge une session d'annotation d'abord.");
+      return;
+    }
+
+    const payload = {
+      session_id: currentSession.session_id,
+      frame: Number(qs("frameIdx").value || 0),
+      label_type: qs("labelType").value,
+      x: visible ? x : null,
+      y: visible ? y : null,
+      visible: visible,
+      object_id: qs("labelObjectId").value.trim(),
+      notes: qs("labelNotes").value.trim(),
+      payload: {
+        video_path: qs("videoPath").value.trim()
+      }
+    };
+
+    try {
+      const res = await fetch("/api/annotation", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error(await res.text());
+      const data = await res.json();
+      annotations.push(data.annotation);
+      qs("labelStatus").innerHTML = "<span class='ok'>Annotation ajoutée frame " + payload.frame + "</span>";
+      renderMarkers();
+      renderCurrentAnnotations();
+      await refreshLabelSessions();
+    } catch (err) {
+      qs("labelStatus").innerHTML = "<span class='bad'>" + htmlEscape(err) + "</span>";
+    }
+  }
+
+  function handleFrameClick(event) {
+    const img = qs("frameImg");
+    if (!img || img.style.display === "none") return;
+
+    const rect = img.getBoundingClientRect();
+    const nx = img.naturalWidth || (currentMeta ? currentMeta.width : 0);
+    const ny = img.naturalHeight || (currentMeta ? currentMeta.height : 0);
+
+    if (!nx || !ny || rect.width <= 0 || rect.height <= 0) return;
+
+    const x = (event.clientX - rect.left) * nx / rect.width;
+    const y = (event.clientY - rect.top) * ny / rect.height;
+
+    addAnnotationAt(Number(x.toFixed(3)), Number(y.toFixed(3)), true);
+  }
+
+  function addInvisibleAnnotation() {
+    addAnnotationAt(null, null, false);
+  }
+
+  async function deleteAnnotation(uid) {
+    if (!currentSession) return;
+
+    try {
+      const res = await fetch("/api/annotation/" + encodeURIComponent(currentSession.session_id) + "/" + encodeURIComponent(uid), {
+        method: "DELETE"
+      });
+      if (!res.ok) throw new Error(await res.text());
+      annotations = annotations.filter(a => a.uid !== uid);
+      renderMarkers();
+      renderCurrentAnnotations();
+      await refreshLabelSessions();
+    } catch (err) {
+      qs("labelStatus").innerHTML = "<span class='bad'>" + htmlEscape(err) + "</span>";
+    }
+  }
+
+  function currentFrameAnnotations() {
+    const frame = Number(qs("frameIdx").value || 0);
+    return annotations.filter(a => Number(a.frame) === frame);
+  }
+
+  function renderMarkers() {
+    const layer = qs("markerLayer");
+    if (!layer) return;
+    layer.innerHTML = "";
+
+    const img = qs("frameImg");
+    if (!img || img.style.display === "none") return;
+
+    const rect = img.getBoundingClientRect();
+    const wrapRect = qs("markerLayer").getBoundingClientRect();
+    const nx = img.naturalWidth || (currentMeta ? currentMeta.width : 0);
+    const ny = img.naturalHeight || (currentMeta ? currentMeta.height : 0);
+
+    if (!nx || !ny || rect.width <= 0 || rect.height <= 0) return;
+
+    for (const a of currentFrameAnnotations()) {
+      if (!a.visible || a.x === null || a.y === null) continue;
+
+      const left = (rect.left - wrapRect.left) + (Number(a.x) / nx) * rect.width;
+      const top = (rect.top - wrapRect.top) + (Number(a.y) / ny) * rect.height;
+
+      const dot = document.createElement("div");
+      dot.className = "marker-dot " + String(a.label_type || "note");
+      dot.style.left = left + "px";
+      dot.style.top = top + "px";
+      dot.title = `${a.label_type} f${a.frame} x=${a.x} y=${a.y}`;
+      layer.appendChild(dot);
+    }
+  }
+
+  function renderCurrentAnnotations() {
+    const box = qs("currentAnnotations");
+    if (!box) return;
+
+    const rows = currentFrameAnnotations();
+    if (!rows.length) {
+      box.innerHTML = "Aucune annotation sur cette frame.";
+      return;
+    }
+
+    box.innerHTML = rows.map(a => `
+      <div style="border-top:1px solid var(--line); padding:6px 0;">
+        <div>
+          <span class="badge">${htmlEscape(a.label_type)}</span>
+          f${htmlEscape(a.frame)}
+          ${a.visible ? `x=${Number(a.x).toFixed(1)} y=${Number(a.y).toFixed(1)}` : "<span class='warn'>no point</span>"}
+        </div>
+        <div class="small">${htmlEscape(a.object_id || "")} ${htmlEscape(a.notes || "")}</div>
+        <button style="margin-top:5px; padding:4px 6px;" onclick="deleteAnnotation('${htmlEscape(a.uid)}')">supprimer</button>
+      </div>
+    `).join("");
+  }
+
+  function exportCurrentSessionCsv() {
+    if (!currentSession) {
+      alert("Aucune session.");
+      return;
+    }
+    window.open("/api/label-session/" + encodeURIComponent(currentSession.session_id) + "/csv", "_blank");
+  }
+
+
+  function qs(id) {
+    return document.getElementById(id);
+  }
+
+  function setStatus(text) {
+    qs("statusLine").textContent = text;
+  }
+
+  async function api(path) {
+    const res = await fetch(path);
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error(path + " -> " + res.status + " " + txt);
+    }
+    return await res.json();
+  }
+
+  function htmlEscape(s) {
+    return String(s ?? "").replace(/[&<>"']/g, c => ({
+      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"
+    }[c]));
+  }
+
+  async function init() {
+    try {
+      const health = await api("/api/health");
+      qs("healthBadge").textContent = health.ok ? "API OK" : "API KO";
+      qs("healthBadge").className = "badge " + (health.ok ? "ok" : "bad");
+      qs("projectRoot").textContent = health.project_root;
+      qs("legacyRoot").textContent = health.legacy_root + (health.legacy_exists ? "" : " [absent]");
+      setStatus("UI prête");
+
+      const cfg = await api("/api/config");
+      qs("scanRoots").textContent = cfg.scan_roots.join("\n");
+
+      await refreshState();
+      await refreshLegacy();
+      await refreshLegacyDetailed(false);
+      await refreshRuns();
+      await refreshVideoLibrary(false);
+    } catch (err) {
+      qs("healthBadge").textContent = "API KO";
+      qs("healthBadge").className = "badge bad";
+      setStatus(String(err));
+    }
+  }
+
+  async function refreshVideoLibrary(rebuild=false) {
+    const box = qs("videoList");
+    box.innerHTML = "<div class='video-item small'>index vidéo...</div>";
+
+    try {
+      const payload = await api("/api/video-library?rebuild=" + (rebuild ? "true" : "false") + "&include_generated=false&include_unknown=false&max_results=500");
+      const videos = payload.records || [];
+
+      if (!videos.length) {
+        box.innerHTML = "<div class='video-item small'>Aucune vidéo source trouvée. Colle un chemin manuel ou mets un .mp4 dans data/videos.</div>";
+        return;
+      }
+
+      box.innerHTML = videos.map(v => `
+        <div class="video-item" onclick="selectVideo('${htmlEscape(v.path).replaceAll("\\", "\\\\")}')">
+          <div>${htmlEscape(v.name)} <span class="badge">${htmlEscape(v.role)}</span></div>
+          <div class="small mono">${htmlEscape(v.width)}x${htmlEscape(v.height)} — ${Number(v.fps || 0).toFixed(2)} fps — ${htmlEscape(v.frame_count)} frames — ${Number(v.duration_sec || 0).toFixed(1)} sec</div>
+          <div class="small mono">${htmlEscape(v.path)}</div>
+        </div>
+      `).join("");
+
+      setStatus("Index vidéo : " + payload.records_total + " vidéo(s), " + payload.backend_ok_count + " lisible(s)");
+    } catch (err) {
+      box.innerHTML = "<div class='video-item bad'>" + htmlEscape(err) + "</div>";
+    }
+  }
+
+  function makeContactSheet(radius=300) {
+    const path = qs("videoPath").value.trim();
+    if (!path) {
+      alert("Chemin vidéo manquant.");
+      return;
+    }
+
+    const center = Number(qs("frameIdx").value || 0);
+    let start = Math.max(0, center - radius);
+    let end = center + radius;
+
+    if (currentMeta && currentMeta.frame_count) {
+      end = Math.min(currentMeta.frame_count - 1, end);
+    }
+
+    const img = qs("contactSheetImg");
+    img.style.display = "block";
+    img.src = "/api/contact-sheet?path=" + encodeURIComponent(path)
+      + "&start_frame=" + encodeURIComponent(start)
+      + "&end_frame=" + encodeURIComponent(end)
+      + "&count=24&cols=6&thumb_w=220&quality=88&t=" + Date.now();
+  }
+
+
+  async function refreshVideos() {
+    const box = qs("videoList");
+    box.innerHTML = "<div class='video-item small'>scan...</div>";
+
+    try {
+      const payload = await api("/api/videos");
+      if (!payload.videos.length) {
+        box.innerHTML = "<div class='video-item small'>Aucune vidéo trouvée. Mets un .mp4 dans data/videos ou colle un chemin manuel.</div>";
+        return;
+      }
+
+      box.innerHTML = payload.videos.map(v => `
+        <div class="video-item" onclick="selectVideo('${htmlEscape(v.path).replaceAll("\\", "\\\\")}')">
+          <div>${htmlEscape(v.name)}</div>
+          <div class="small mono">${htmlEscape(v.size_mb)} MB — ${htmlEscape(v.path)}</div>
+        </div>
+      `).join("");
+    } catch (err) {
+      box.innerHTML = "<div class='video-item bad'>" + htmlEscape(err) + "</div>";
+    }
+  }
+
+  function selectVideo(path) {
+    qs("videoPath").value = path;
+    loadMeta().then(loadFrame);
+  }
+
+  async function loadMeta() {
+    const path = qs("videoPath").value.trim();
+    if (!path) {
+      alert("Chemin vidéo manquant.");
+      return;
+    }
+
+    const payload = await api("/api/video-meta?path=" + encodeURIComponent(path));
+    currentMeta = payload;
+
+    const rows = [
+      ["exists", payload.exists],
+      ["backend_ok", payload.backend_ok],
+      ["width", payload.width],
+      ["height", payload.height],
+      ["fps", Number(payload.fps || 0).toFixed(3)],
+      ["frames", payload.frame_count],
+      ["duration", Number(payload.duration_sec || 0).toFixed(2) + " sec"],
+      ["path", payload.path],
+      ["error", payload.error || ""],
+    ];
+
+    qs("metaBox").innerHTML = rows.map(([k,v]) => `<div>${htmlEscape(k)}</div><div>${htmlEscape(v)}</div>`).join("");
+    qs("frameCountLabel").textContent = (payload.frame_count || 0) + " frames";
+    qs("timelineLabel").textContent = payload.backend_ok ? "Timeline vidéo" : "Meta inactive";
+    updateTimelineCursor();
+    renderMarkers();
+    renderCurrentAnnotations();
+  }
+
+  async function loadFrame() {
+    const path = qs("videoPath").value.trim();
+    const frame = Number(qs("frameIdx").value || 0);
+    if (!path) {
+      alert("Chemin vidéo manquant.");
+      return;
+    }
+
+    const useScene = qs("sceneOverlayToggle") && qs("sceneOverlayToggle").checked;
+    const useServerLabels = qs("serverLabelOverlayToggle") && qs("serverLabelOverlayToggle").checked;
+    const sessionId = (useServerLabels && currentSession) ? currentSession.session_id : "";
+
+    const endpoint = (useScene || sessionId) ? "/api/frame-overlay" : "/api/frame";
+    const url = endpoint + "?path=" + encodeURIComponent(path)
+      + "&frame=" + encodeURIComponent(frame)
+      + "&quality=90"
+      + "&legacy_scene=" + encodeURIComponent(useScene ? "true" : "false")
+      + "&scene_tol=0"
+      + "&label_session_id=" + encodeURIComponent(sessionId)
+      + "&t=" + Date.now();
+    const img = qs("frameImg");
+    img.onload = () => {
+      img.style.display = "block";
+      qs("emptyViewer").style.display = "none";
+    };
+    img.onerror = () => {
+      img.style.display = "none";
+      qs("emptyViewer").style.display = "block";
+      qs("emptyViewer").textContent = "Erreur chargement frame.";
+    };
+    img.src = url;
+    updateTimelineCursor();
+  }
+
+  function stepFrame(delta) {
+    const input = qs("frameIdx");
+    let value = Number(input.value || 0) + delta;
+    if (value < 0) value = 0;
+    if (currentMeta && currentMeta.frame_count && value >= currentMeta.frame_count) {
+      value = currentMeta.frame_count - 1;
+    }
+    input.value = value;
+    loadFrame();
+  }
+
+  function updateTimelineCursor() {
+    const cursor = qs("timelineCursor");
+    const frame = Number(qs("frameIdx").value || 0);
+    const total = currentMeta && currentMeta.frame_count ? currentMeta.frame_count : 0;
+    const pct = total > 1 ? Math.max(0, Math.min(100, frame / (total - 1) * 100)) : 0;
+    cursor.style.left = pct + "%";
+    renderMarkers();
+    renderCurrentAnnotations();
+  }
+
+  function seekTimeline(event) {
+    if (!currentMeta || !currentMeta.frame_count) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const pct = (event.clientX - rect.left) / rect.width;
+    const frame = Math.round(pct * (currentMeta.frame_count - 1));
+    qs("frameIdx").value = Math.max(0, Math.min(currentMeta.frame_count - 1, frame));
+    loadFrame();
+  }
+
+  async function refreshState() {
+    const payload = await api("/api/state");
+    const mods = payload.modules || {};
+    qs("phaseBadge").textContent = payload.phase || "state";
+    qs("stateBox").innerHTML = Object.keys(mods).map(k => `<div>${htmlEscape(k)}</div><div>${htmlEscape(mods[k])}</div>`).join("");
+  }
+
+  async function refreshLegacy() {
+    try {
+      const payload = await api("/api/legacy-artifacts");
+      const checks = payload.checks || {};
+      const table = checks.validated_table_chain || [];
+      const ball = checks.partial_ball_chain_reference || [];
+      const tableOk = table.filter(x => x.exists).length;
+      const ballOk = ball.filter(x => x.exists).length;
+
+      qs("legacyBox").innerHTML = `
+        <div>table chain: <span class="${tableOk ? "ok" : "warn"}">${tableOk}/${table.length}</span></div>
+        <div>ball refs: <span class="${ballOk ? "ok" : "warn"}">${ballOk}/${ball.length}</span></div>
+        <div style="margin-top:8px;">next: 007B import index détaillé</div>
+      `;
+    } catch (err) {
+      qs("legacyBox").innerHTML = "<span class='bad'>" + htmlEscape(err) + "</span>";
+    }
+  }
+
+  async function refreshLegacyDetailed(rebuild=false) {
+    const box = qs("legacyDetailedBox");
+    box.innerHTML = "index détaillé...";
+    try {
+      const payload = await api("/api/legacy-artifacts-detailed?rebuild=" + (rebuild ? "true" : "false"));
+      const records = payload.records || [];
+      const missing = records.filter(r => !r.exists);
+      const csvs = records.filter(r => r.suffix === ".csv" && r.exists);
+      const jsons = records.filter(r => r.suffix === ".json" && r.exists);
+
+      const top = records.map(r => {
+        const cls = r.exists ? "ok" : "bad";
+        const cols = (r.columns || []).slice(0, 8).join(", ");
+        const details = r.suffix === ".csv"
+          ? `${r.row_count_estimate ?? ""} rows — ${htmlEscape(cols)}`
+          : r.suffix === ".json"
+            ? `${htmlEscape(r.json_type || "")} — ${htmlEscape((r.json_keys || []).slice(0, 8).join(", "))}`
+            : htmlEscape(r.kind || "");
+        return `
+          <div style="border-top:1px solid var(--line); padding:6px 0;">
+            <div><span class="${cls}">${r.exists ? "OK" : "MISS"}</span> ${htmlEscape(r.relative_path)}</div>
+            <div class="small">${details}</div>
+          </div>
+        `;
+      }).join("");
+
+      box.innerHTML = `
+        <div>records: <span class="ok">${payload.records_exists}</span> ok / <span class="${payload.records_missing ? "bad" : "ok"}">${payload.records_missing}</span> missing</div>
+        <div>csv: ${csvs.length} — json: ${jsons.length}</div>
+        <div>outputs: runs\\007B_legacy_artifacts_index</div>
+        <div style="margin-top:8px;">${top}</div>
+      `;
+    } catch (err) {
+      box.innerHTML = "<span class='bad'>" + htmlEscape(err) + "</span>";
+    }
+  }
+
+
+  async function refreshRuns() {
+    try {
+      const payload = await api("/api/runs");
+      const rows = (payload.runs || []).slice(0, 12);
+      if (!rows.length) {
+        qs("runsBox").textContent = "Aucun run.";
+        return;
+      }
+      qs("runsBox").innerHTML = rows.map(r => `
+        <div style="margin-bottom:6px;">
+          <span class="badge">${htmlEscape(r.source)}</span>
+          ${htmlEscape(r.name)}
+        </div>
+      `).join("");
+    } catch (err) {
+      qs("runsBox").innerHTML = "<span class='bad'>" + htmlEscape(err) + "</span>";
+    }
+  }
+
+  init();
+</script>
+</body>
+</html>

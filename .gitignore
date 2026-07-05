@@ -1,0 +1,126 @@
+﻿# Vidéos / médias lourds
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.wav
+*.mp3
+
+# Runs / sorties lourdes
+**/runs/**
+**/outputs/**
+**/overlays/**
+**/frames/**
+**/cache/**
+**/__pycache__/**
+*.pyc
+
+# Modèles / poids
+*.pt
+*.pth
+*.onnx
+*.ckpt
+*.safetensors
+
+# Archives / gros exports
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+
+# Environnements
+.venv/
+.venv_torch/
+venv/
+env/
+
+# IDE / système
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Secrets éventuels
+.env
+*.key
+*.pem
+
+# Repos externes embarqués
+TTFlux/data_external/code/sportsvideo/
+TTFlux/data_external/code/tt3d/
+TTFlux/data_external/code/ttnet_pytorch/
+
+# Dossiers lourds / générés
+**/runs/**
+**/data_external/**
+**/datasets/**
+**/dataset/**
+**/raw/**
+**/videos/**
+**/clips/**
+**/exports/**
+**/models/**
+**/weights/**
+**/checkpoints/**
+**/logs/**
+**/tmp/**
+**/temp/**
+
+# Gros médias / data
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.wav
+*.mp3
+*.flac
+*.png
+*.jpg
+*.jpeg
+*.bmp
+*.npy
+*.npz
+*.pkl
+*.pickle
+*.parquet
+*.sqlite
+*.db
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+
+# Repos externes embarqués
+TTFlux/data_external/code/sportsvideo/
+TTFlux/data_external/code/tt3d/
+TTFlux/data_external/code/ttnet_pytorch/
+# Données externes
+**/data_external/
+
+# Projets tiers / dépendances externes
+TTNet-Real-time-Analysis-System-for-Table-Tennis-Pytorch-master/
+**/TTNet-Real-time-Analysis-System-for-Table-Tennis-Pytorch-master/
+
+# Datasets / vidéos / médias
+**/videos_dataset*/
+**/videos*/
+**/dataset*/
+**/datasets*/
+**/clips*/
+**/frames*/
+**/images*/
+**/raw*/
+
+# Backups / runs
+**/backups/
+**/backup/
+**/runs/
+
+# Fichiers lourds
+*.gif
+*.mp4
+*.part

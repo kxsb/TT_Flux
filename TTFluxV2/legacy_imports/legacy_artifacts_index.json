@@ -1,0 +1,32 @@
+{
+  "note": "Index de départ. Les fichiers ne sont pas copiés ici ; ils restent dans TTFlux V1 tant qu'on ne les promeut pas.",
+  "legacy_root": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux",
+  "validated_table_chain": [
+    "runs/rally_table_camera_005B2_pass33/table_camera_timeline_005B2.csv",
+    "runs/rally_table_mask_seed_005C6A/table_mask_seed_points_005C6A.csv",
+    "runs/rally_table_mask_classifier_005C6B/table_mask_rf_model_005C6B.pkl",
+    "runs/rally_table_mask_classifier_005C6B/table_object_classification_005C6B.csv",
+    "runs/rally_table_metric_qa_005C7B/table_metric_quality_005C7B.csv",
+    "runs/rally_table_projection_vote_005C8A/table_projection_votes_005C8A.csv",
+    "runs/rally_table_projection_vote_summary_005C8B/table_projection_votes_accepted_005C8B.csv",
+    "runs/rally_table_reference_fit_005C9A/table_reference_fit_005C9A.csv",
+    "runs/rally_scene_table_objects_005C9B/scene_table_objects_005C9B.csv",
+    "runs/rally_scene_table_objects_005C9B/ball_points_scene_table_projected_005C9B.csv",
+    "runs/rally_scene_table_objects_005C9B/scene_topdown_report_005C9B.html"
+  ],
+  "partial_ball_chain_reference": [
+    "runs/rally_apply_ranker_004V_all160/rally_ranker_paths_004V.csv",
+    "runs/rally_context_gate_004Z5_all160_p080_r030/context_gate_pass_reviews_004Z5.csv",
+    "runs/rally_display_single_ball_005A3_pass33_p080_r030",
+    "runs/rally_ball_table_score_005D2/ball_points_table_scored_005D2.csv",
+    "runs/rally_ball_table_relink_005D4/ball_points_table_relinked_005D4.csv",
+    "runs/rally_ball_gap_triage_005D6A/ball_tracking_gap_triage_005D6A.csv",
+    "runs/rally_candidate_gap_audit_005D6B/candidate_gap_audit_summary_005D6B.json"
+  ],
+  "key_diagnostic": {
+    "patch": "005D6B",
+    "meaning": "Le problème majeur du tracking balle était un réservoir candidat vide dans les gaps, pas seulement le Viterbi/relink.",
+    "target_candidate_hits": 2,
+    "target_candidate_empty": 225
+  }
+}

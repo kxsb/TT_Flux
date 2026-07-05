@@ -1,0 +1,23 @@
+{
+  "project": "TTFluxV2",
+  "version": "0.0.1",
+  "legacy_root": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux",
+  "ui": {
+    "host": "127.0.0.1",
+    "port": 8787
+  },
+  "video_scan_roots": [
+    "data/videos",
+    "../TTFlux/data/videos",
+    "../TTFlux/videos",
+    "../TTFlux/clips"
+  ],
+  "design_order": [
+    "analysis_ui",
+    "environment_table_score_players",
+    "ball_tracking",
+    "pytorch_training",
+    "dataset",
+    "tactical_analysis_ui"
+  ]
+}

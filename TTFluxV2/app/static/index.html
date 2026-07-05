@@ -1,0 +1,1865 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TTFlux V2</title>
+  <style>
+    :root {
+      --bg:#080d18;
+      --side:#0d1424;
+      --panel:#101a2d;
+      --panel2:#0b1220;
+      --line:#26334f;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --accent:#38bdf8;
+      --ok:#86efac;
+      --bad:#fb7185;
+      --warn:#fbbf24;
+    }
+
+    * { box-sizing:border-box; }
+
+    body {
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      font-size:14px;
+      height:100vh;
+      overflow:hidden;
+    }
+
+    .layout {
+      display:grid;
+      grid-template-columns:220px 1fr;
+      height:100vh;
+    }
+
+    aside {
+      background:var(--side);
+      border-right:1px solid var(--line);
+      padding:16px 12px;
+      overflow:auto;
+    }
+
+    .brand {
+      font-weight:800;
+      font-size:18px;
+      margin-bottom:4px;
+    }
+
+    .sub {
+      color:var(--muted);
+      font-size:12px;
+      margin-bottom:22px;
+    }
+
+    .nav-title {
+      color:var(--muted);
+      text-transform:uppercase;
+      font-size:11px;
+      letter-spacing:.12em;
+      margin:18px 10px 8px;
+    }
+
+    .nav button {
+      width:100%;
+      text-align:left;
+      border:1px solid transparent;
+      background:transparent;
+      color:var(--text);
+      border-radius:10px;
+      padding:10px 11px;
+      cursor:pointer;
+      font:inherit;
+      margin-bottom:4px;
+    }
+
+    .nav button:hover { background:#121d33; }
+
+    .nav button.active {
+      background:#15233d;
+      border-color:#2a4168;
+      color:#fff;
+    }
+
+    main {
+      min-width:0;
+      display:grid;
+      grid-template-rows:52px 1fr;
+      height:100vh;
+    }
+
+    header {
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 16px;
+      background:#080d18;
+    }
+
+    .title { font-weight:700; }
+    .status { color:var(--muted); font-size:12px; }
+
+    .content {
+      min-height:0;
+      overflow:auto;
+      padding:14px;
+    }
+
+    .view { display:none; }
+    .view.active { display:block; }
+
+    .grid {
+      display:grid;
+      grid-template-columns:360px 1fr;
+      gap:12px;
+      min-height:calc(100vh - 82px);
+    }
+
+    .panel {
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:14px;
+      overflow:hidden;
+      min-height:0;
+    }
+
+    .panel-head {
+      padding:11px 13px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+    }
+
+    .panel-title {
+      font-weight:700;
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      color:#cbd5e1;
+    }
+
+    .panel-body {
+      padding:12px;
+      overflow:auto;
+      max-height:calc(100vh - 142px);
+    }
+
+    button, input, select, textarea {
+      border:1px solid var(--line);
+      background:#13203a;
+      color:var(--text);
+      border-radius:9px;
+      padding:8px 10px;
+      font:inherit;
+    }
+
+    button { cursor:pointer; font-weight:650; }
+    button:hover { border-color:var(--accent); }
+    input, select, textarea { width:100%; background:#0a1120; }
+
+    label {
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      margin:10px 0 5px;
+    }
+
+    .row { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+
+    .list {
+      border:1px solid var(--line);
+      border-radius:11px;
+      overflow:auto;
+      background:#070b14;
+      max-height:calc(100vh - 310px);
+    }
+
+    .item {
+      padding:9px 10px;
+      border-bottom:1px solid #1d2942;
+      cursor:pointer;
+    }
+
+    .item:last-child { border-bottom:0; }
+    .item:hover { background:#101b30; }
+    .item .name { font-weight:650; margin-bottom:3px; }
+
+    .small { color:var(--muted); font-size:12px; }
+    .mono { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:12px; }
+
+    .badge {
+      display:inline-flex;
+      padding:2px 7px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+    }
+
+    .viewer {
+      display:grid;
+      grid-template-rows:auto 1fr auto auto auto;
+      gap:10px;
+      min-height:calc(100vh - 110px);
+    }
+
+    .toolbar {
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px;
+      display:grid;
+      grid-template-columns:1fr 110px 80px 80px 80px;
+      gap:8px;
+      align-items:end;
+    }
+
+    .imagebox {
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#050814;
+      border:1px solid var(--line);
+      border-radius:14px;
+      overflow:hidden;
+      min-height:420px;
+    }
+
+    .imagebox img {
+      max-width:100%;
+      max-height:100%;
+      display:none;
+    }
+
+    .placeholder { color:var(--muted); }
+
+    .timeline {
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px;
+    }
+
+    .timeline-top {
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+      font-size:12px;
+      margin-bottom:7px;
+    }
+
+    .timeline input[type="range"] {
+      width:100%;
+      padding:0;
+      accent-color:var(--accent);
+    }
+
+    .playback {
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px;
+      display:grid;
+      grid-template-columns:80px 80px 90px 90px 1fr;
+      gap:8px;
+      align-items:center;
+    }
+
+    .speed-label {
+      color:var(--muted);
+      font-size:12px;
+      text-align:right;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    }
+
+    .info {
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px;
+      min-height:80px;
+    }
+
+    pre {
+      margin:0;
+      white-space:pre-wrap;
+      word-break:break-word;
+      background:#060a13;
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:10px;
+      max-height:300px;
+      overflow:auto;
+    }
+
+    .ok { color:var(--ok); }
+    .bad { color:var(--bad); }
+    .warn { color:var(--warn); }
+
+    @media (max-width:1000px) {
+      body { overflow:auto; height:auto; }
+      .layout { grid-template-columns:1fr; height:auto; }
+      aside { border-right:0; border-bottom:1px solid var(--line); }
+      main { height:auto; }
+      .grid { grid-template-columns:1fr; min-height:auto; }
+      .toolbar { grid-template-columns:1fr 1fr; }
+      .panel-body { max-height:none; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside>
+    <div class="brand">TTFlux V2</div>
+    <div class="sub" id="apiStatus">connexion...</div>
+
+    <div class="nav-title">Vue</div>
+    <div class="nav">
+      <button id="nav-raw" class="active" onclick="showView('raw')">Vidéos brutes</button>
+      <button id="nav-analyzed" onclick="showView('analyzed')">Vidéos analysées</button>
+      <button id="nav-review" onclick="showView('review')">human_review</button>
+      <button id="nav-training" onclick="showView('training')">training AI</button>
+    </div>
+
+    <div class="nav-title">Debug</div>
+    <div class="nav">
+      <button onclick="window.open('/api/debug/paths?t=' + Date.now(), '_blank')">paths</button>
+      <button onclick="reloadCurrent()">reload vue</button>
+    </div>
+  </aside>
+
+  <main>
+    <header>
+      <div>
+        <div class="title" id="viewTitle">Vidéos brutes</div>
+        <div class="status" id="statusLine">initialisation</div>
+      </div>
+      <div class="badge" id="phaseBadge">007G3_light</div>
+    </header>
+
+    <div class="content">
+
+      <section id="view-raw" class="view active">
+        <div class="grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">Vidéos brutes</div>
+              <button onclick="loadRawVideos()">scan</button>
+            </div>
+            <div class="panel-body">
+              <label>Source</label>
+              <select id="rawSourceMode" onchange="loadRawVideos()">
+                <option value="transversal">legacy WTT transversal</option>
+                <option value="external">external datasets</option>
+                <option value="mixed">legacy + external</option>
+                <option value="raw_scan">scan brut legacy</option>
+              </select>
+
+              <label>Dataset externe</label>
+              <select id="externalDatasetFilter" onchange="loadRawVideos()">
+                <option value="all">externes raw canoniques</option>
+                <option value="openttgames_raw_videos">OpenTTGames raw videos</option>
+                <option value="tt3d_raw_extracted">TT3D extracted</option>
+                <option value="ttnet_layout">TTNet layout explicite</option>
+              </select>
+
+              <label>Qualité transversale</label>
+              <select id="rawQualityFilter" onchange="loadRawVideos()">
+                <option value="all">tout</option>
+                <option value="training_ready">training_ready</option>
+                <option value="table_ball">table + balle projetée</option>
+                <option value="table_only">table seule</option>
+                <option value="raw_only">raw seulement</option>
+              </select>
+
+              <label>Filtre texte</label>
+              <input id="rawFilter" placeholder="nom, review_id, status..." oninput="renderRawList()" />
+
+              <div class="row3">
+                <div>
+                  <label>Min sec</label>
+                  <input id="rawMinSec" type="number" min="0" step="1" placeholder="0" oninput="renderRawList()" />
+                </div>
+                <div>
+                  <label>Max sec</label>
+                  <input id="rawMaxSec" type="number" min="0" step="1" placeholder="∞" oninput="renderRawList()" />
+                </div>
+                <div>
+                  <label>Preset</label>
+                  <select id="rawDurationPreset" onchange="applyRawDurationPreset()">
+                    <option value="">tout</option>
+                    <option value="0-30">0-30s</option>
+                    <option value="30-90">30-90s</option>
+                    <option value="90-180">90-180s</option>
+                    <option value="180-">180s+</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row" style="margin-top:8px;">
+                <button onclick="hydrateRawDurations()">charger durées</button>
+                <button onclick="clearRawDurationFilters()">reset filtres</button>
+              </div>
+              <div class="row" style="margin-top:8px;">
+                <button onclick="rebuildClipIndex()">rebuild index</button>
+                <button onclick="openClipIndexSummary()">résumé index</button>
+              </div>
+              <div class="row" style="margin-top:8px;">
+                <button onclick="openExternalSampleIndex()">samples ext.</button>
+                <button onclick="rebuildExternalSampleIndex()">rebuild samples</button>
+              </div>
+              <div class="row" style="margin-top:8px;">
+                <button onclick="openOpenTTGamesAnnotationProbe()">probe annot.</button>
+                <button onclick="openOpenTTGamesBallPoints()">ball points</button>
+                <button onclick="openOpenTTGamesGtFrame()">frame GT</button>
+                <button onclick="openOpenTTGamesGtInfo()">info GT</button>
+                <button onclick="openOpenTTGamesGtContactSheet()">planche GT</button>
+              </div>
+
+              <div id="rawFilterStatus" class="small mono" style="margin:8px 0;">0 vidéo</div>
+
+              <label>Liste</label>
+              <div class="list" id="rawList"></div>
+            </div>
+          </div>
+
+          <div class="viewer">
+            <div class="toolbar">
+              <div>
+                <label>Chemin vidéo</label>
+                <input id="videoPath" placeholder="C:\...\clip.mp4" />
+              </div>
+              <div>
+                <label>Frame</label>
+                <input id="frameIdx" type="number" value="0" min="0" onkeydown="if(event.key==='Enter') loadFrame()" />
+              </div>
+              <button onclick="stepFrame(-25)">-25</button>
+              <button onclick="stepFrame(-1)">-1</button>
+              <button onclick="stepFrame(1)">+1</button>
+            </div>
+
+            <div class="imagebox">
+              <img id="frameImg" alt="frame" />
+              <div id="placeholder" class="placeholder">Aucune frame chargée</div>
+            </div>
+
+            <div class="timeline">
+              <div class="timeline-top">
+                <span id="timelineFrameLabel">frame 0 / 0</span>
+                <span id="timelineTimeLabel">00:00 / 00:00</span>
+              </div>
+              <input id="frameTimeline" type="range" min="0" max="0" value="0"
+                oninput="timelinePreview(this.value)"
+                onchange="timelineSeek(this.value)" />
+            </div>
+
+            <div class="playback">
+              <button id="rawPlayBtn" onclick="playRaw()">play</button>
+              <button onclick="stopRaw()">stop</button>
+              <button onclick="slowerRaw()">ralenti</button>
+              <button onclick="fasterRaw()">accéléré</button>
+              <div class="speed-label" id="rawSpeedLabel">x1.00</div>
+            </div>
+
+            <div class="info">
+              <div class="row">
+                <button onclick="loadMeta()">charger meta</button>
+                <button onclick="loadFrame()">afficher frame</button>
+              </div>
+              <pre id="metaBox" class="mono" style="margin-top:10px;">aucune vidéo</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-analyzed" class="view">
+        <div class="grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">Vidéos analysées</div>
+              <button onclick="loadAnalyzedVideos()">scan</button>
+            </div>
+            <div class="panel-body">
+              <label>Source</label>
+              <select id="analyzedMode" onchange="loadAnalyzedVideos()">
+                <option value="canonical">canonique / propre</option>
+                <option value="v2">V2 seulement</option>
+                <option value="all">tout legacy — sale</option>
+              </select>
+
+              <label>Filtre</label>
+              <input id="analyzedFilter" placeholder="overlay, table, ball..." oninput="renderAnalyzedList()" />
+              <div id="analyzedStatus" class="small mono" style="margin:8px 0;">0 vidéo</div>
+              <label>Liste</label>
+              <div class="list" id="analyzedList"></div>
+            </div>
+          </div>
+
+          <div class="viewer">
+            <div class="toolbar">
+              <div>
+                <label>Chemin vidéo analysée</label>
+                <input id="analyzedPath" placeholder="C:\...\overlay.mp4" />
+              </div>
+              <div>
+                <label>Frame</label>
+                <input id="analyzedFrameIdx" type="number" value="0" min="0" onkeydown="if(event.key==='Enter') loadAnalyzedFrame()" />
+              </div>
+              <button onclick="stepAnalyzedFrame(-25)">-25</button>
+              <button onclick="stepAnalyzedFrame(-1)">-1</button>
+              <button onclick="stepAnalyzedFrame(1)">+1</button>
+            </div>
+
+            <div class="imagebox">
+              <img id="analyzedFrameImg" alt="analyzed frame" />
+              <div id="analyzedPlaceholder" class="placeholder">Aucune vidéo analysée chargée</div>
+            </div>
+
+            <div class="timeline">
+              <div class="timeline-top">
+                <span id="analyzedTimelineFrameLabel">frame 0 / 0</span>
+                <span id="analyzedTimelineTimeLabel">00:00 / 00:00</span>
+              </div>
+              <input id="analyzedTimeline" type="range" min="0" max="0" value="0"
+                oninput="analyzedTimelinePreview(this.value)"
+                onchange="analyzedTimelineSeek(this.value)" />
+            </div>
+
+            <div class="playback">
+              <button id="analyzedPlayBtn" onclick="playAnalyzed()">play</button>
+              <button onclick="stopAnalyzed()">stop</button>
+              <button onclick="slowerAnalyzed()">ralenti</button>
+              <button onclick="fasterAnalyzed()">accéléré</button>
+              <div class="speed-label" id="analyzedSpeedLabel">x1.00</div>
+            </div>
+
+            <div class="info">
+              <div class="row">
+                <button onclick="loadAnalyzedMeta()">charger meta</button>
+                <button onclick="loadAnalyzedFrame()">afficher frame</button>
+              </div>
+              <pre id="analyzedMetaBox" class="mono" style="margin-top:10px;">aucune vidéo</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-review" class="view">
+        <div class="grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">human_review</div>
+              <button onclick="loadSessions()">sessions</button>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <button onclick="createSession()">nouvelle session</button>
+                <button onclick="exportSession()">export CSV</button>
+              </div>
+
+              <label>Session</label>
+              <select id="sessionSelect" onchange="selectSession()">
+                <option value="">Aucune</option>
+              </select>
+
+              <label>Type annotation</label>
+              <select id="labelType">
+                <option value="ball">ball</option>
+                <option value="ball_missing">ball_missing</option>
+                <option value="table_corner">table_corner</option>
+                <option value="player">player</option>
+                <option value="scoreboard">scoreboard</option>
+                <option value="note">note</option>
+              </select>
+
+              <label>Notes</label>
+              <textarea id="labelNotes" rows="3"></textarea>
+
+              <div class="small" style="margin-top:10px;">Clique sur l'image dans Vidéos brutes pour annoter la frame courante.</div>
+              <pre id="reviewBox" class="mono" style="margin-top:10px;">aucune session</pre>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">Annotations frame courante</div>
+            </div>
+            <div class="panel-body">
+              <pre id="annotationBox" class="mono">aucune annotation</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-training" class="view">
+        <div class="grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">training AI / datasets</div>
+              <button onclick="runDatasetAudit(false)">charger</button>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <button onclick="runDatasetAudit(true)">rebuild audit</button>
+                <button onclick="loadDatasetPools()">pools</button>
+              </div>
+
+              <div class="row" style="margin-top:8px;">
+                <button onclick="runTransversalRegistry(false)">registre actif</button>
+                <button onclick="runTransversalRegistry(true)">rebuild registre</button>
+              </div>
+              <div class="row" style="margin-top:8px;">
+                <button onclick="runExternalRegistry(false)">external</button>
+                <button onclick="runExternalRegistry(true)">rebuild external</button>
+              </div>
+              <div class="row" style="margin-top:8px;">
+                <button onclick="runExternalSamples(false)">samples ext.</button>
+                <button onclick="runExternalSamples(true)">rebuild samples</button>
+              </div>
+              <div class="row" style="margin-top:8px;">
+                <button onclick="runOpenTTGamesProbe()">probe OpenTTGames</button>
+                <button onclick="runOpenTTGamesBallPoints()">ball points game_1</button>
+              </div>
+              <div class="row" style="margin-top:8px;">
+                <button onclick="runOpenTTGamesBallIndex(false)">index ball</button>
+                <button onclick="runOpenTTGamesBallIndex(true)">rebuild ball</button>
+              </div>
+              <div class="row" style="margin-top:8px;">
+                <button onclick="runOpenTTGamesGtContactSheet()">planche GT game_1</button>
+                <button onclick="runOpenTTGamesGtAudit(false)">audit GT all</button>
+                <button onclick="runOpenTTGamesGtAudit(true)">rebuild audit GT</button>
+                <button onclick="openOpenTTGamesGtAuditReport()">rapport GT</button>
+              </div>
+              <div class="row" style="margin-top:8px;">
+                <button onclick="runOpenTTGamesGtSegments(false)">segments GT</button>
+                <button onclick="runOpenTTGamesGtSegments(true)">rebuild segments</button>
+                <button onclick="openOpenTTGamesGtSegmentsReport()">rapport segments</button>
+              </div>
+              <div class="row" style="margin-top:8px;">
+                <button onclick="runOpenTTGamesTrainingRows(false)">rows GT</button>
+                <button onclick="runOpenTTGamesTrainingRows(true)">rebuild rows</button>
+                <button onclick="openOpenTTGamesTrainingRowsCsv()">csv rows</button>
+                <button onclick="openOpenTTGamesTrainingSegmentsCsv()">csv segments</button>
+              </div>
+
+              <label>Résumé audit / registre</label>
+              <pre id="datasetAuditBox" class="mono">audit non chargé</pre>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">usage transversal</div>
+              <span class="badge">007H</span>
+            </div>
+            <div class="panel-body">
+              <pre class="mono" id="datasetPlanBox">Objectif :
+- ne plus dépendre d'une seule ancienne stack
+- utiliser les datasets par rôle transversal
+- source_videos : clips source ou clips rally propres
+- analyzed_videos : V2 + canonical seulement par défaut
+- human_review : labels / votes / validations humaines
+- training_rows : lignes exploitables IA
+- ball_tracking : sorties tracking / candidats
+- table_scene : table, homographie, caméra, scène
+- messy_legacy_analyzed_stacks : historique sale, masqué par défaut
+- join keys : review_id, rally_id, video_id, clip_path, frame, camera_segment_id</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+let activeView = "raw";
+let rawPlaybackTimer = null;
+let rawPlaybackRate = 1.0;
+let rawFrameFloat = 0;
+let analyzedPlaybackTimer = null;
+let analyzedPlaybackRate = 1.0;
+let analyzedFrameFloat = 0;
+let rawVideos = [];
+let analyzedVideos = [];
+let rawMetaHydrating = false;
+let currentMeta = null;
+let analyzedMeta = null;
+let currentSession = null;
+let annotations = [];
+let analyzedLoadedOnce = false;
+
+function qs(id) { return document.getElementById(id); }
+
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"
+  }[c]));
+}
+
+function setStatus(s) { qs("statusLine").textContent = s; }
+
+function formatDuration(sec) {
+  sec = Number(sec || 0);
+  if (!Number.isFinite(sec) || sec < 0) sec = 0;
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+}
+
+function clampPlaybackRate(v) {
+  v = Number(v || 1);
+  if (!Number.isFinite(v)) v = 1;
+  return Math.max(0.25, Math.min(4.0, v));
+}
+
+function updateSpeedLabels() {
+  if (qs("rawSpeedLabel")) qs("rawSpeedLabel").textContent = "x" + rawPlaybackRate.toFixed(2);
+  if (qs("analyzedSpeedLabel")) qs("analyzedSpeedLabel").textContent = "x" + analyzedPlaybackRate.toFixed(2);
+}
+
+function durLabel(v) {
+  if (v.duration_sec === undefined || v.duration_sec === null) return "durée ?";
+  return formatDuration(v.duration_sec);
+}
+
+function videoDuration(v) {
+  const d = Number(v.duration_sec);
+  return Number.isFinite(d) && d > 0 ? d : null;
+}
+
+async function api(url, options) {
+  const r = await fetch(url, options);
+  if (!r.ok) throw new Error(url + " -> " + r.status + " " + await r.text());
+  return await r.json();
+}
+
+function showView(name) {
+  if (name !== "raw") stopRaw();
+  if (name !== "analyzed") stopAnalyzed();
+  activeView = name;
+
+  for (const v of document.querySelectorAll(".view")) v.classList.remove("active");
+  for (const b of document.querySelectorAll(".nav button")) b.classList.remove("active");
+
+  qs("view-" + name).classList.add("active");
+  qs("nav-" + name).classList.add("active");
+
+  const titles = {
+    raw: "Vidéos brutes",
+    analyzed: "Vidéos analysées",
+    review: "human_review",
+    training: "training AI",
+  };
+
+  qs("viewTitle").textContent = titles[name] || name;
+
+  if (name === "analyzed" && !analyzedLoadedOnce) {
+    loadAnalyzedVideos();
+    analyzedLoadedOnce = true;
+  }
+
+  if (name === "review") loadSessions();
+}
+
+async function reloadCurrent() {
+  if (activeView === "raw") return loadRawVideos();
+  if (activeView === "analyzed") return loadAnalyzedVideos();
+  if (activeView === "review") return loadSessions();
+}
+
+function applyRawDurationPreset() {
+  const v = qs("rawDurationPreset").value;
+
+  if (!v) {
+    qs("rawMinSec").value = "";
+    qs("rawMaxSec").value = "";
+  } else if (v === "180-") {
+    qs("rawMinSec").value = "180";
+    qs("rawMaxSec").value = "";
+  } else {
+    const parts = v.split("-");
+    qs("rawMinSec").value = parts[0] || "";
+    qs("rawMaxSec").value = parts[1] || "";
+  }
+
+  renderRawList();
+}
+
+function clearRawDurationFilters() {
+  qs("rawMinSec").value = "";
+  qs("rawMaxSec").value = "";
+  qs("rawDurationPreset").value = "";
+  renderRawList();
+}
+
+
+
+async function runOpenTTGamesTrainingRows(rebuild=false) {
+  const box = qs("datasetAuditBox");
+  if (box) box.textContent = rebuild ? "rebuild rows GT OpenTTGames..." : "chargement rows GT OpenTTGames...";
+
+  try {
+    const payload = await api("/api/datasets/openttgames-training-rows?rebuild=" + (rebuild ? "true" : "false") + "&gap_threshold=30&min_valid_points=16&include_unusable_segments=false&t=" + Date.now());
+    const compact = {
+      source_segment_count: payload.source_segment_count,
+      segment_count: payload.segment_count,
+      row_count: payload.row_count,
+      usable_position_row_count: payload.usable_position_row_count,
+      visibility_row_count: payload.visibility_row_count,
+      train_row_count: payload.train_row_count,
+      test_row_count: payload.test_row_count,
+      train_usable_position_row_count: payload.train_usable_position_row_count,
+      test_usable_position_row_count: payload.test_usable_position_row_count,
+      row_role_counts: payload.row_role_counts,
+      split_counts: payload.split_counts,
+      sample_counts: payload.sample_counts,
+      outputs: payload.outputs,
+    };
+    if (box) box.textContent = JSON.stringify(compact, null, 2);
+    setStatus("training rows GT : " + payload.row_count + " rows");
+  } catch(e) {
+    if (box) box.textContent = String(e);
+    setStatus("erreur rows GT OpenTTGames");
+  }
+}
+
+function openOpenTTGamesTrainingRowsCsv() {
+  window.open("/api/datasets/openttgames-training-rows-csv?t=" + Date.now(), "_blank");
+}
+
+function openOpenTTGamesTrainingSegmentsCsv() {
+  window.open("/api/datasets/openttgames-training-segments-csv?t=" + Date.now(), "_blank");
+}
+
+async function runOpenTTGamesGtSegments(rebuild=false) {
+  const box = qs("datasetAuditBox");
+  if (box) box.textContent = rebuild ? "rebuild segments GT OpenTTGames..." : "chargement segments GT OpenTTGames...";
+
+  try {
+    const payload = await api("/api/datasets/openttgames-gt-segments?rebuild=" + (rebuild ? "true" : "false") + "&gap_threshold=30&min_valid_points=16&t=" + Date.now());
+    const compact = {
+      sample_count: payload.sample_count,
+      segment_count: payload.segment_count,
+      usable_segment_count: payload.usable_segment_count,
+      point_count: payload.point_count,
+      split_counts: payload.split_counts,
+      quality_counts: payload.quality_counts,
+      sample_summaries: payload.sample_summaries,
+      first_segments: (payload.segments || []).slice(0, 40).map(s => ({
+        segment_uid: s.segment_uid,
+        sample_id: s.sample_id,
+        split: s.split,
+        frame_start: s.frame_start,
+        frame_end: s.frame_end,
+        point_count: s.point_count,
+        valid_xy_count: s.valid_xy_count,
+        usable_for_training: s.usable_for_training,
+        quality_flags: s.quality_flags,
+      })),
+      outputs: payload.outputs,
+    };
+    if (box) box.textContent = JSON.stringify(compact, null, 2);
+    setStatus("segments GT : " + payload.segment_count + " segments, usable=" + payload.usable_segment_count);
+  } catch(e) {
+    if (box) box.textContent = String(e);
+    setStatus("erreur segments GT OpenTTGames");
+  }
+}
+
+function openOpenTTGamesGtSegmentsReport() {
+  window.open("/api/datasets/openttgames-gt-segments-html?t=" + Date.now(), "_blank");
+}
+
+async function runOpenTTGamesGtAudit(rebuild=false) {
+  const box = qs("datasetAuditBox");
+  if (box) box.textContent = rebuild ? "rebuild audit GT OpenTTGames..." : "chargement audit GT OpenTTGames...";
+
+  try {
+    const payload = await api("/api/datasets/openttgames-gt-audit?rebuild=" + (rebuild ? "true" : "false") + "&build_sheets=true&t=" + Date.now());
+    const compact = {
+      sample_count: payload.sample_count,
+      point_count: payload.point_count,
+      split_counts: payload.split_counts,
+      quality_flag_counts: payload.quality_flag_counts,
+      samples: (payload.samples || []).map(s => ({
+        sample_id: s.sample_id,
+        split: s.split,
+        point_count: s.point_count,
+        valid_xy_count: s.valid_xy_count,
+        invalid_xy_count: s.invalid_xy_count,
+        out_of_image_count: s.out_of_image_count,
+        frame_min: s.frame_min,
+        frame_max: s.frame_max,
+        max_gap: s.max_gap,
+        gap_gt30_count: s.gap_gt30_count,
+        quality_flags: s.quality_flags,
+        sheet_jpg: s.sheet_jpg,
+      })),
+      outputs: payload.outputs,
+    };
+    if (box) box.textContent = JSON.stringify(compact, null, 2);
+    setStatus("audit GT OpenTTGames : " + payload.sample_count + " samples");
+  } catch(e) {
+    if (box) box.textContent = String(e);
+    setStatus("erreur audit GT OpenTTGames");
+  }
+}
+
+function openOpenTTGamesGtAuditReport() {
+  window.open("/api/datasets/openttgames-gt-audit-html?t=" + Date.now(), "_blank");
+}
+
+async function runOpenTTGamesGtContactSheet() {
+  const game1 = "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\data_external\\sources\\openttgames\\raw_videos\\game_1.mp4";
+  window.open("/api/datasets/openttgames-gt-contact-sheet?path=" + encodeURIComponent(game1) + "&max_tiles=24&cols=4&t=" + Date.now(), "_blank");
+}
+
+async function runOpenTTGamesBallIndex(rebuild=false) {
+  const box = qs("datasetAuditBox");
+  if (box) box.textContent = rebuild ? "rebuild index ball OpenTTGames..." : "chargement index ball OpenTTGames...";
+
+  try {
+    const payload = await api("/api/datasets/openttgames-ball-points-index?rebuild=" + (rebuild ? "true" : "false") + "&t=" + Date.now());
+    const compact = {
+      sample_count: payload.sample_count,
+      point_count: payload.point_count,
+      frame_missing_count: payload.frame_missing_count,
+      split_counts: payload.split_counts,
+      sample_counts: payload.sample_counts,
+      sample_summaries: payload.sample_summaries,
+      outputs: payload.outputs,
+      csv_url: "/api/datasets/openttgames-ball-points-csv",
+    };
+    if (box) box.textContent = JSON.stringify(compact, null, 2);
+    setStatus("index ball OpenTTGames : " + payload.point_count + " points");
+  } catch(e) {
+    if (box) box.textContent = String(e);
+    setStatus("erreur index ball OpenTTGames");
+  }
+}
+
+async function runOpenTTGamesProbe() {
+  const box = qs("datasetAuditBox");
+  if (box) box.textContent = "probe annotations OpenTTGames...";
+
+  try {
+    const payload = await api("/api/datasets/openttgames-annotation-probe?t=" + Date.now());
+    const compact = {
+      sample_count: payload.sample_count,
+      suffix_total: payload.suffix_total,
+      dir_total: payload.dir_total,
+      first_samples: (payload.samples || []).slice(0, 3).map(s => ({
+        sample_id: s.sample_id,
+        split: s.split,
+        file_count_probe: s.file_count_probe,
+        likely_annotation_count: s.likely_annotation_count,
+        suffix_counts: s.suffix_counts,
+        dir_counts: s.dir_counts,
+        sniffed_files: (s.sniffed_files || []).slice(0, 5).map(f => ({
+          name: f.name,
+          suffix: f.suffix,
+          likely_annotation: f.likely_annotation,
+          sniff_kind: f.sniff ? f.sniff.kind : "",
+          columns: f.sniff ? f.sniff.columns : undefined,
+        })),
+      })),
+      outputs: payload.outputs,
+    };
+    if (box) box.textContent = JSON.stringify(compact, null, 2);
+    setStatus("probe OpenTTGames terminé");
+  } catch(e) {
+    if (box) box.textContent = String(e);
+    setStatus("erreur probe OpenTTGames");
+  }
+}
+
+async function runOpenTTGamesBallPoints() {
+  const box = qs("datasetAuditBox");
+  if (box) box.textContent = "extraction ball points game_1...";
+
+  try {
+    const payload = await api("/api/datasets/openttgames-ball-points?sample_id=game_1&max_points=5000&t=" + Date.now());
+    const compact = {
+      sample_id: payload.sample_id,
+      split: payload.split,
+      candidate_file_count: payload.candidate_file_count,
+      point_count: payload.point_count,
+      frame_min: payload.frame_min,
+      frame_max: payload.frame_max,
+      x_min: payload.x_min,
+      x_max: payload.x_max,
+      y_min: payload.y_min,
+      y_max: payload.y_max,
+      tried_files: payload.tried_files,
+      first_points: (payload.points || []).slice(0, 20),
+    };
+    if (box) box.textContent = JSON.stringify(compact, null, 2);
+    setStatus("ball points OpenTTGames : " + payload.point_count);
+  } catch(e) {
+    if (box) box.textContent = String(e);
+    setStatus("erreur ball points OpenTTGames");
+  }
+}
+
+async function runExternalSamples(rebuild=false) {
+  const box = qs("datasetAuditBox");
+  if (box) box.textContent = rebuild ? "rebuild sample index externe..." : "chargement sample index externe...";
+
+  try {
+    const payload = await api("/api/datasets/external-samples?rebuild=" + (rebuild ? "true" : "false") + "&limit=500&t=" + Date.now());
+    const compact = {
+      total_samples: payload.total_samples,
+      dataset_counts: payload.dataset_counts,
+      split_counts: payload.split_counts,
+      annotation_ready_counts: payload.annotation_ready_counts,
+      first_samples: (payload.samples || []).slice(0, 30).map(s => ({
+        dataset_id: s.dataset_id,
+        sample_id: s.sample_id,
+        split: s.split,
+        annotation_exists: s.annotation_exists,
+        annotation_file_count: s.annotation_file_count,
+        primary_video: s.primary_video,
+      })),
+      outputs: payload.outputs,
+    };
+    if (box) box.textContent = JSON.stringify(compact, null, 2);
+    setStatus("sample index externe prêt");
+  } catch(e) {
+    if (box) box.textContent = String(e);
+    setStatus("erreur sample index externe");
+  }
+}
+
+async function runExternalRegistry(rebuild=false) {
+  const box = qs("datasetAuditBox");
+  if (box) box.textContent = rebuild ? "rebuild registre externe..." : "chargement registre externe...";
+
+  try {
+    const payload = await api("/api/datasets/external-summary?rebuild=" + (rebuild ? "true" : "false") + "&t=" + Date.now());
+    if (box) box.textContent = JSON.stringify(payload, null, 2);
+    setStatus("registre externe prêt");
+  } catch(e) {
+    if (box) box.textContent = String(e);
+    setStatus("erreur registre externe");
+  }
+}
+
+async function runTransversalRegistry(rebuild=false) {
+  const box = qs("datasetAuditBox");
+  if (box) box.textContent = rebuild ? "rebuild registre transversal..." : "chargement registre transversal...";
+
+  try {
+    const payload = await api("/api/datasets/transversal-registry?rebuild=" + (rebuild ? "true" : "false") + "&t=" + Date.now());
+
+    const compact = {
+      audit_records_total: payload.audit_records_total,
+      audit_status_counts: payload.audit_status_counts,
+      active_profile: payload.active_profile,
+      role_counts: Object.fromEntries(Object.entries(payload.roles || {}).map(([k,v]) => [k, (v || []).length])),
+      top_records: Object.fromEntries(Object.entries(payload.roles || {}).map(([k,v]) => [
+        k,
+        (v || []).slice(0, 5).map(r => ({
+          run_id: r.run_id,
+          status: r.status,
+          canonical: r.canonical,
+          video_count: r.video_count,
+          csv_count: r.csv_count,
+          score: r.score,
+          path: r.path,
+        }))
+      ])),
+      outputs: payload.outputs,
+    };
+
+    if (box) box.textContent = JSON.stringify(compact, null, 2);
+    setStatus("registre transversal prêt");
+  } catch(e) {
+    if (box) box.textContent = String(e);
+    setStatus("erreur registre transversal");
+  }
+}
+
+async function runDatasetAudit(rebuild=false) {
+  const box = qs("datasetAuditBox");
+  if (box) box.textContent = rebuild ? "rebuild audit..." : "chargement audit...";
+
+  try {
+    const payload = await api("/api/datasets/audit?rebuild=" + (rebuild ? "true" : "false") + "&t=" + Date.now());
+    const summary = {
+      records_total: payload.records_total,
+      status_counts: payload.status_counts,
+      role_counts: payload.role_counts,
+      outputs: payload.outputs,
+      pools: Object.fromEntries(Object.entries(payload.pools || {}).map(([k,v]) => [k, v.length])),
+    };
+    if (box) box.textContent = JSON.stringify(summary, null, 2);
+    setStatus("audit datasets : " + payload.records_total + " runs");
+  } catch(e) {
+    if (box) box.textContent = String(e);
+    setStatus("erreur audit datasets");
+  }
+}
+
+async function loadDatasetPools() {
+  const box = qs("datasetAuditBox");
+  if (box) box.textContent = "chargement pools...";
+
+  try {
+    const payload = await api("/api/datasets/pools?t=" + Date.now());
+    const compact = {};
+    for (const [k, rows] of Object.entries(payload || {})) {
+      compact[k] = (rows || []).slice(0, 20).map(r => ({
+        run_id: r.run_id,
+        status: r.status,
+        roles: r.roles,
+        video_count: r.video_count,
+        csv_count: r.csv_count,
+        path: r.path,
+      }));
+    }
+    if (box) box.textContent = JSON.stringify(compact, null, 2);
+  } catch(e) {
+    if (box) box.textContent = String(e);
+  }
+}
+
+async function init() {
+  try {
+    const h = await api("/api/health?t=" + Date.now());
+    qs("apiStatus").innerHTML = h.ok ? "<span class='ok'>API OK</span>" : "<span class='bad'>API KO</span>";
+    setStatus("UI légère prête");
+  } catch(e) {
+    qs("apiStatus").innerHTML = "<span class='bad'>API KO</span>";
+    setStatus(String(e));
+  }
+
+  updateSpeedLabels();
+  loadRawVideos();
+}
+
+async function loadRawVideos() {
+  qs("rawList").innerHTML = "<div class='item small'>chargement...</div>";
+  qs("rawFilterStatus").textContent = "chargement...";
+
+  const mode = qs("rawSourceMode") ? qs("rawSourceMode").value : "transversal";
+
+  try {
+    let payload;
+
+    if (mode === "raw_scan") {
+      payload = await api("/api/light/raw-videos?limit=180&with_meta=false&t=" + Date.now());
+      rawVideos = payload.items || [];
+      setStatus("scan brut : " + rawVideos.length + " vidéos — durées non chargées");
+    } else {
+      const quality = qs("rawQualityFilter") ? qs("rawQualityFilter").value : "all";
+      const externalDatasetId = qs("externalDatasetFilter") ? qs("externalDatasetFilter").value : "all";
+
+      let unifiedMode = "legacy_transversal";
+      if (mode === "external") unifiedMode = "external";
+      if (mode === "mixed") unifiedMode = "mixed";
+
+      payload = await api("/api/datasets/unified-raw-clips?mode=" + encodeURIComponent(unifiedMode)
+        + "&quality=" + encodeURIComponent(quality)
+        + "&external_dataset_id=" + encodeURIComponent(externalDatasetId)
+        + "&limit=250&t=" + Date.now());
+
+      rawVideos = payload.items || [];
+      setStatus("clips : " + rawVideos.length
+        + " | affichés legacy=" + payload.legacy_count
+        + " external=" + payload.external_count
+        + " | dispo legacy=" + payload.legacy_total_available
+        + " external=" + payload.external_total_available);
+    }
+
+    renderRawList();
+  } catch(e) {
+    qs("rawList").innerHTML = "<div class='item bad'>" + esc(e) + "</div>";
+    setStatus("erreur chargement vidéos brutes");
+  }
+}
+
+async function rebuildClipIndex() {
+  qs("rawList").innerHTML = "<div class='item small'>rebuild index transversal...</div>";
+  qs("rawFilterStatus").textContent = "rebuild index...";
+
+  try {
+    const mode = qs("rawSourceMode") ? qs("rawSourceMode").value : "transversal";
+    const quality = qs("rawQualityFilter") ? qs("rawQualityFilter").value : "all";
+    const externalDatasetId = qs("externalDatasetFilter") ? qs("externalDatasetFilter").value : "all";
+
+    let unifiedMode = "legacy_transversal";
+    if (mode === "external") unifiedMode = "external";
+    if (mode === "mixed") unifiedMode = "mixed";
+
+    const payload = await api("/api/datasets/unified-raw-clips?rebuild=true&mode=" + encodeURIComponent(unifiedMode)
+      + "&quality=" + encodeURIComponent(quality)
+      + "&external_dataset_id=" + encodeURIComponent(externalDatasetId)
+      + "&limit=250&t=" + Date.now());
+
+    rawVideos = payload.items || [];
+    renderRawList();
+    setStatus("index rebuild : " + rawVideos.length + " clips");
+  } catch(e) {
+    qs("rawList").innerHTML = "<div class='item bad'>" + esc(e) + "</div>";
+    setStatus("erreur rebuild index");
+  }
+}
+
+function openClipIndexSummary() {
+  const mode = qs("rawSourceMode") ? qs("rawSourceMode").value : "transversal";
+  if (mode === "external") {
+    window.open("/api/datasets/external-summary?t=" + Date.now(), "_blank");
+  } else {
+    window.open("/api/datasets/clip-index-summary?t=" + Date.now(), "_blank");
+  }
+}
+
+function openExternalSampleIndex() {
+  window.open("/api/datasets/external-samples?t=" + Date.now(), "_blank");
+}
+
+async function rebuildExternalSampleIndex() {
+  setStatus("rebuild sample index externe...");
+  const payload = await api("/api/datasets/external-samples?rebuild=true&limit=50&t=" + Date.now());
+  setStatus("sample index externe : " + payload.total_samples + " samples");
+  window.open("/api/datasets/external-samples?limit=100&t=" + Date.now(), "_blank");
+}
+
+function currentExternalSampleIdFallback() {
+  const path = qs("videoPath") ? qs("videoPath").value : "";
+  const low = String(path || "").toLowerCase();
+
+  const m = low.match(/(game_\d+|test_\d+)\.mp4/);
+  if (m) return m[1];
+
+  return "game_1";
+}
+
+function openOpenTTGamesAnnotationProbe() {
+  const sid = currentExternalSampleIdFallback();
+  window.open("/api/datasets/openttgames-annotation-probe?sample_id=" + encodeURIComponent(sid) + "&t=" + Date.now(), "_blank");
+}
+
+function openOpenTTGamesBallPoints() {
+  const sid = currentExternalSampleIdFallback();
+  window.open("/api/datasets/openttgames-ball-points?sample_id=" + encodeURIComponent(sid) + "&max_points=5000&t=" + Date.now(), "_blank");
+}
+
+function currentFrameFallback() {
+  const ids = ["frameIdx", "frameIndex", "frameInput", "frame", "currentFrame", "timelineSlider", "rawFrameSlider", "frameSlider", "videoFrame"];
+  for (const id of ids) {
+    const el = qs(id);
+    if (!el) continue;
+    const v = Number(el.value);
+    if (Number.isFinite(v) && v >= 0) return Math.round(v);
+  }
+
+  try {
+    const img = qs("frameImage") || qs("frameImg") || document.querySelector("img");
+    const src = img ? String(img.src || "") : "";
+    const u = new URL(src);
+    const f = Number(u.searchParams.get("frame"));
+    if (Number.isFinite(f) && f >= 0) return Math.round(f);
+  } catch(e) {}
+
+  return 0;
+}
+
+function openOpenTTGamesGtFrame() {
+  const path = qs("videoPath") ? qs("videoPath").value : "";
+  const frame = currentFrameFallback();
+  if (!path) {
+    setStatus("aucune vidéo sélectionnée");
+    return;
+  }
+  window.open("/api/frame-external-gt?path=" + encodeURIComponent(path) + "&frame=" + encodeURIComponent(frame) + "&window=0&t=" + Date.now(), "_blank");
+}
+
+function openOpenTTGamesGtInfo() {
+  const path = qs("videoPath") ? qs("videoPath").value : "";
+  const frame = currentFrameFallback();
+  if (!path) {
+    setStatus("aucune vidéo sélectionnée");
+    return;
+  }
+  window.open("/api/datasets/openttgames-ball-frame-point?path=" + encodeURIComponent(path) + "&frame=" + encodeURIComponent(frame) + "&window=5&t=" + Date.now(), "_blank");
+}
+
+function openOpenTTGamesGtContactSheet() {
+  const path = qs("videoPath") ? qs("videoPath").value : "";
+  if (!path) {
+    setStatus("aucune vidéo sélectionnée");
+    return;
+  }
+  window.open("/api/datasets/openttgames-gt-contact-sheet?path=" + encodeURIComponent(path) + "&max_tiles=24&cols=4&t=" + Date.now(), "_blank");
+}
+
+async function hydrateRawDurations() {
+  if (rawMetaHydrating) return;
+
+  rawMetaHydrating = true;
+  setStatus("chargement progressif des durées...");
+  qs("rawFilterStatus").textContent = "chargement durées...";
+
+  const max = Math.min(rawVideos.length, 180);
+  let done = 0;
+
+  async function hydrateOne(v) {
+    if (!v || !v.path || v.duration_sec !== undefined) return;
+
+    try {
+      const meta = await api("/api/video-meta?path=" + encodeURIComponent(v.path) + "&t=" + Date.now());
+      v.width = meta.width;
+      v.height = meta.height;
+      v.fps = meta.fps;
+      v.frame_count = meta.frame_count;
+      v.duration_sec = meta.duration_sec;
+      v.backend_ok = meta.backend_ok;
+      v.video_error = meta.error;
+    } catch(e) {
+      v.duration_sec = null;
+      v.video_error = String(e);
+    }
+
+    done++;
+    if (done % 5 === 0 || done === max) {
+      qs("rawFilterStatus").textContent = "durées " + done + " / " + max;
+      renderRawList();
+    }
+  }
+
+  const concurrency = 4;
+  let cursor = 0;
+
+  async function worker() {
+    while (cursor < max) {
+      const idx = cursor++;
+      await hydrateOne(rawVideos[idx]);
+    }
+  }
+
+  await Promise.all(Array.from({length: concurrency}, worker));
+
+  rawMetaHydrating = false;
+  renderRawList();
+  setStatus("durées chargées : " + done + " vidéos");
+}
+
+function renderRawList() {
+  const f = (qs("rawFilter").value || "").toLowerCase();
+  const minRaw = qs("rawMinSec").value;
+  const maxRaw = qs("rawMaxSec").value;
+  const minSec = minRaw === "" ? null : Number(minRaw);
+  const maxSec = maxRaw === "" ? null : Number(maxRaw);
+
+  const list = rawVideos.filter(v => {
+    const s = JSON.stringify(v).toLowerCase();
+    const textOk = !f || s.includes(f);
+
+    const dur = videoDuration(v);
+    const hasDurationFilter = minSec !== null || maxSec !== null;
+
+    let durationOk = true;
+    if (hasDurationFilter) {
+      if (dur === null) durationOk = false;
+      if (durationOk && minSec !== null) durationOk = dur >= minSec;
+      if (durationOk && maxSec !== null) durationOk = dur <= maxSec;
+    }
+
+    return textOk && durationOk;
+  });
+
+  const knownDur = rawVideos.filter(v => videoDuration(v) !== null).length;
+  qs("rawFilterStatus").textContent = list.length + " / " + rawVideos.length + " vidéos"
+    + " | durées connues " + knownDur + "/" + rawVideos.length;
+
+  qs("rawList").innerHTML = list.length ? list.map(v => `
+    <div class="item" onclick="selectRawVideo('${esc(v.path).replaceAll("\\", "\\\\")}')">
+      <div class="name">${esc(v.review_id || v.name)}</div>
+      <div class="small mono">${esc(v.dataset_family || v.source || "raw")} — ${esc(v.analysis_quality || "raw")} — ball=${esc(v.ball_projected_points || 0)} — train=${esc(v.training_row_count || 0)} — table=${esc(v.scene_table_status_005C9B || "")}</div>
+      <div class="small mono">${esc(v.sample_id ? ("sample=" + v.sample_id + " split=" + (v.split || "")) : "")}</div>
+      <div class="small mono">${esc(v.annotation_exists ? ("annotations=" + v.annotation_file_count) : (v.annotation_path ? "annotations absentes" : ""))}</div>
+      <div class="small mono">${esc(durLabel(v))} — ${esc(v.frame_count || "?")} frames — ${v.fps ? Number(v.fps).toFixed(2) + " fps" : "fps ?"}</div>
+      <div class="small mono">${esc(v.dataset_id || v.source_run_id || v.source || v.source_root || "")}</div>
+      <div class="small mono">${esc(v.path)}</div>
+    </div>
+  `).join("") : "<div class='item small'>Aucune vidéo brute trouvée</div>";
+}
+
+
+function setRawPlaybackRate(v) {
+  rawPlaybackRate = clampPlaybackRate(v);
+  updateSpeedLabels();
+}
+
+function slowerRaw() {
+  setRawPlaybackRate(rawPlaybackRate / 2);
+}
+
+function fasterRaw() {
+  setRawPlaybackRate(rawPlaybackRate * 2);
+}
+
+async function playRaw() {
+  const path = qs("videoPath").value.trim();
+  if (!path) {
+    alert("Charge une vidéo brute d'abord.");
+    return;
+  }
+
+  if (!currentMeta || !currentMeta.frame_count) {
+    await loadMeta();
+  }
+
+  if (!currentMeta || !currentMeta.frame_count) {
+    alert("Meta vidéo indisponible.");
+    return;
+  }
+
+  stopRaw();
+
+  const fps = Number(currentMeta.fps || 25);
+  const tickMs = 140;
+  const tickSec = tickMs / 1000;
+  const maxFrame = Math.max(0, Number(currentMeta.frame_count || 1) - 1);
+
+  rawFrameFloat = Number(qs("frameIdx").value || 0);
+  qs("rawPlayBtn").textContent = "play...";
+  updateSpeedLabels();
+
+  rawPlaybackTimer = setInterval(() => {
+    rawFrameFloat += fps * tickSec * rawPlaybackRate;
+
+    if (rawFrameFloat >= maxFrame) {
+      rawFrameFloat = maxFrame;
+      qs("frameIdx").value = String(Math.round(rawFrameFloat));
+      loadFrame();
+      stopRaw();
+      return;
+    }
+
+    const nextFrame = Math.round(rawFrameFloat);
+    if (Number(qs("frameIdx").value || 0) !== nextFrame) {
+      qs("frameIdx").value = String(nextFrame);
+      loadFrame();
+    }
+  }, tickMs);
+}
+
+function stopRaw() {
+  if (rawPlaybackTimer) {
+    clearInterval(rawPlaybackTimer);
+    rawPlaybackTimer = null;
+  }
+  if (qs("rawPlayBtn")) qs("rawPlayBtn").textContent = "play";
+}
+
+async function selectRawVideo(path) {
+  stopRaw();
+  qs("videoPath").value = path;
+  await loadMeta();
+  qs("frameIdx").value = 0;
+  await loadFrame();
+}
+
+function updateTimeline() {
+  const slider = qs("frameTimeline");
+  const frame = Number(qs("frameIdx").value || 0);
+  const total = currentMeta && currentMeta.frame_count ? Number(currentMeta.frame_count) : 0;
+  const fps = currentMeta && currentMeta.fps ? Number(currentMeta.fps) : 0;
+  const maxFrame = Math.max(0, total - 1);
+
+  slider.max = String(maxFrame);
+  slider.value = String(Math.max(0, Math.min(frame, maxFrame)));
+
+  qs("timelineFrameLabel").textContent = "frame " + slider.value + " / " + maxFrame;
+
+  const curSec = fps > 0 ? Number(slider.value) / fps : 0;
+  const totalSec = currentMeta && currentMeta.duration_sec ? Number(currentMeta.duration_sec) : 0;
+  qs("timelineTimeLabel").textContent = formatDuration(curSec) + " / " + formatDuration(totalSec);
+}
+
+function timelinePreview(value) {
+  qs("frameIdx").value = value;
+  updateTimeline();
+  renderCurrentAnnotations();
+}
+
+function timelineSeek(value) {
+  stopRaw();
+  qs("frameIdx").value = value;
+  loadFrame();
+}
+
+async function loadMeta() {
+  const path = qs("videoPath").value.trim();
+  if (!path) return;
+
+  currentMeta = await api("/api/video-meta?path=" + encodeURIComponent(path) + "&t=" + Date.now());
+
+  qs("metaBox").textContent = JSON.stringify({
+    width: currentMeta.width,
+    height: currentMeta.height,
+    fps: currentMeta.fps,
+    frame_count: currentMeta.frame_count,
+    duration_sec: currentMeta.duration_sec,
+    backend_ok: currentMeta.backend_ok,
+    path: currentMeta.path,
+    error: currentMeta.error,
+  }, null, 2);
+
+  updateTimeline();
+}
+
+async function loadFrame() {
+  const path = qs("videoPath").value.trim();
+  if (!path) return;
+
+  const frame = Number(qs("frameIdx").value || 0);
+  const img = qs("frameImg");
+
+  img.onload = () => {
+    img.style.display = "block";
+    qs("placeholder").style.display = "none";
+  };
+
+  img.onerror = () => {
+    img.style.display = "none";
+    qs("placeholder").style.display = "block";
+    qs("placeholder").textContent = "Erreur chargement frame";
+  };
+
+  img.src = "/api/frame?path=" + encodeURIComponent(path) + "&frame=" + encodeURIComponent(frame) + "&quality=90&t=" + Date.now();
+
+  updateTimeline();
+  renderCurrentAnnotations();
+}
+
+function stepFrame(delta) {
+  stopRaw();
+  let f = Number(qs("frameIdx").value || 0) + delta;
+  if (f < 0) f = 0;
+  if (currentMeta && currentMeta.frame_count) f = Math.min(f, currentMeta.frame_count - 1);
+  qs("frameIdx").value = f;
+  loadFrame();
+}
+
+async function loadAnalyzedVideos() {
+  qs("analyzedList").innerHTML = "<div class='item small'>scan vidéos analysées...</div>";
+  qs("analyzedStatus").textContent = "scan...";
+
+  try {
+    const mode = qs("analyzedMode") ? qs("analyzedMode").value : "canonical";
+    const payload = await api("/api/datasets/analyzed-videos?mode=" + encodeURIComponent(mode) + "&limit=180&t=" + Date.now());
+    analyzedVideos = payload.items || [];
+    renderAnalyzedList();
+    setStatus("vidéos analysées : " + analyzedVideos.length);
+  } catch(e) {
+    qs("analyzedList").innerHTML = "<div class='item bad'>" + esc(e) + "</div>";
+    setStatus("erreur scan vidéos analysées");
+  }
+}
+
+function renderAnalyzedList() {
+  const f = (qs("analyzedFilter").value || "").toLowerCase();
+
+  const list = analyzedVideos.filter(v => {
+    const s = JSON.stringify(v).toLowerCase();
+    return !f || s.includes(f);
+  });
+
+  qs("analyzedStatus").textContent = list.length + " / " + analyzedVideos.length + " vidéos";
+
+  qs("analyzedList").innerHTML = list.length ? list.map(v => `
+    <div class="item" onclick="selectAnalyzedVideo('${esc(v.path).replaceAll("\\", "\\\\")}')">
+      <div class="name">${esc(v.name)}</div>
+      <div class="small mono">${esc(v.group || "")} — ${esc(v.run_id || "")}</div>
+      <div class="small mono">${esc(v.path)}</div>
+    </div>
+  `).join("") : "<div class='item small'>Aucune vidéo analysée trouvée</div>";
+}
+
+
+function setAnalyzedPlaybackRate(v) {
+  analyzedPlaybackRate = clampPlaybackRate(v);
+  updateSpeedLabels();
+}
+
+function slowerAnalyzed() {
+  setAnalyzedPlaybackRate(analyzedPlaybackRate / 2);
+}
+
+function fasterAnalyzed() {
+  setAnalyzedPlaybackRate(analyzedPlaybackRate * 2);
+}
+
+async function playAnalyzed() {
+  const path = qs("analyzedPath").value.trim();
+  if (!path) {
+    alert("Charge une vidéo analysée d'abord.");
+    return;
+  }
+
+  if (!analyzedMeta || !analyzedMeta.frame_count) {
+    await loadAnalyzedMeta();
+  }
+
+  if (!analyzedMeta || !analyzedMeta.frame_count) {
+    alert("Meta vidéo analysée indisponible.");
+    return;
+  }
+
+  stopAnalyzed();
+
+  const fps = Number(analyzedMeta.fps || 25);
+  const tickMs = 140;
+  const tickSec = tickMs / 1000;
+  const maxFrame = Math.max(0, Number(analyzedMeta.frame_count || 1) - 1);
+
+  analyzedFrameFloat = Number(qs("analyzedFrameIdx").value || 0);
+  qs("analyzedPlayBtn").textContent = "play...";
+  updateSpeedLabels();
+
+  analyzedPlaybackTimer = setInterval(() => {
+    analyzedFrameFloat += fps * tickSec * analyzedPlaybackRate;
+
+    if (analyzedFrameFloat >= maxFrame) {
+      analyzedFrameFloat = maxFrame;
+      qs("analyzedFrameIdx").value = String(Math.round(analyzedFrameFloat));
+      loadAnalyzedFrame();
+      stopAnalyzed();
+      return;
+    }
+
+    const nextFrame = Math.round(analyzedFrameFloat);
+    if (Number(qs("analyzedFrameIdx").value || 0) !== nextFrame) {
+      qs("analyzedFrameIdx").value = String(nextFrame);
+      loadAnalyzedFrame();
+    }
+  }, tickMs);
+}
+
+function stopAnalyzed() {
+  if (analyzedPlaybackTimer) {
+    clearInterval(analyzedPlaybackTimer);
+    analyzedPlaybackTimer = null;
+  }
+  if (qs("analyzedPlayBtn")) qs("analyzedPlayBtn").textContent = "play";
+}
+
+async function selectAnalyzedVideo(path) {
+  stopAnalyzed();
+  qs("analyzedPath").value = path;
+  await loadAnalyzedMeta();
+  qs("analyzedFrameIdx").value = 0;
+  await loadAnalyzedFrame();
+}
+
+function updateAnalyzedTimeline() {
+  const slider = qs("analyzedTimeline");
+  const frame = Number(qs("analyzedFrameIdx").value || 0);
+  const total = analyzedMeta && analyzedMeta.frame_count ? Number(analyzedMeta.frame_count) : 0;
+  const fps = analyzedMeta && analyzedMeta.fps ? Number(analyzedMeta.fps) : 0;
+  const maxFrame = Math.max(0, total - 1);
+
+  slider.max = String(maxFrame);
+  slider.value = String(Math.max(0, Math.min(frame, maxFrame)));
+
+  qs("analyzedTimelineFrameLabel").textContent = "frame " + slider.value + " / " + maxFrame;
+
+  const curSec = fps > 0 ? Number(slider.value) / fps : 0;
+  const totalSec = analyzedMeta && analyzedMeta.duration_sec ? Number(analyzedMeta.duration_sec) : 0;
+  qs("analyzedTimelineTimeLabel").textContent = formatDuration(curSec) + " / " + formatDuration(totalSec);
+}
+
+function analyzedTimelinePreview(value) {
+  qs("analyzedFrameIdx").value = value;
+  updateAnalyzedTimeline();
+}
+
+function analyzedTimelineSeek(value) {
+  stopAnalyzed();
+  qs("analyzedFrameIdx").value = value;
+  loadAnalyzedFrame();
+}
+
+async function loadAnalyzedMeta() {
+  const path = qs("analyzedPath").value.trim();
+  if (!path) return;
+
+  analyzedMeta = await api("/api/video-meta?path=" + encodeURIComponent(path) + "&t=" + Date.now());
+
+  qs("analyzedMetaBox").textContent = JSON.stringify({
+    width: analyzedMeta.width,
+    height: analyzedMeta.height,
+    fps: analyzedMeta.fps,
+    frame_count: analyzedMeta.frame_count,
+    duration_sec: analyzedMeta.duration_sec,
+    backend_ok: analyzedMeta.backend_ok,
+    path: analyzedMeta.path,
+    error: analyzedMeta.error,
+  }, null, 2);
+
+  updateAnalyzedTimeline();
+}
+
+async function loadAnalyzedFrame() {
+  const path = qs("analyzedPath").value.trim();
+  if (!path) return;
+
+  const frame = Number(qs("analyzedFrameIdx").value || 0);
+  const img = qs("analyzedFrameImg");
+
+  img.onload = () => {
+    img.style.display = "block";
+    qs("analyzedPlaceholder").style.display = "none";
+  };
+
+  img.onerror = () => {
+    img.style.display = "none";
+    qs("analyzedPlaceholder").style.display = "block";
+    qs("analyzedPlaceholder").textContent = "Erreur chargement frame";
+  };
+
+  img.src = "/api/frame?path=" + encodeURIComponent(path) + "&frame=" + encodeURIComponent(frame) + "&quality=90&t=" + Date.now();
+
+  updateAnalyzedTimeline();
+}
+
+function stepAnalyzedFrame(delta) {
+  stopAnalyzed();
+  let f = Number(qs("analyzedFrameIdx").value || 0) + delta;
+  if (f < 0) f = 0;
+  if (analyzedMeta && analyzedMeta.frame_count) f = Math.min(f, analyzedMeta.frame_count - 1);
+  qs("analyzedFrameIdx").value = f;
+  loadAnalyzedFrame();
+}
+
+async function loadSessions() {
+  try {
+    const payload = await api("/api/label-sessions?t=" + Date.now());
+    const sessions = payload.sessions || [];
+    qs("sessionSelect").innerHTML = '<option value="">Aucune</option>' + sessions.map(s => `
+      <option value="${esc(s.session_id)}">${esc(s.session_id)} (${esc(s.annotation_count || 0)})</option>
+    `).join("");
+  } catch(e) {
+    qs("reviewBox").textContent = String(e);
+  }
+}
+
+async function createSession() {
+  const path = qs("videoPath").value.trim();
+  if (!path) {
+    alert("Charge d'abord une vidéo brute.");
+    return;
+  }
+
+  const name = prompt("Nom court de session ?", "") || "";
+  const r = await fetch("/api/label-session?video_path=" + encodeURIComponent(path) + "&name=" + encodeURIComponent(name), { method:"POST" });
+  if (!r.ok) throw new Error(await r.text());
+
+  currentSession = await r.json();
+  await loadSessions();
+  qs("sessionSelect").value = currentSession.session_id;
+  await selectSession();
+}
+
+async function selectSession() {
+  const id = qs("sessionSelect").value;
+
+  if (!id) {
+    currentSession = null;
+    annotations = [];
+    qs("reviewBox").textContent = "aucune session";
+    renderCurrentAnnotations();
+    return;
+  }
+
+  const payload = await api("/api/label-session/" + encodeURIComponent(id) + "?t=" + Date.now());
+  currentSession = payload.session;
+  annotations = payload.annotations || [];
+
+  qs("reviewBox").textContent = JSON.stringify({
+    session_id: currentSession.session_id,
+    video_path: currentSession.video_path,
+    annotation_count: currentSession.annotation_count,
+  }, null, 2);
+
+  renderCurrentAnnotations();
+}
+
+function renderCurrentAnnotations() {
+  if (!qs("annotationBox")) return;
+
+  const frame = Number(qs("frameIdx").value || 0);
+  const rows = annotations.filter(a => Number(a.frame) === frame);
+  qs("annotationBox").textContent = rows.length ? JSON.stringify(rows, null, 2) : "aucune annotation sur frame " + frame;
+}
+
+function exportSession() {
+  if (!currentSession) {
+    alert("Aucune session.");
+    return;
+  }
+
+  window.open("/api/label-session/" + encodeURIComponent(currentSession.session_id) + "/csv", "_blank");
+}
+
+qs("frameImg").addEventListener("click", async (event) => {
+  if (!currentSession) return;
+
+  const img = qs("frameImg");
+  const rect = img.getBoundingClientRect();
+  const nx = img.naturalWidth;
+  const ny = img.naturalHeight;
+
+  if (!nx || !ny) return;
+
+  const x = (event.clientX - rect.left) * nx / rect.width;
+  const y = (event.clientY - rect.top) * ny / rect.height;
+
+  const payload = {
+    session_id: currentSession.session_id,
+    frame: Number(qs("frameIdx").value || 0),
+    label_type: qs("labelType").value,
+    x: Number(x.toFixed(3)),
+    y: Number(y.toFixed(3)),
+    visible: true,
+    object_id: "",
+    notes: qs("labelNotes").value || "",
+    payload: { video_path: qs("videoPath").value.trim() }
+  };
+
+  const r = await fetch("/api/annotation", {
+    method:"POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(payload)
+  });
+
+  if (!r.ok) {
+    alert(await r.text());
+    return;
+  }
+
+  const data = await r.json();
+  annotations.push(data.annotation);
+  renderCurrentAnnotations();
+});
+
+init();
+</script>
+</body>
+</html>

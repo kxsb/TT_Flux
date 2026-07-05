@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Env
+.venv/
+.env
+
+# TTFlux generated artifacts
+runs/**
+!runs/.gitkeep
+data/videos/**
+!data/videos/.gitkeep
+data/frames/**
+!data/frames/.gitkeep
+data/labels/**
+!data/labels/.gitkeep
+data/external/**
+!data/external/.gitkeep
+
+# UI / local
+app/static/generated/
+*.log

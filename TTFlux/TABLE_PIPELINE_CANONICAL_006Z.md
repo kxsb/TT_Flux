@@ -1,0 +1,923 @@
+# TTFlux — Table pipeline canonical lock 006Z
+
+Generated: 2026-07-05T17:24:31
+
+## Décision
+
+La méthode table fonctionnelle à conserver est la chaîne `005C9A → 005C9B → 005D1 → 005D2 → 005D4`.
+
+Les scripts `006C*` ne doivent pas remplacer cette base. Ils sont classés comme diagnostics ou pistes de reprise, pas comme source canonique.
+
+## Chaîne canonique
+
+### 005C9A
+Optimisation projection table officielle contre masque appris / lignes support
+
+- `OK` `runs/rally_table_reference_fit_005C9A/table_reference_fit_005C9A.csv`
+- `OK` `runs/rally_table_reference_fit_005C9A/table_reference_fit_summary_005C9A.json`
+- `OK` `runs/rally_table_reference_fit_005C9A/table_reference_fit_report_005C9A.html`
+
+### 005C9B
+Promotion objets table scène consolidés
+
+- `OK` `runs/rally_scene_table_objects_005C9B/scene_table_objects_005C9B.csv`
+
+### 005D1
+Gate table/caméra conservatif pour points balle existants
+
+- `OK` `runs/rally_ball_table_gate_005D1/ball_points_table_gated_005D1.csv`
+- `OK` `runs/rally_ball_table_gate_005D1/ball_table_gate_summary_005D1.json`
+
+### 005D2
+Score table/caméra pour reranking futur
+
+- `OK` `runs/rally_ball_table_score_005D2/ball_points_table_scored_005D2.csv`
+- `OK` `runs/rally_ball_table_score_005D2/ball_points_table_safe_005D2.csv`
+- `OK` `runs/rally_ball_table_score_005D2/ball_table_score_summary_005D2.json`
+- `OK` `runs/rally_ball_table_score_005D2/ball_table_score_topdown_report_005D2.html`
+
+### 005D3B
+Overlay de validation visuelle table-aware ball score
+
+- `OK` `runs/rally_ball_table_score_overlay_005D3B/ball_table_score_overlay_summary_005D3B.json`
+
+### 005D4
+Relink temporel conservatif table-aware + interpolation courts gaps
+
+- `OK` `runs/rally_ball_table_relink_005D4/ball_points_table_relinked_005D4.csv`
+- `OK` `runs/rally_ball_table_relink_005D4/ball_table_relink_summary_005D4.json`
+
+## À ne pas utiliser comme table canonique
+
+- `006C` : heuristique HSV naïve ; ne remplace pas 005C9A/005C9B
+- `006C_FIX2` : sélection d'un seul template global ; ignore changements caméra
+- `006C3` : bonne idée conceptuelle caméra/shot, mais matching template instable ; à reprendre plus tard à partir des objets 005C9B
+
+## Règle de reprise pour 006D
+
+1. Ne pas redétecter la table avec HSV simple.
+2. Repartir de `scene_table_objects_005C9B.csv` pour les objets table.
+3. Joindre les labels humains 006A/006B aux candidats balle et aux objets table par `review_id`, `clip_path`, `video_id`, plage de frames, puis frame locale.
+4. La table doit être dynamique par segment/caméra. Si aucun contexte table fiable n’existe pour un plan rapproché, inscrire `NO_TABLE_CONTEXT` plutôt que projeter un mauvais quad.
+5. Le score table/caméra doit être une feature de reranking, pas un filtre dur unique.
+
+## Scripts liés trouvés
+
+- `scripts\005C1_table_object_homography.py` tokens=005C1
+- `scripts\005C2_table_corner_review_server.py` tokens=005C1
+- `scripts\005C3_apply_table_corrections.py` tokens=005C1|005C3
+- `scripts\005C4_table_canonical_audit.py` tokens=005C1|005C3
+- `scripts\005C5A_select_table_semantic_rework.py` tokens=005C1|005C3|005C5
+- `scripts\005C5B_semantic_table_corner_review_server.py` tokens=005C1|005C3|005C5
+- `scripts\005C5C2_merge_table_corrections.py` tokens=005C1|005C3|005C5|005C5C2
+- `scripts\005C6A_table_mask_seed_server.py` tokens=005C1|005C3|005C5|005C5C2|005C6
+- `scripts\005C6B_train_table_mask_classifier.py` tokens=005C1|005C3|005C5|005C5C2|005C6|005C6B
+- `scripts\005C7A_snap_table_geometry_from_mask.py` tokens=005C1|005C3|005C6|005C6B|005C7|005C7A
+- `scripts\005C7B_metric_table_quality_gate.py` tokens=005C1|005C3|005C6|005C6B|005C7|005C7A
+- `scripts\005C8A_table_projection_vote_server.py` tokens=005C1|005C3|005C6|005C6B|005C7|005C7A|005C8
+- `scripts\005C8B_summarize_table_projection_votes.py` tokens=005C7|005C7A|005C8|005C8B
+- `scripts\005C9A_reference_table_fit_optimizer.py` tokens=005C3|005C6|005C6B|005C7|005C7A|005C8|005C8B|005C9|005C9A
+- `scripts\005C9B_promote_scene_table_objects.py` tokens=005C7|005C7A|005C8|005C9|005C9A|005C9B
+- `scripts\005D1_table_camera_aware_ball_gate.py` tokens=005C9|005C9B|005D1|005D2
+- `scripts\005D2_score_ball_with_table_context.py` tokens=005C9|005C9B|005D1|005D2
+- `scripts\005D3B_table_score_video_overlays.py` tokens=005C9|005C9B|005D2|005D3|005D3B
+- `scripts\005D3_table_score_video_overlays.py` tokens=005C9|005C9B|005D2|005D3
+- `scripts\005D4_table_aware_relink_interpolate.py` tokens=005C9|005C9B|005D2|005D4
+- `scripts\005D5_audit_tracking_gaps.py` tokens=005C9|005C9B|005D2|005D4
+- `scripts\005D6A_triage_tracking_gaps_with_camera_state.py` tokens=005C9|005C9B
+- `scripts\005D7B_gap_candidate_selector_audit.py` tokens=005D4
+- `scripts\005D7C_strict_gap_selector_reject.py` tokens=005D4
+- `scripts\005D7D_safe_gapfill_injection_audit.py` tokens=005D4
+- `scripts\005D7E_export_gapfilled_preview_track.py` tokens=005D4
+- `scripts\005D7F_target_gap_validation.py` tokens=005D4
+- `scripts\005D7G_promote_gapfilled_canonical_unique.py` tokens=005D4
+- `scripts\005F0_rollback_baseline_005D4_policy_compare.py` tokens=005D4
+- `scripts\005F1_tracklet_only_ball_trajectory_view.py` tokens=005D4
+- `scripts\005F2_resolve_clean_raw_video.py` tokens=005D4
+- `scripts\006C3_dynamic_camera_shot_table_context.py` tokens=005C1|005C3|005C5|005C5C2|005C7|005C7A|005C9|005C9A
+- `scripts\006C_FIX2_restore_table_from_existing_catalog.py` tokens=005C1|005C3|005C5|005C5C2|005C6|005C6B|005C7|005C7A|005C9|005C9A|005C9B
+- `scripts\006C_FIX_restore_existing_table_context_005C9B.py` tokens=005C1|005C3|005C5|005C5C2|005C6|005C6B|005C7|005C7A|005C9|005C9A|005C9B
+- `scripts\006Z_lock_table_pipeline_audit.py` tokens=005C1|005C3|005C5|005C5C2|005C6|005C6B|005C7|005C7A|005C8|005C8B|005C9|005C9A|005C9B|005D1|005D2|005D3|005D3B|005D4
+
+## Summaries liés trouvés
+
+- `runs\005D7A_gap_candidates\005D7A_gap_summary.json` version=005D7A_gap_candidate_reservoir
+- `runs\005D7B_gap_selected\005D7B_gap_selected_summary.json` version=005D7B_gap_candidate_selector_audit
+- `runs\005D7C_strict_gap_selected\005D7C_strict_selector_summary.json` version=005D7C_strict_gap_selector_reject
+- `runs\005D7D_safe_gapfill\005D7D_safe_gapfill_summary.json` version=005D7D_safe_gapfill_injection_audit
+- `runs\005D7E_gapfilled_preview\005D7E_gapfilled_preview_summary.json` version=005D7E_export_gapfilled_preview_track
+- `runs\005D7F_target_gap_validation\005D7F_target_gap_validation_summary.json` version=005D7F_target_gap_validation
+- `runs\005D7G_gapfilled_canonical\005D7F_target_gap_validation_summary.copy.json` version=005D7F_target_gap_validation
+- `runs\005D7G_gapfilled_canonical\005D7G_gapfilled_canonical_manifest.json` version=005D7G_promote_gapfilled_canonical_unique
+- `runs\005D7K_gapfilled_canonical_v2\005D7F_target_gap_validation_summary.copy.json` version=005D7F_target_gap_validation
+- `runs\005E0_canonical_jump_audit\005E0_jump_audit_summary.json` version=005E0_canonical_jump_audit
+- `runs\005F0_rollback_baseline_005D4\005F0_rollback_baseline_summary.json` version=005F0_rollback_baseline_005D4_policy_compare
+- `runs\005F1_tracklet_only_view\005F1_tracklet_only_summary.json` version=005F1_tracklet_only_ball_trajectory_view
+- `runs\005F1_tracklet_only_view_clean_aligned_normal\005F1_tracklet_only_summary.json` version=005F1_tracklet_only_ball_trajectory_view
+- `runs\005F1_tracklet_only_view_clean_aligned_strict\005F1_tracklet_only_summary.json` version=005F1_tracklet_only_ball_trajectory_view
+- `runs\005F2_resolve_clean_raw_video\005F2_resolve_clean_raw_video_summary.json` version=005F2_resolve_clean_raw_video
+- `runs\006C3_dynamic_camera_table_context\006C3_camera_table_context_debug.json` version=006C3_dynamic_camera_shot_table_context
+- `runs\006C_FIX2_restore_table_catalog\006C_FIX2_table_context.json` version=006C_FIX2_restore_table_from_existing_catalog
+- `runs\rally_ball_gap_audit_005D5\ball_tracking_gap_audit_summary_005D5.json` version=005D5
+- `runs\rally_ball_gap_triage_005D6A\ball_tracking_gap_triage_summary_005D6A.json` version=005D6A
+- `runs\rally_ball_table_gate_005D1\ball_table_gate_summary_005D1.json` version=005D1
+- `runs\rally_ball_table_relink_005D4\ball_table_relink_summary_005D4.json` version=005D4
+- `runs\rally_ball_table_score_005D2\ball_table_score_summary_005D2.json` version=005D2
+- `runs\rally_ball_table_score_overlay_005D3B\ball_table_score_overlay_summary_005D3B.json` version=005D3B
+- `runs\rally_scene_table_objects_005C9B\scene_table_objects_summary_005C9B.json` version=005C9B
+- `runs\rally_table_mask_classifier_005C6B\table_mask_classifier_summary_005C6B.json` version=005C6B
+- `runs\rally_table_mask_seed_005C6A\table_mask_seed_server_summary_005C6A.json` version=005C6A
+- `runs\rally_table_metric_qa_005C7B\table_metric_quality_summary_005C7B.json` version=005C7B
+- `runs\rally_table_object_005C1_pass33\table_object_detection_diagnostics_005C1.json` version=
+- `runs\rally_table_object_005C1_pass33\table_object_summary_005C1.json` version=005C1
+- `runs\rally_table_object_005C2_corner_review\table_corner_review_summary_005C2.json` version=005C2
+- `runs\rally_table_object_005C3_corrected\table_object_corrected_summary_005C3.json` version=005C3
+- `runs\rally_table_object_005C4_canonical_audit\table_object_canonical_audit_summary_005C4.json` version=005C4
+- `runs\rally_table_object_005C5C2_merged\table_object_merged_summary_005C5C2.json` version=005C5C2
+- `runs\rally_table_object_005C5C2_merged_audit\table_object_canonical_audit_summary_005C4.json` version=005C4
+- `runs\rally_table_object_005C5C_semantic_test\table_object_corrected_summary_005C3.json` version=005C3
+- `runs\rally_table_object_005C5C_semantic_test_audit\table_object_canonical_audit_summary_005C4.json` version=005C4
+- `runs\rally_table_object_005C5_semantic_rework\table_semantic_rework_summary_005C5A.json` version=005C5A
+- `runs\rally_table_object_005C5_semantic_rework_review\semantic_corner_review_summary_005C5B.json` version=005C5B
+- `runs\rally_table_projection_vote_005C8A\table_projection_vote_server_summary_005C8A.json` version=005C8A
+- `runs\rally_table_projection_vote_summary_005C8B\table_projection_vote_summary_005C8B.json` version=005C8B
+- `runs\rally_table_reference_fit_005C9A\table_reference_fit_summary_005C9A.json` version=005C9A
+- `runs\rally_table_snap_geometry_005C7A\table_snap_geometry_summary_005C7A.json` version=005C7A
+
+## Fichiers copiés dans l’archive
+
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7A_gap_candidates\005D7A_gap_candidates.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7A_gap_candidates\005D7A_gap_summary.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7B_gap_selected\005D7B_gap_selected_summary.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7B_gap_selected\005D7B_gap_selected_top1.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7B_gap_selected\005D7B_gapfilled_preview_points.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7C_strict_gap_selected\005D7C_strict_accepted_only.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7C_strict_gap_selected\005D7C_strict_gapfilled_preview_points.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7C_strict_gap_selected\005D7C_strict_selected_all_frames.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7C_strict_gap_selected\005D7C_strict_selector_summary.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7D_safe_gapfill\005D7D_safe_gapfill_accepted.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7D_safe_gapfill\005D7D_safe_gapfill_audit.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7D_safe_gapfill\005D7D_safe_gapfill_preview_track.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7D_safe_gapfill\005D7D_safe_gapfill_summary.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7E_gapfilled_preview\005D7E_ball_points_gapfilled_preview.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7E_gapfilled_preview\005D7E_gapfilled_preview_summary.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7E_gapfilled_preview\005D7E_injected_points_only.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7F_target_gap_validation\005D7F_target_gap_frame_status.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7F_target_gap_validation\005D7F_target_gap_per_gap_summary.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7F_target_gap_validation\005D7F_target_gap_validation_summary.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7G_gapfilled_canonical\005D7F_target_gap_validation_summary.copy.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7G_gapfilled_canonical\005D7G_ball_points_gapfilled_canonical_unique.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7G_gapfilled_canonical\005D7G_gapfilled_canonical_manifest.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7K_gapfilled_canonical_v2\005D7F_target_gap_validation_summary.copy.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7K_gapfilled_canonical_v2\005D7K_ball_points_gapfilled_canonical_unique.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005D7L_final_canonical_audit\005D7L_final_canonical_audit_summary.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005E0_canonical_jump_audit\005E0_jump_audit_summary.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005E0_canonical_jump_audit\005E0_jump_clusters.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005E0_canonical_jump_audit\005E0_jump_steps_only.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005E0_canonical_jump_audit\005E0_step_audit_all.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F0_rollback_baseline_005D4\005F0_baseline_005D4_first.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F0_rollback_baseline_005D4\005F0_baseline_005D4_last.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F0_rollback_baseline_005D4\005F0_baseline_005D4_max_score.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F0_rollback_baseline_005D4\005F0_baseline_005D4_min_jump_greedy.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F0_rollback_baseline_005D4\005F0_rollback_baseline_summary.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F0_rollback_baseline_005D4\NEXT_BASELINE_TRACK_CSV.txt`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F1_tracklet_only_view\005F1_all_tracklets.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F1_tracklet_only_view\005F1_selected_tracklet_points.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F1_tracklet_only_view\005F1_selected_tracklets.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F1_tracklet_only_view\005F1_tracklet_only_summary.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F1_tracklet_only_view_clean_aligned_normal\005F1_all_tracklets.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F1_tracklet_only_view_clean_aligned_normal\005F1_selected_tracklet_points.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F1_tracklet_only_view_clean_aligned_normal\005F1_selected_tracklets.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F1_tracklet_only_view_clean_aligned_normal\005F1_tracklet_only_summary.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F1_tracklet_only_view_clean_aligned_strict\005F1_all_tracklets.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F1_tracklet_only_view_clean_aligned_strict\005F1_selected_tracklet_points.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F1_tracklet_only_view_clean_aligned_strict\005F1_selected_tracklets.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F1_tracklet_only_view_clean_aligned_strict\005F1_tracklet_only_summary.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F2_resolve_clean_raw_video\005F2_resolve_clean_raw_video_summary.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F2_resolve_clean_raw_video\005F2_video_candidates.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\005F2_resolve_clean_raw_video\005F2_video_candidates_contact_sheet.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\006C3_dynamic_camera_table_context\006C3_camera_table_context_contact.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\006C3_dynamic_camera_table_context\006C3_camera_table_context_debug.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\006C3_dynamic_camera_table_context\006C3_camera_table_context_timeline.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\006C_FIX2_restore_table_catalog\006C_FIX2_source_debug.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\006C_FIX2_restore_table_catalog\006C_FIX2_table_candidates.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\006C_FIX2_restore_table_catalog\006C_FIX2_table_candidates_contact.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\006C_FIX2_restore_table_catalog\006C_FIX2_table_context.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_gap_audit_005D5\ball_tracking_gap_audit_005D5.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_gap_audit_005D5\ball_tracking_gap_audit_summary_005D5.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_gap_triage_005D6A\ball_tracking_gap_triage_005D6A.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_gap_triage_005D6A\ball_tracking_gap_triage_summary_005D6A.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_gap_triage_005D6A\ball_tracking_gap_triage_top_005D6A.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\ball_points_table_gated_005D1.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\ball_table_gate_segment_summary_005D1.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\ball_table_gate_summary_005D1.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\ball_table_gate_topdown_report_005D1.html`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\001_RLY0006_seg2_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\002_RLY0005_seg2_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\003_RLY0073_seg1_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\004_RLY0063_seg2_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\005_RLY0118_seg2_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\006_RLY0004_seg2_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\007_RLY0116_seg2_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\008_RLY0032_seg5_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\009_RLY0004_seg3_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\010_RLY0005_seg1_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\011_RLY0112_seg2_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\012_RLY0032_seg1_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\013_RLY0092_seg1_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\014_RLY0078_seg3_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\015_RLY0006_seg3_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\016_RLY0102_seg3_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\017_RLY0077_seg3_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\018_RLY0004_seg4_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\019_RLY0077_seg2_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\020_RLY0079_seg3_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\021_RLY0115_seg4_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\022_RLY0098_seg6_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_gate_005D1\topdown\023_RLY0032_seg3_005D1_gate.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_relink_005D4\ball_points_table_relinked_005D4.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_relink_005D4\ball_table_relink_segment_summary_005D4.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_relink_005D4\ball_table_relink_summary_005D4.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\ball_points_table_safe_005D2.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\ball_points_table_scored_005D2.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\ball_table_score_segment_summary_005D2.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\ball_table_score_summary_005D2.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\ball_table_score_topdown_report_005D2.html`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\001_RLY0073_seg1_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\002_RLY0005_seg2_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\003_RLY0006_seg2_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\004_RLY0063_seg2_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\005_RLY0004_seg3_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\006_RLY0004_seg2_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\007_RLY0118_seg2_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\008_RLY0116_seg2_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\009_RLY0112_seg2_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\010_RLY0032_seg1_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\011_RLY0078_seg3_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\012_RLY0032_seg5_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\013_RLY0004_seg4_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\014_RLY0102_seg3_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\015_RLY0092_seg1_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\016_RLY0005_seg1_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\017_RLY0032_seg3_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\018_RLY0006_seg3_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\019_RLY0077_seg3_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\020_RLY0077_seg2_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\021_RLY0079_seg3_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\022_RLY0115_seg4_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_005D2\topdown\023_RLY0098_seg6_005D2_score.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_ball_table_score_overlay_005D3B\ball_table_score_overlay_summary_005D3B.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_display_single_ball_005A3_pass33_p080_r030\single_ball_display_review_summary_005A3.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\ball_points_scene_table_projected_005C9B.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\scene_table_objects_005C9B.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\scene_table_objects_summary_005C9B.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\scene_table_review_summary_005C9B.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\scene_topdown_report_005C9B.html`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\001_RLY0004_seg1_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\002_RLY0005_seg1_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\003_RLY0032_seg3_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\004_RLY0063_seg1_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\005_RLY0004_seg2_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\006_RLY0004_seg3_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\007_RLY0004_seg4_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\008_RLY0005_seg2_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\009_RLY0006_seg2_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\010_RLY0006_seg3_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\011_RLY0032_seg1_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\012_RLY0032_seg5_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\013_RLY0063_seg2_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\014_RLY0073_seg1_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\015_RLY0077_seg2_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\016_RLY0077_seg3_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\017_RLY0078_seg3_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\018_RLY0079_seg3_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\019_RLY0092_seg1_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\020_RLY0098_seg6_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\021_RLY0102_seg3_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\022_RLY0112_seg2_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\023_RLY0115_seg4_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\024_RLY0116_seg2_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_scene_table_objects_005C9B\topdown_images\025_RLY0118_seg2_005C9B_topdown.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_camera_005B2_pass33\display_points_table_camera_005B2.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_camera_005B2_pass33\table_camera_timeline_005B2.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\001_RLY0004_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\002_RLY0004_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\003_RLY0004_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\004_RLY0004_seg4_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\005_RLY0005_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\006_RLY0005_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\007_RLY0005_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\008_RLY0006_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\009_RLY0006_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\010_RLY0006_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\011_RLY0024_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\012_RLY0024_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\013_RLY0024_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\014_RLY0032_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\015_RLY0032_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\016_RLY0032_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\017_RLY0032_seg4_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\018_RLY0032_seg5_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\019_RLY0063_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\020_RLY0063_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\021_RLY0065_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\022_RLY0073_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\023_RLY0074_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\024_RLY0075_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\025_RLY0075_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\026_RLY0076_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\027_RLY0076_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\028_RLY0077_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\029_RLY0077_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\030_RLY0077_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\031_RLY0077_seg4_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\032_RLY0078_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\033_RLY0078_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\034_RLY0078_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\035_RLY0078_seg4_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\036_RLY0079_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\037_RLY0079_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\038_RLY0079_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\039_RLY0079_seg4_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\040_RLY0082_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\041_RLY0082_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\042_RLY0082_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\043_RLY0086_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\044_RLY0086_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\045_RLY0086_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\046_RLY0087_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\047_RLY0087_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\048_RLY0087_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\049_RLY0090_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\050_RLY0090_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\051_RLY0090_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\052_RLY0091_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\053_RLY0091_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\054_RLY0091_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\055_RLY0092_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\056_RLY0092_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\057_RLY0092_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\058_RLY0092_seg4_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\059_RLY0095_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\060_RLY0095_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\061_RLY0095_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\062_RLY0098_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\063_RLY0098_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\064_RLY0098_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\065_RLY0098_seg4_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\066_RLY0098_seg5_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\067_RLY0098_seg6_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\068_RLY0099_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\069_RLY0099_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\070_RLY0099_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\071_RLY0102_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\072_RLY0102_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\073_RLY0102_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\074_RLY0104_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\075_RLY0104_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\076_RLY0105_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\077_RLY0105_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\078_RLY0105_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\079_RLY0107_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\080_RLY0107_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\081_RLY0107_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\082_RLY0109_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\083_RLY0109_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\084_RLY0112_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\085_RLY0112_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\086_RLY0112_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\087_RLY0115_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\088_RLY0115_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\089_RLY0115_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\090_RLY0115_seg4_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\091_RLY0116_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\092_RLY0116_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\093_RLY0116_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\094_RLY0116_seg4_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\095_RLY0117_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\096_RLY0117_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\097_RLY0117_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\098_RLY0118_seg1_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\099_RLY0118_seg2_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\100_RLY0118_seg3_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\images\101_RLY0118_seg4_005C6B_mask.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\table_mask_classifier_report_005C6B.html`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\table_mask_classifier_summary_005C6B.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\table_mask_rf_model_005C6B.pkl`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\table_mask_training_samples_005C6B.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_classifier_005C6B\table_object_classification_005C6B.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_seed_005C6A\table_mask_seed_points_005C6A.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_mask_seed_005C6A\table_mask_seed_server_summary_005C6A.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\001_RLY0107_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\002_RLY0098_seg4_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\003_RLY0107_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\004_RLY0115_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\005_RLY0098_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\006_RLY0112_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\007_RLY0107_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\008_RLY0090_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\009_RLY0116_seg4_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\010_RLY0104_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\011_RLY0099_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\012_RLY0032_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\013_RLY0091_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\014_RLY0115_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\015_RLY0109_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\016_RLY0079_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\017_RLY0086_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\018_RLY0116_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\019_RLY0091_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\020_RLY0091_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\021_RLY0098_seg5_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\022_RLY0087_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\023_RLY0087_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\024_RLY0024_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\025_RLY0090_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\026_RLY0095_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\027_RLY0079_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\028_RLY0086_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\029_RLY0005_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\030_RLY0102_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\031_RLY0032_seg4_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\032_RLY0092_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\033_RLY0098_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\034_RLY0105_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\035_RLY0118_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\036_RLY0104_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\037_RLY0004_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\038_RLY0063_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\039_RLY0118_seg4_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\040_RLY0032_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\041_RLY0079_seg4_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\042_RLY0117_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\043_RLY0076_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\044_RLY0087_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\045_RLY0099_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\046_RLY0099_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\047_RLY0082_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\048_RLY0082_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\049_RLY0092_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\050_RLY0090_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\051_RLY0118_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\052_RLY0006_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\053_RLY0116_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\054_RLY0102_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\055_RLY0024_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\056_RLY0086_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\057_RLY0024_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\058_RLY0082_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\059_RLY0117_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\060_RLY0112_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\061_RLY0098_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\062_RLY0115_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\063_RLY0109_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\064_RLY0092_seg4_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\065_RLY0116_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\066_RLY0005_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\067_RLY0004_seg4_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\068_RLY0004_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\069_RLY0077_seg4_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\070_RLY0095_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\071_RLY0105_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\072_RLY0095_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\073_RLY0078_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\074_RLY0077_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\075_RLY0078_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\076_RLY0032_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\077_RLY0074_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\078_RLY0105_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\079_RLY0092_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\080_RLY0077_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\081_RLY0079_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\082_RLY0006_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\083_RLY0117_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\084_RLY0112_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\085_RLY0065_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\086_RLY0075_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\087_RLY0098_seg6_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\088_RLY0032_seg5_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\089_RLY0078_seg4_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\090_RLY0118_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\091_RLY0077_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\092_RLY0102_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\093_RLY0115_seg4_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\094_RLY0075_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\095_RLY0076_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\096_RLY0073_seg1_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\097_RLY0006_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\098_RLY0078_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\099_RLY0004_seg3_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\100_RLY0063_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\images\101_RLY0005_seg2_005C7B_metric_qa.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\table_metric_quality_005C7B.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\table_metric_quality_report_005C7B.html`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_metric_qa_005C7B\table_metric_quality_summary_005C7B.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C1_pass33\ball_points_table_projected_005C1.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C1_pass33\table_object_detection_diagnostics_005C1.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C1_pass33\table_object_summary_005C1.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C1_pass33\table_objects_005C1.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C2_corner_review\table_corner_corrections_005C2.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C2_corner_review\table_corner_review_summary_005C2.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C3_corrected\ball_points_table_projected_005C3.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C3_corrected\table_object_corrected_summary_005C3.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C3_corrected\table_objects_corrected_005C3.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C3_corrected\table_projection_review_summary_005C3.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C4_canonical_audit\table_object_canonical_audit_005C4.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C4_canonical_audit\table_object_canonical_audit_005C4.html`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C4_canonical_audit\table_object_canonical_audit_summary_005C4.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged\ball_points_table_projected_005C5C2.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged\table_object_merged_summary_005C5C2.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged\table_objects_merged_005C5C2.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged\table_projection_review_summary_005C5C2.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\001_RLY0091_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\002_RLY0087_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\003_RLY0082_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\004_RLY0082_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\005_RLY0086_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\006_RLY0090_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\007_RLY0024_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\008_RLY0024_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\009_RLY0099_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\010_RLY0099_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\011_RLY0091_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\012_RLY0086_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\013_RLY0082_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\014_RLY0090_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\015_RLY0087_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\016_RLY0024_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\017_RLY0099_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\018_RLY0091_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\019_RLY0086_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\020_RLY0090_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\021_RLY0087_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\022_RLY0098_seg5_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\023_RLY0098_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\024_RLY0032_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\025_RLY0095_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\026_RLY0079_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\027_RLY0115_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\028_RLY0092_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\029_RLY0105_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\030_RLY0079_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\031_RLY0117_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\032_RLY0095_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\033_RLY0077_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\034_RLY0118_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\035_RLY0077_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\036_RLY0006_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\037_RLY0118_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\038_RLY0077_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\039_RLY0118_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\040_RLY0078_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\041_RLY0004_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\042_RLY0006_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\043_RLY0098_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\044_RLY0109_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\045_RLY0078_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\046_RLY0109_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\047_RLY0004_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\048_RLY0092_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\049_RLY0078_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\050_RLY0115_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\051_RLY0116_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\052_RLY0105_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\053_RLY0092_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\054_RLY0115_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\055_RLY0116_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\056_RLY0112_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\057_RLY0107_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\058_RLY0112_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\059_RLY0098_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\060_RLY0032_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\061_RLY0032_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\062_RLY0115_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\063_RLY0112_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\064_RLY0098_seg6_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\065_RLY0077_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\066_RLY0032_seg5_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\067_RLY0102_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\068_RLY0116_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\069_RLY0104_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\070_RLY0098_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\071_RLY0079_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\072_RLY0107_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\073_RLY0116_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\074_RLY0092_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\075_RLY0065_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\076_RLY0005_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\077_RLY0117_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\078_RLY0102_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\079_RLY0117_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\080_RLY0102_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\081_RLY0107_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\082_RLY0032_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\083_RLY0076_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\084_RLY0104_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\085_RLY0076_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\086_RLY0118_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\087_RLY0079_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\088_RLY0105_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\089_RLY0063_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\090_RLY0095_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\091_RLY0075_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\092_RLY0073_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\093_RLY0078_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\094_RLY0075_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\095_RLY0074_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\096_RLY0004_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\097_RLY0005_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\098_RLY0006_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\099_RLY0005_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\100_RLY0004_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\images\101_RLY0063_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\table_object_canonical_audit_005C4.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\table_object_canonical_audit_005C4.html`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C2_merged_audit\table_object_canonical_audit_summary_005C4.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test\ball_points_table_projected_005C3.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test\table_object_corrected_summary_005C3.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test\table_objects_corrected_005C3.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test\table_projection_review_summary_005C3.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\001_RLY0090_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\002_RLY0087_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\003_RLY0024_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\004_RLY0099_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\005_RLY0091_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\006_RLY0086_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\007_RLY0090_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\008_RLY0087_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\009_RLY0091_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\010_RLY0087_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\011_RLY0082_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\012_RLY0082_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\013_RLY0086_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\014_RLY0090_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\015_RLY0024_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\016_RLY0024_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\017_RLY0099_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\018_RLY0099_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\019_RLY0091_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\020_RLY0086_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\021_RLY0082_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\022_RLY0098_seg5_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\023_RLY0098_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\024_RLY0032_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\025_RLY0095_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\026_RLY0079_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\027_RLY0115_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\028_RLY0092_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\029_RLY0105_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\030_RLY0079_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\031_RLY0117_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\032_RLY0095_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\033_RLY0077_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\034_RLY0118_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\035_RLY0077_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\036_RLY0006_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\037_RLY0118_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\038_RLY0077_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\039_RLY0118_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\040_RLY0078_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\041_RLY0004_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\042_RLY0006_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\043_RLY0098_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\044_RLY0109_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\045_RLY0078_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\046_RLY0109_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\047_RLY0004_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\048_RLY0092_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\049_RLY0078_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\050_RLY0115_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\051_RLY0116_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\052_RLY0105_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\053_RLY0092_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\054_RLY0115_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\055_RLY0116_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\056_RLY0112_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\057_RLY0107_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\058_RLY0112_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\059_RLY0098_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\060_RLY0032_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\061_RLY0032_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\062_RLY0115_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\063_RLY0112_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\064_RLY0098_seg6_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\065_RLY0077_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\066_RLY0032_seg5_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\067_RLY0102_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\068_RLY0116_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\069_RLY0104_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\070_RLY0098_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\071_RLY0079_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\072_RLY0107_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\073_RLY0116_seg4_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\074_RLY0092_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\075_RLY0065_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\076_RLY0005_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\077_RLY0117_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\078_RLY0102_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\079_RLY0117_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\080_RLY0102_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\081_RLY0107_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\082_RLY0032_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\083_RLY0076_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\084_RLY0104_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\085_RLY0076_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\086_RLY0118_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\087_RLY0079_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\088_RLY0105_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\089_RLY0063_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\090_RLY0095_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\091_RLY0075_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\092_RLY0073_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\093_RLY0078_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\094_RLY0075_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\095_RLY0074_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\096_RLY0004_seg3_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\097_RLY0005_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\098_RLY0006_seg2_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\099_RLY0005_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\100_RLY0004_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\images\101_RLY0063_seg1_005C4_table_audit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\table_object_canonical_audit_005C4.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\table_object_canonical_audit_005C4.html`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5C_semantic_test_audit\table_object_canonical_audit_summary_005C4.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5_semantic_rework\table_semantic_rework_candidates_005C5A.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5_semantic_rework\table_semantic_rework_summary_005C5A.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5_semantic_rework_review\semantic_corner_review_summary_005C5B.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_object_005C5_semantic_rework_review\table_corner_semantic_corrections_005C5B.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_projection_vote_005C8A\table_projection_vote_server_summary_005C8A.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_projection_vote_005C8A\table_projection_votes_005C8A.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_projection_vote_summary_005C8B\table_projection_best_rule_predicted_005C8B.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_projection_vote_summary_005C8B\table_projection_rules_005C8B.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_projection_vote_summary_005C8B\table_projection_vote_summary_005C8B.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_projection_vote_summary_005C8B\table_projection_votes_accepted_005C8B.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_projection_vote_summary_005C8B\table_projection_votes_merged_005C8B.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_projection_vote_summary_005C8B\table_projection_votes_rejected_005C8B.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_projection_vote_summary_005C8B\table_projection_votes_review_005C8B.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\001_RLY0004_seg2_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\002_RLY0004_seg3_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\003_RLY0004_seg4_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\004_RLY0005_seg2_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\005_RLY0006_seg2_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\006_RLY0006_seg3_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\007_RLY0032_seg1_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\008_RLY0032_seg5_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\009_RLY0063_seg2_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\010_RLY0073_seg1_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\011_RLY0077_seg2_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\012_RLY0077_seg3_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\013_RLY0078_seg3_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\014_RLY0079_seg3_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\015_RLY0092_seg1_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\016_RLY0098_seg6_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\017_RLY0102_seg3_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\018_RLY0112_seg2_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\019_RLY0115_seg4_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\020_RLY0116_seg2_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\021_RLY0118_seg2_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\022_RLY0004_seg1_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\023_RLY0005_seg1_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\024_RLY0032_seg3_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\images\025_RLY0063_seg1_005C9A_ref_fit.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\table_reference_fit_005C9A.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\table_reference_fit_report_005C9A.html`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_reference_fit_005C9A\table_reference_fit_summary_005C9A.json`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\001_RLY0098_seg4_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\002_RLY0107_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\003_RLY0115_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\004_RLY0098_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\005_RLY0112_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\006_RLY0107_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\007_RLY0116_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\008_RLY0107_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\009_RLY0115_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\010_RLY0104_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\011_RLY0079_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\012_RLY0092_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\013_RLY0004_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\014_RLY0116_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\015_RLY0032_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\016_RLY0078_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\017_RLY0078_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\018_RLY0077_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\019_RLY0118_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\020_RLY0118_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\021_RLY0077_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\022_RLY0006_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\023_RLY0079_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\024_RLY0112_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\025_RLY0116_seg4_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\026_RLY0077_seg4_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\027_RLY0078_seg4_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\028_RLY0092_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\029_RLY0109_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\030_RLY0102_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\031_RLY0098_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\032_RLY0092_seg4_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\033_RLY0095_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\034_RLY0118_seg4_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\035_RLY0004_seg4_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\036_RLY0006_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\037_RLY0117_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\038_RLY0032_seg5_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\039_RLY0105_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\040_RLY0077_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\041_RLY0098_seg6_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\042_RLY0116_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\043_RLY0032_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\044_RLY0115_seg4_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\045_RLY0005_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\046_RLY0079_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\047_RLY0063_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\048_RLY0004_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\049_RLY0032_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\050_RLY0092_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\051_RLY0090_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\052_RLY0079_seg4_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\053_RLY0099_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\054_RLY0117_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\055_RLY0117_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\056_RLY0087_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\057_RLY0102_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\058_RLY0087_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\059_RLY0090_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\060_RLY0086_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\061_RLY0095_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\062_RLY0024_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\063_RLY0032_seg4_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\064_RLY0109_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\065_RLY0098_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\066_RLY0091_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\067_RLY0115_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\068_RLY0098_seg5_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\069_RLY0112_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\070_RLY0091_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\071_RLY0086_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\072_RLY0004_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\073_RLY0073_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\074_RLY0078_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\075_RLY0005_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\076_RLY0005_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\077_RLY0063_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\078_RLY0075_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\079_RLY0102_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\080_RLY0074_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\081_RLY0076_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\082_RLY0105_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\083_RLY0075_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\084_RLY0104_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\085_RLY0006_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\086_RLY0065_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\087_RLY0095_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\088_RLY0105_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\089_RLY0076_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\090_RLY0118_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\091_RLY0091_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\092_RLY0024_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\093_RLY0087_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\094_RLY0082_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\095_RLY0082_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\096_RLY0099_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\097_RLY0099_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\098_RLY0082_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\099_RLY0086_seg1_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\100_RLY0090_seg3_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\images\101_RLY0024_seg2_005C7A_snap.jpg`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\table_object_snap_geometry_005C7A.csv`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\table_snap_geometry_report_005C7A.html`
+- `runs\006Z_table_pipeline_lock\locked_files\runs\rally_table_snap_geometry_005C7A\table_snap_geometry_summary_005C7A.json`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005C1_table_object_homography.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005C2_table_corner_review_server.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005C3_apply_table_corrections.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005C4_table_canonical_audit.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005C5A_select_table_semantic_rework.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005C5B_semantic_table_corner_review_server.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005C5C2_merge_table_corrections.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005C6A_table_mask_seed_server.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005C6B_train_table_mask_classifier.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005C7A_snap_table_geometry_from_mask.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005C7B_metric_table_quality_gate.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005C8A_table_projection_vote_server.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005C8B_summarize_table_projection_votes.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005C9A_reference_table_fit_optimizer.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005C9B_promote_scene_table_objects.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005D1_table_camera_aware_ball_gate.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005D2_score_ball_with_table_context.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005D3B_table_score_video_overlays.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005D3_table_score_video_overlays.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005D4_table_aware_relink_interpolate.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005D5_audit_tracking_gaps.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005D6A_triage_tracking_gaps_with_camera_state.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005D7B_gap_candidate_selector_audit.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005D7C_strict_gap_selector_reject.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005D7D_safe_gapfill_injection_audit.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005D7E_export_gapfilled_preview_track.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005D7F_target_gap_validation.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005D7G_promote_gapfilled_canonical_unique.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005F0_rollback_baseline_005D4_policy_compare.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005F1_tracklet_only_ball_trajectory_view.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\005F2_resolve_clean_raw_video.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\006C3_dynamic_camera_shot_table_context.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\006C_FIX2_restore_table_from_existing_catalog.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\006C_FIX_restore_existing_table_context_005C9B.py`
+- `runs\006Z_table_pipeline_lock\locked_files\scripts\006Z_lock_table_pipeline_audit.py`

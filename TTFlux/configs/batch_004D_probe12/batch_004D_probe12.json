@@ -1,0 +1,160 @@
+{
+  "version": "004D",
+  "batch_id": "batch_004D_probe12",
+  "run_dir": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\runs\\batch_004D_probe12",
+  "config_dir": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_probe12",
+  "template_batch": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002B\\batch_002B.json",
+  "template_config_path": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_002B\\01_v62_0019_v61_5_-0bM0t0qS8Q_s02.json",
+  "template_info": {
+    "mode": "string_ref"
+  },
+  "count": 12,
+  "items": [
+    {
+      "idx": 1,
+      "clip_id": "batch_004D_probe12_0001_-0bM0t0qS8Q",
+      "video_id": "-0bM0t0qS8Q",
+      "config": "configs/batch_004D_probe12/001_batch_004D_probe12_0001_-0bM0t0qS8Q.json",
+      "config_path": "configs/batch_004D_probe12/001_batch_004D_probe12_0001_-0bM0t0qS8Q.json",
+      "video_path": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\runs\\dataset_rebuild_004C_balanced\\clips\\ds004b_0001_-0bM0t0qS8Q_f3100_to_f3500.mp4",
+      "source_dataset_clip_id_004C2": "ds004b_0001_-0bM0t0qS8Q_f3100_to_f3500",
+      "source_dataset_rank_004C2": 1,
+      "source_activity_score_004B": 16.522785
+    },
+    {
+      "idx": 2,
+      "clip_id": "batch_004D_probe12_0002_-0bM0t0qS8Q",
+      "video_id": "-0bM0t0qS8Q",
+      "config": "configs/batch_004D_probe12/002_batch_004D_probe12_0002_-0bM0t0qS8Q.json",
+      "config_path": "configs/batch_004D_probe12/002_batch_004D_probe12_0002_-0bM0t0qS8Q.json",
+      "video_path": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\runs\\dataset_rebuild_004C_balanced\\clips\\ds004b_0002_-0bM0t0qS8Q_f5200_to_f5600.mp4",
+      "source_dataset_clip_id_004C2": "ds004b_0002_-0bM0t0qS8Q_f5200_to_f5600",
+      "source_dataset_rank_004C2": 2,
+      "source_activity_score_004B": 16.301768
+    },
+    {
+      "idx": 3,
+      "clip_id": "batch_004D_probe12_0003_-0bM0t0qS8Q",
+      "video_id": "-0bM0t0qS8Q",
+      "config": "configs/batch_004D_probe12/003_batch_004D_probe12_0003_-0bM0t0qS8Q.json",
+      "config_path": "configs/batch_004D_probe12/003_batch_004D_probe12_0003_-0bM0t0qS8Q.json",
+      "video_path": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\runs\\dataset_rebuild_004C_balanced\\clips\\ds004b_0003_-0bM0t0qS8Q_f16000_to_f16400.mp4",
+      "source_dataset_clip_id_004C2": "ds004b_0003_-0bM0t0qS8Q_f16000_to_f16400",
+      "source_dataset_rank_004C2": 3,
+      "source_activity_score_004B": 16.177559
+    },
+    {
+      "idx": 4,
+      "clip_id": "batch_004D_probe12_0004_-0bM0t0qS8Q",
+      "video_id": "-0bM0t0qS8Q",
+      "config": "configs/batch_004D_probe12/004_batch_004D_probe12_0004_-0bM0t0qS8Q.json",
+      "config_path": "configs/batch_004D_probe12/004_batch_004D_probe12_0004_-0bM0t0qS8Q.json",
+      "video_path": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\runs\\dataset_rebuild_004C_balanced\\clips\\ds004b_0004_-0bM0t0qS8Q_f18700_to_f19100.mp4",
+      "source_dataset_clip_id_004C2": "ds004b_0004_-0bM0t0qS8Q_f18700_to_f19100",
+      "source_dataset_rank_004C2": 4,
+      "source_activity_score_004B": 16.079322
+    },
+    {
+      "idx": 5,
+      "clip_id": "batch_004D_probe12_0005_-0bM0t0qS8Q",
+      "video_id": "-0bM0t0qS8Q",
+      "config": "configs/batch_004D_probe12/005_batch_004D_probe12_0005_-0bM0t0qS8Q.json",
+      "config_path": "configs/batch_004D_probe12/005_batch_004D_probe12_0005_-0bM0t0qS8Q.json",
+      "video_path": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\runs\\dataset_rebuild_004C_balanced\\clips\\ds004b_0005_-0bM0t0qS8Q_f7000_to_f7400.mp4",
+      "source_dataset_clip_id_004C2": "ds004b_0005_-0bM0t0qS8Q_f7000_to_f7400",
+      "source_dataset_rank_004C2": 5,
+      "source_activity_score_004B": 15.867273
+    },
+    {
+      "idx": 6,
+      "clip_id": "batch_004D_probe12_0006_-0bM0t0qS8Q",
+      "video_id": "-0bM0t0qS8Q",
+      "config": "configs/batch_004D_probe12/006_batch_004D_probe12_0006_-0bM0t0qS8Q.json",
+      "config_path": "configs/batch_004D_probe12/006_batch_004D_probe12_0006_-0bM0t0qS8Q.json",
+      "video_path": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\runs\\dataset_rebuild_004C_balanced\\clips\\ds004b_0006_-0bM0t0qS8Q_f6100_to_f6500.mp4",
+      "source_dataset_clip_id_004C2": "ds004b_0006_-0bM0t0qS8Q_f6100_to_f6500",
+      "source_dataset_rank_004C2": 6,
+      "source_activity_score_004B": 15.724744
+    },
+    {
+      "idx": 7,
+      "clip_id": "batch_004D_probe12_0007_-0bM0t0qS8Q",
+      "video_id": "-0bM0t0qS8Q",
+      "config": "configs/batch_004D_probe12/007_batch_004D_probe12_0007_-0bM0t0qS8Q.json",
+      "config_path": "configs/batch_004D_probe12/007_batch_004D_probe12_0007_-0bM0t0qS8Q.json",
+      "video_path": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\runs\\dataset_rebuild_004C_balanced\\clips\\ds004b_0007_-0bM0t0qS8Q_f1300_to_f1700.mp4",
+      "source_dataset_clip_id_004C2": "ds004b_0007_-0bM0t0qS8Q_f1300_to_f1700",
+      "source_dataset_rank_004C2": 7,
+      "source_activity_score_004B": 14.817121
+    },
+    {
+      "idx": 8,
+      "clip_id": "batch_004D_probe12_0008_-0bM0t0qS8Q",
+      "video_id": "-0bM0t0qS8Q",
+      "config": "configs/batch_004D_probe12/008_batch_004D_probe12_0008_-0bM0t0qS8Q.json",
+      "config_path": "configs/batch_004D_probe12/008_batch_004D_probe12_0008_-0bM0t0qS8Q.json",
+      "video_path": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\runs\\dataset_rebuild_004C_balanced\\clips\\ds004b_0008_-0bM0t0qS8Q_f7900_to_f8300.mp4",
+      "source_dataset_clip_id_004C2": "ds004b_0008_-0bM0t0qS8Q_f7900_to_f8300",
+      "source_dataset_rank_004C2": 8,
+      "source_activity_score_004B": 14.688078
+    },
+    {
+      "idx": 9,
+      "clip_id": "batch_004D_probe12_0009_-0bM0t0qS8Q",
+      "video_id": "-0bM0t0qS8Q",
+      "config": "configs/batch_004D_probe12/009_batch_004D_probe12_0009_-0bM0t0qS8Q.json",
+      "config_path": "configs/batch_004D_probe12/009_batch_004D_probe12_0009_-0bM0t0qS8Q.json",
+      "video_path": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\runs\\dataset_rebuild_004C_balanced\\clips\\ds004b_0009_-0bM0t0qS8Q_f12400_to_f12800.mp4",
+      "source_dataset_clip_id_004C2": "ds004b_0009_-0bM0t0qS8Q_f12400_to_f12800",
+      "source_dataset_rank_004C2": 9,
+      "source_activity_score_004B": 11.402686
+    },
+    {
+      "idx": 10,
+      "clip_id": "batch_004D_probe12_0010_-0bM0t0qS8Q",
+      "video_id": "-0bM0t0qS8Q",
+      "config": "configs/batch_004D_probe12/010_batch_004D_probe12_0010_-0bM0t0qS8Q.json",
+      "config_path": "configs/batch_004D_probe12/010_batch_004D_probe12_0010_-0bM0t0qS8Q.json",
+      "video_path": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\runs\\dataset_rebuild_004C_balanced\\clips\\ds004b_0010_-0bM0t0qS8Q_f9100_to_f9500.mp4",
+      "source_dataset_clip_id_004C2": "ds004b_0010_-0bM0t0qS8Q_f9100_to_f9500",
+      "source_dataset_rank_004C2": 10,
+      "source_activity_score_004B": 9.163797
+    },
+    {
+      "idx": 11,
+      "clip_id": "batch_004D_probe12_0011_-0bM0t0qS8Q",
+      "video_id": "-0bM0t0qS8Q",
+      "config": "configs/batch_004D_probe12/011_batch_004D_probe12_0011_-0bM0t0qS8Q.json",
+      "config_path": "configs/batch_004D_probe12/011_batch_004D_probe12_0011_-0bM0t0qS8Q.json",
+      "video_path": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\runs\\dataset_rebuild_004C_balanced\\clips\\ds004b_0011_-0bM0t0qS8Q_f15400_to_f15800.mp4",
+      "source_dataset_clip_id_004C2": "ds004b_0011_-0bM0t0qS8Q_f15400_to_f15800",
+      "source_dataset_rank_004C2": 11,
+      "source_activity_score_004B": 8.658575
+    },
+    {
+      "idx": 12,
+      "clip_id": "batch_004D_probe12_0012_-0bM0t0qS8Q",
+      "video_id": "-0bM0t0qS8Q",
+      "config": "configs/batch_004D_probe12/012_batch_004D_probe12_0012_-0bM0t0qS8Q.json",
+      "config_path": "configs/batch_004D_probe12/012_batch_004D_probe12_0012_-0bM0t0qS8Q.json",
+      "video_path": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\runs\\dataset_rebuild_004C_balanced\\clips\\ds004b_0012_-0bM0t0qS8Q_f10900_to_f11300.mp4",
+      "source_dataset_clip_id_004C2": "ds004b_0012_-0bM0t0qS8Q_f10900_to_f11300",
+      "source_dataset_rank_004C2": 12,
+      "source_activity_score_004B": 8.133091
+    }
+  ],
+  "configs": [
+    "configs/batch_004D_probe12/001_batch_004D_probe12_0001_-0bM0t0qS8Q.json",
+    "configs/batch_004D_probe12/002_batch_004D_probe12_0002_-0bM0t0qS8Q.json",
+    "configs/batch_004D_probe12/003_batch_004D_probe12_0003_-0bM0t0qS8Q.json",
+    "configs/batch_004D_probe12/004_batch_004D_probe12_0004_-0bM0t0qS8Q.json",
+    "configs/batch_004D_probe12/005_batch_004D_probe12_0005_-0bM0t0qS8Q.json",
+    "configs/batch_004D_probe12/006_batch_004D_probe12_0006_-0bM0t0qS8Q.json",
+    "configs/batch_004D_probe12/007_batch_004D_probe12_0007_-0bM0t0qS8Q.json",
+    "configs/batch_004D_probe12/008_batch_004D_probe12_0008_-0bM0t0qS8Q.json",
+    "configs/batch_004D_probe12/009_batch_004D_probe12_0009_-0bM0t0qS8Q.json",
+    "configs/batch_004D_probe12/010_batch_004D_probe12_0010_-0bM0t0qS8Q.json",
+    "configs/batch_004D_probe12/011_batch_004D_probe12_0011_-0bM0t0qS8Q.json",
+    "configs/batch_004D_probe12/012_batch_004D_probe12_0012_-0bM0t0qS8Q.json"
+  ]
+}

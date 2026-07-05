@@ -1,0 +1,1693 @@
+{
+  "version": "004F",
+  "batch_id": "batch_004F_full240",
+  "source_batch": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\batch_004D_full240.json",
+  "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv",
+  "count": 240,
+  "run_dir": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\runs\\batch_004F_full240",
+  "config_dir": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004F_full240",
+  "configs": [
+    "configs/batch_004F_full240/001_batch_004D_full240_0001_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/002_batch_004D_full240_0002_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/003_batch_004D_full240_0003_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/004_batch_004D_full240_0004_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/005_batch_004D_full240_0005_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/006_batch_004D_full240_0006_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/007_batch_004D_full240_0007_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/008_batch_004D_full240_0008_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/009_batch_004D_full240_0009_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/010_batch_004D_full240_0010_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/011_batch_004D_full240_0011_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/012_batch_004D_full240_0012_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/013_batch_004D_full240_0013_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/014_batch_004D_full240_0014_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/015_batch_004D_full240_0015_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/016_batch_004D_full240_0016_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/017_batch_004D_full240_0017_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/018_batch_004D_full240_0018_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/019_batch_004D_full240_0019_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/020_batch_004D_full240_0020_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/021_batch_004D_full240_0021_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/022_batch_004D_full240_0022_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/023_batch_004D_full240_0023_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/024_batch_004D_full240_0024_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/025_batch_004D_full240_0025_M2forQBQaZc.json",
+    "configs/batch_004F_full240/026_batch_004D_full240_0026_M2forQBQaZc.json",
+    "configs/batch_004F_full240/027_batch_004D_full240_0027_M2forQBQaZc.json",
+    "configs/batch_004F_full240/028_batch_004D_full240_0028_M2forQBQaZc.json",
+    "configs/batch_004F_full240/029_batch_004D_full240_0029_M2forQBQaZc.json",
+    "configs/batch_004F_full240/030_batch_004D_full240_0030_M2forQBQaZc.json",
+    "configs/batch_004F_full240/031_batch_004D_full240_0031_M2forQBQaZc.json",
+    "configs/batch_004F_full240/032_batch_004D_full240_0032_M2forQBQaZc.json",
+    "configs/batch_004F_full240/033_batch_004D_full240_0033_M2forQBQaZc.json",
+    "configs/batch_004F_full240/034_batch_004D_full240_0034_M2forQBQaZc.json",
+    "configs/batch_004F_full240/035_batch_004D_full240_0035_M2forQBQaZc.json",
+    "configs/batch_004F_full240/036_batch_004D_full240_0036_M2forQBQaZc.json",
+    "configs/batch_004F_full240/037_batch_004D_full240_0037_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/038_batch_004D_full240_0038_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/039_batch_004D_full240_0039_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/040_batch_004D_full240_0040_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/041_batch_004D_full240_0041_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/042_batch_004D_full240_0042_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/043_batch_004D_full240_0043_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/044_batch_004D_full240_0044_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/045_batch_004D_full240_0045_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/046_batch_004D_full240_0046_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/047_batch_004D_full240_0047_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/048_batch_004D_full240_0048_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/049_batch_004D_full240_0049_cJskrO-DANo.json",
+    "configs/batch_004F_full240/050_batch_004D_full240_0050_cJskrO-DANo.json",
+    "configs/batch_004F_full240/051_batch_004D_full240_0051_cJskrO-DANo.json",
+    "configs/batch_004F_full240/052_batch_004D_full240_0052_cJskrO-DANo.json",
+    "configs/batch_004F_full240/053_batch_004D_full240_0053_cJskrO-DANo.json",
+    "configs/batch_004F_full240/054_batch_004D_full240_0054_cJskrO-DANo.json",
+    "configs/batch_004F_full240/055_batch_004D_full240_0055_cJskrO-DANo.json",
+    "configs/batch_004F_full240/056_batch_004D_full240_0056_cJskrO-DANo.json",
+    "configs/batch_004F_full240/057_batch_004D_full240_0057_cJskrO-DANo.json",
+    "configs/batch_004F_full240/058_batch_004D_full240_0058_cJskrO-DANo.json",
+    "configs/batch_004F_full240/059_batch_004D_full240_0059_cJskrO-DANo.json",
+    "configs/batch_004F_full240/060_batch_004D_full240_0060_cJskrO-DANo.json",
+    "configs/batch_004F_full240/061_batch_004D_full240_0061_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/062_batch_004D_full240_0062_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/063_batch_004D_full240_0063_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/064_batch_004D_full240_0064_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/065_batch_004D_full240_0065_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/066_batch_004D_full240_0066_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/067_batch_004D_full240_0067_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/068_batch_004D_full240_0068_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/069_batch_004D_full240_0069_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/070_batch_004D_full240_0070_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/071_batch_004D_full240_0071_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/072_batch_004D_full240_0072_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/073_batch_004D_full240_0073_oGrMajgH2Tc.json",
+    "configs/batch_004F_full240/074_batch_004D_full240_0074_oGrMajgH2Tc.json",
+    "configs/batch_004F_full240/075_batch_004D_full240_0075_oGrMajgH2Tc.json",
+    "configs/batch_004F_full240/076_batch_004D_full240_0076_oGrMajgH2Tc.json",
+    "configs/batch_004F_full240/077_batch_004D_full240_0077_oGrMajgH2Tc.json",
+    "configs/batch_004F_full240/078_batch_004D_full240_0078_oGrMajgH2Tc.json",
+    "configs/batch_004F_full240/079_batch_004D_full240_0079_oGrMajgH2Tc.json",
+    "configs/batch_004F_full240/080_batch_004D_full240_0080_oGrMajgH2Tc.json",
+    "configs/batch_004F_full240/081_batch_004D_full240_0081_oGrMajgH2Tc.json",
+    "configs/batch_004F_full240/082_batch_004D_full240_0082_oGrMajgH2Tc.json",
+    "configs/batch_004F_full240/083_batch_004D_full240_0083_oGrMajgH2Tc.json",
+    "configs/batch_004F_full240/084_batch_004D_full240_0084_oGrMajgH2Tc.json",
+    "configs/batch_004F_full240/085_batch_004D_full240_0085_z5dZV6g_rXM.json",
+    "configs/batch_004F_full240/086_batch_004D_full240_0086_z5dZV6g_rXM.json",
+    "configs/batch_004F_full240/087_batch_004D_full240_0087_z5dZV6g_rXM.json",
+    "configs/batch_004F_full240/088_batch_004D_full240_0088_z5dZV6g_rXM.json",
+    "configs/batch_004F_full240/089_batch_004D_full240_0089_z5dZV6g_rXM.json",
+    "configs/batch_004F_full240/090_batch_004D_full240_0090_z5dZV6g_rXM.json",
+    "configs/batch_004F_full240/091_batch_004D_full240_0091_z5dZV6g_rXM.json",
+    "configs/batch_004F_full240/092_batch_004D_full240_0092_z5dZV6g_rXM.json",
+    "configs/batch_004F_full240/093_batch_004D_full240_0093_z5dZV6g_rXM.json",
+    "configs/batch_004F_full240/094_batch_004D_full240_0094_z5dZV6g_rXM.json",
+    "configs/batch_004F_full240/095_batch_004D_full240_0095_z5dZV6g_rXM.json",
+    "configs/batch_004F_full240/096_batch_004D_full240_0096_z5dZV6g_rXM.json",
+    "configs/batch_004F_full240/097_batch_004D_full240_0097_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/098_batch_004D_full240_0098_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/099_batch_004D_full240_0099_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/100_batch_004D_full240_0100_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/101_batch_004D_full240_0101_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/102_batch_004D_full240_0102_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/103_batch_004D_full240_0103_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/104_batch_004D_full240_0104_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/105_batch_004D_full240_0105_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/106_batch_004D_full240_0106_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/107_batch_004D_full240_0107_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/108_batch_004D_full240_0108_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/109_batch_004D_full240_0109_M2forQBQaZc.json",
+    "configs/batch_004F_full240/110_batch_004D_full240_0110_M2forQBQaZc.json",
+    "configs/batch_004F_full240/111_batch_004D_full240_0111_M2forQBQaZc.json",
+    "configs/batch_004F_full240/112_batch_004D_full240_0112_M2forQBQaZc.json",
+    "configs/batch_004F_full240/113_batch_004D_full240_0113_M2forQBQaZc.json",
+    "configs/batch_004F_full240/114_batch_004D_full240_0114_M2forQBQaZc.json",
+    "configs/batch_004F_full240/115_batch_004D_full240_0115_M2forQBQaZc.json",
+    "configs/batch_004F_full240/116_batch_004D_full240_0116_M2forQBQaZc.json",
+    "configs/batch_004F_full240/117_batch_004D_full240_0117_M2forQBQaZc.json",
+    "configs/batch_004F_full240/118_batch_004D_full240_0118_M2forQBQaZc.json",
+    "configs/batch_004F_full240/119_batch_004D_full240_0119_M2forQBQaZc.json",
+    "configs/batch_004F_full240/120_batch_004D_full240_0120_M2forQBQaZc.json",
+    "configs/batch_004F_full240/121_batch_004D_full240_0121_M2forQBQaZc.json",
+    "configs/batch_004F_full240/122_batch_004D_full240_0122_M2forQBQaZc.json",
+    "configs/batch_004F_full240/123_batch_004D_full240_0123_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/124_batch_004D_full240_0124_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/125_batch_004D_full240_0125_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/126_batch_004D_full240_0126_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/127_batch_004D_full240_0127_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/128_batch_004D_full240_0128_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/129_batch_004D_full240_0129_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/130_batch_004D_full240_0130_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/131_batch_004D_full240_0131_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/132_batch_004D_full240_0132_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/133_batch_004D_full240_0133_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/134_batch_004D_full240_0134_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/135_batch_004D_full240_0135_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/136_batch_004D_full240_0136_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/137_batch_004D_full240_0137_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/138_batch_004D_full240_0138_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/139_batch_004D_full240_0139_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/140_batch_004D_full240_0140_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/141_batch_004D_full240_0141_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/142_batch_004D_full240_0142_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/143_batch_004D_full240_0143_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/144_batch_004D_full240_0144_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/145_batch_004D_full240_0145_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/146_batch_004D_full240_0146_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/147_batch_004D_full240_0147_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/148_batch_004D_full240_0148_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/149_batch_004D_full240_0149_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/150_batch_004D_full240_0150_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/151_batch_004D_full240_0151_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/152_batch_004D_full240_0152_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/153_batch_004D_full240_0153_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/154_batch_004D_full240_0154_dQSoZh7ZjEQ.json",
+    "configs/batch_004F_full240/155_batch_004D_full240_0155_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/156_batch_004D_full240_0156_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/157_batch_004D_full240_0157_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/158_batch_004D_full240_0158_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/159_batch_004D_full240_0159_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/160_batch_004D_full240_0160_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/161_batch_004D_full240_0161_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/162_batch_004D_full240_0162_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/163_batch_004D_full240_0163_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/164_batch_004D_full240_0164_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/165_batch_004D_full240_0165_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/166_batch_004D_full240_0166_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/167_batch_004D_full240_0167_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/168_batch_004D_full240_0168_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/169_batch_004D_full240_0169_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/170_batch_004D_full240_0170_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/171_batch_004D_full240_0171_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/172_batch_004D_full240_0172_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/173_batch_004D_full240_0173_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/174_batch_004D_full240_0174_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/175_batch_004D_full240_0175_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/176_batch_004D_full240_0176_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/177_batch_004D_full240_0177_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/178_batch_004D_full240_0178_NQ4qXZsIrx8.json",
+    "configs/batch_004F_full240/179_batch_004D_full240_0179_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/180_batch_004D_full240_0180_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/181_batch_004D_full240_0181_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/182_batch_004D_full240_0182_-0bM0t0qS8Q.json",
+    "configs/batch_004F_full240/183_batch_004D_full240_0183_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/184_batch_004D_full240_0184_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/185_batch_004D_full240_0185_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/186_batch_004D_full240_0186_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/187_batch_004D_full240_0187_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/188_batch_004D_full240_0188_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/189_batch_004D_full240_0189_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/190_batch_004D_full240_0190_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/191_batch_004D_full240_0191_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/192_batch_004D_full240_0192_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/193_batch_004D_full240_0193_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/194_batch_004D_full240_0194_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/195_batch_004D_full240_0195_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/196_batch_004D_full240_0196_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/197_batch_004D_full240_0197_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/198_batch_004D_full240_0198_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/199_batch_004D_full240_0199_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/200_batch_004D_full240_0200_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/201_batch_004D_full240_0201_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/202_batch_004D_full240_0202_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/203_batch_004D_full240_0203_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/204_batch_004D_full240_0204_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/205_batch_004D_full240_0205_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/206_batch_004D_full240_0206_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/207_batch_004D_full240_0207_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/208_batch_004D_full240_0208_zQdMfh8tM_k.json",
+    "configs/batch_004F_full240/209_batch_004D_full240_0209_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/210_batch_004D_full240_0210_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/211_batch_004D_full240_0211_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/212_batch_004D_full240_0212_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/213_batch_004D_full240_0213_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/214_batch_004D_full240_0214_cJskrO-DANo.json",
+    "configs/batch_004F_full240/215_batch_004D_full240_0215_cJskrO-DANo.json",
+    "configs/batch_004F_full240/216_batch_004D_full240_0216_cJskrO-DANo.json",
+    "configs/batch_004F_full240/217_batch_004D_full240_0217_M2forQBQaZc.json",
+    "configs/batch_004F_full240/218_batch_004D_full240_0218_cJskrO-DANo.json",
+    "configs/batch_004F_full240/219_batch_004D_full240_0219_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/220_batch_004D_full240_0220_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/221_batch_004D_full240_0221_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/222_batch_004D_full240_0222_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/223_batch_004D_full240_0223_cJskrO-DANo.json",
+    "configs/batch_004F_full240/224_batch_004D_full240_0224_cJskrO-DANo.json",
+    "configs/batch_004F_full240/225_batch_004D_full240_0225_M2forQBQaZc.json",
+    "configs/batch_004F_full240/226_batch_004D_full240_0226_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/227_batch_004D_full240_0227_cJskrO-DANo.json",
+    "configs/batch_004F_full240/228_batch_004D_full240_0228_M2forQBQaZc.json",
+    "configs/batch_004F_full240/229_batch_004D_full240_0229_cJskrO-DANo.json",
+    "configs/batch_004F_full240/230_batch_004D_full240_0230_KaVr4kbGZRE.json",
+    "configs/batch_004F_full240/231_batch_004D_full240_0231_cJskrO-DANo.json",
+    "configs/batch_004F_full240/232_batch_004D_full240_0232_cJskrO-DANo.json",
+    "configs/batch_004F_full240/233_batch_004D_full240_0233_cJskrO-DANo.json",
+    "configs/batch_004F_full240/234_batch_004D_full240_0234_cJskrO-DANo.json",
+    "configs/batch_004F_full240/235_batch_004D_full240_0235_cJskrO-DANo.json",
+    "configs/batch_004F_full240/236_batch_004D_full240_0236_cJskrO-DANo.json",
+    "configs/batch_004F_full240/237_batch_004D_full240_0237_cJskrO-DANo.json",
+    "configs/batch_004F_full240/238_batch_004D_full240_0238_cJskrO-DANo.json",
+    "configs/batch_004F_full240/239_batch_004D_full240_0239_oGrMajgH2Tc.json",
+    "configs/batch_004F_full240/240_batch_004D_full240_0240_oGrMajgH2Tc.json"
+  ],
+  "items": [
+    {
+      "idx": 1,
+      "config": "configs/batch_004F_full240/001_batch_004D_full240_0001_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\001_batch_004D_full240_0001_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 2,
+      "config": "configs/batch_004F_full240/002_batch_004D_full240_0002_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\002_batch_004D_full240_0002_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 3,
+      "config": "configs/batch_004F_full240/003_batch_004D_full240_0003_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\003_batch_004D_full240_0003_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 4,
+      "config": "configs/batch_004F_full240/004_batch_004D_full240_0004_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\004_batch_004D_full240_0004_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 5,
+      "config": "configs/batch_004F_full240/005_batch_004D_full240_0005_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\005_batch_004D_full240_0005_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 6,
+      "config": "configs/batch_004F_full240/006_batch_004D_full240_0006_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\006_batch_004D_full240_0006_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 7,
+      "config": "configs/batch_004F_full240/007_batch_004D_full240_0007_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\007_batch_004D_full240_0007_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 8,
+      "config": "configs/batch_004F_full240/008_batch_004D_full240_0008_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\008_batch_004D_full240_0008_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 9,
+      "config": "configs/batch_004F_full240/009_batch_004D_full240_0009_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\009_batch_004D_full240_0009_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 10,
+      "config": "configs/batch_004F_full240/010_batch_004D_full240_0010_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\010_batch_004D_full240_0010_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 11,
+      "config": "configs/batch_004F_full240/011_batch_004D_full240_0011_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\011_batch_004D_full240_0011_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 12,
+      "config": "configs/batch_004F_full240/012_batch_004D_full240_0012_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\012_batch_004D_full240_0012_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 13,
+      "config": "configs/batch_004F_full240/013_batch_004D_full240_0013_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\013_batch_004D_full240_0013_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 14,
+      "config": "configs/batch_004F_full240/014_batch_004D_full240_0014_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\014_batch_004D_full240_0014_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 15,
+      "config": "configs/batch_004F_full240/015_batch_004D_full240_0015_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\015_batch_004D_full240_0015_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 16,
+      "config": "configs/batch_004F_full240/016_batch_004D_full240_0016_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\016_batch_004D_full240_0016_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 17,
+      "config": "configs/batch_004F_full240/017_batch_004D_full240_0017_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\017_batch_004D_full240_0017_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 18,
+      "config": "configs/batch_004F_full240/018_batch_004D_full240_0018_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\018_batch_004D_full240_0018_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 19,
+      "config": "configs/batch_004F_full240/019_batch_004D_full240_0019_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\019_batch_004D_full240_0019_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 20,
+      "config": "configs/batch_004F_full240/020_batch_004D_full240_0020_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\020_batch_004D_full240_0020_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 21,
+      "config": "configs/batch_004F_full240/021_batch_004D_full240_0021_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\021_batch_004D_full240_0021_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 22,
+      "config": "configs/batch_004F_full240/022_batch_004D_full240_0022_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\022_batch_004D_full240_0022_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 23,
+      "config": "configs/batch_004F_full240/023_batch_004D_full240_0023_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\023_batch_004D_full240_0023_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 24,
+      "config": "configs/batch_004F_full240/024_batch_004D_full240_0024_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\024_batch_004D_full240_0024_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 25,
+      "config": "configs/batch_004F_full240/025_batch_004D_full240_0025_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\025_batch_004D_full240_0025_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 26,
+      "config": "configs/batch_004F_full240/026_batch_004D_full240_0026_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\026_batch_004D_full240_0026_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 27,
+      "config": "configs/batch_004F_full240/027_batch_004D_full240_0027_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\027_batch_004D_full240_0027_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 28,
+      "config": "configs/batch_004F_full240/028_batch_004D_full240_0028_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\028_batch_004D_full240_0028_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 29,
+      "config": "configs/batch_004F_full240/029_batch_004D_full240_0029_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\029_batch_004D_full240_0029_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 30,
+      "config": "configs/batch_004F_full240/030_batch_004D_full240_0030_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\030_batch_004D_full240_0030_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 31,
+      "config": "configs/batch_004F_full240/031_batch_004D_full240_0031_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\031_batch_004D_full240_0031_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 32,
+      "config": "configs/batch_004F_full240/032_batch_004D_full240_0032_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\032_batch_004D_full240_0032_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 33,
+      "config": "configs/batch_004F_full240/033_batch_004D_full240_0033_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\033_batch_004D_full240_0033_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 34,
+      "config": "configs/batch_004F_full240/034_batch_004D_full240_0034_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\034_batch_004D_full240_0034_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 35,
+      "config": "configs/batch_004F_full240/035_batch_004D_full240_0035_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\035_batch_004D_full240_0035_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 36,
+      "config": "configs/batch_004F_full240/036_batch_004D_full240_0036_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\036_batch_004D_full240_0036_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 37,
+      "config": "configs/batch_004F_full240/037_batch_004D_full240_0037_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\037_batch_004D_full240_0037_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 38,
+      "config": "configs/batch_004F_full240/038_batch_004D_full240_0038_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\038_batch_004D_full240_0038_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 39,
+      "config": "configs/batch_004F_full240/039_batch_004D_full240_0039_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\039_batch_004D_full240_0039_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 40,
+      "config": "configs/batch_004F_full240/040_batch_004D_full240_0040_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\040_batch_004D_full240_0040_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 41,
+      "config": "configs/batch_004F_full240/041_batch_004D_full240_0041_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\041_batch_004D_full240_0041_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 42,
+      "config": "configs/batch_004F_full240/042_batch_004D_full240_0042_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\042_batch_004D_full240_0042_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 43,
+      "config": "configs/batch_004F_full240/043_batch_004D_full240_0043_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\043_batch_004D_full240_0043_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 44,
+      "config": "configs/batch_004F_full240/044_batch_004D_full240_0044_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\044_batch_004D_full240_0044_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 45,
+      "config": "configs/batch_004F_full240/045_batch_004D_full240_0045_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\045_batch_004D_full240_0045_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 46,
+      "config": "configs/batch_004F_full240/046_batch_004D_full240_0046_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\046_batch_004D_full240_0046_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 47,
+      "config": "configs/batch_004F_full240/047_batch_004D_full240_0047_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\047_batch_004D_full240_0047_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 48,
+      "config": "configs/batch_004F_full240/048_batch_004D_full240_0048_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\048_batch_004D_full240_0048_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 49,
+      "config": "configs/batch_004F_full240/049_batch_004D_full240_0049_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\049_batch_004D_full240_0049_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 50,
+      "config": "configs/batch_004F_full240/050_batch_004D_full240_0050_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\050_batch_004D_full240_0050_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 51,
+      "config": "configs/batch_004F_full240/051_batch_004D_full240_0051_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\051_batch_004D_full240_0051_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 52,
+      "config": "configs/batch_004F_full240/052_batch_004D_full240_0052_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\052_batch_004D_full240_0052_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 53,
+      "config": "configs/batch_004F_full240/053_batch_004D_full240_0053_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\053_batch_004D_full240_0053_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 54,
+      "config": "configs/batch_004F_full240/054_batch_004D_full240_0054_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\054_batch_004D_full240_0054_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 55,
+      "config": "configs/batch_004F_full240/055_batch_004D_full240_0055_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\055_batch_004D_full240_0055_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 56,
+      "config": "configs/batch_004F_full240/056_batch_004D_full240_0056_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\056_batch_004D_full240_0056_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 57,
+      "config": "configs/batch_004F_full240/057_batch_004D_full240_0057_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\057_batch_004D_full240_0057_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 58,
+      "config": "configs/batch_004F_full240/058_batch_004D_full240_0058_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\058_batch_004D_full240_0058_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 59,
+      "config": "configs/batch_004F_full240/059_batch_004D_full240_0059_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\059_batch_004D_full240_0059_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 60,
+      "config": "configs/batch_004F_full240/060_batch_004D_full240_0060_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\060_batch_004D_full240_0060_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 61,
+      "config": "configs/batch_004F_full240/061_batch_004D_full240_0061_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\061_batch_004D_full240_0061_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 62,
+      "config": "configs/batch_004F_full240/062_batch_004D_full240_0062_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\062_batch_004D_full240_0062_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 63,
+      "config": "configs/batch_004F_full240/063_batch_004D_full240_0063_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\063_batch_004D_full240_0063_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 64,
+      "config": "configs/batch_004F_full240/064_batch_004D_full240_0064_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\064_batch_004D_full240_0064_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 65,
+      "config": "configs/batch_004F_full240/065_batch_004D_full240_0065_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\065_batch_004D_full240_0065_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 66,
+      "config": "configs/batch_004F_full240/066_batch_004D_full240_0066_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\066_batch_004D_full240_0066_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 67,
+      "config": "configs/batch_004F_full240/067_batch_004D_full240_0067_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\067_batch_004D_full240_0067_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 68,
+      "config": "configs/batch_004F_full240/068_batch_004D_full240_0068_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\068_batch_004D_full240_0068_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 69,
+      "config": "configs/batch_004F_full240/069_batch_004D_full240_0069_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\069_batch_004D_full240_0069_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 70,
+      "config": "configs/batch_004F_full240/070_batch_004D_full240_0070_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\070_batch_004D_full240_0070_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 71,
+      "config": "configs/batch_004F_full240/071_batch_004D_full240_0071_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\071_batch_004D_full240_0071_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 72,
+      "config": "configs/batch_004F_full240/072_batch_004D_full240_0072_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\072_batch_004D_full240_0072_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 73,
+      "config": "configs/batch_004F_full240/073_batch_004D_full240_0073_oGrMajgH2Tc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\073_batch_004D_full240_0073_oGrMajgH2Tc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 74,
+      "config": "configs/batch_004F_full240/074_batch_004D_full240_0074_oGrMajgH2Tc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\074_batch_004D_full240_0074_oGrMajgH2Tc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 75,
+      "config": "configs/batch_004F_full240/075_batch_004D_full240_0075_oGrMajgH2Tc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\075_batch_004D_full240_0075_oGrMajgH2Tc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 76,
+      "config": "configs/batch_004F_full240/076_batch_004D_full240_0076_oGrMajgH2Tc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\076_batch_004D_full240_0076_oGrMajgH2Tc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 77,
+      "config": "configs/batch_004F_full240/077_batch_004D_full240_0077_oGrMajgH2Tc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\077_batch_004D_full240_0077_oGrMajgH2Tc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 78,
+      "config": "configs/batch_004F_full240/078_batch_004D_full240_0078_oGrMajgH2Tc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\078_batch_004D_full240_0078_oGrMajgH2Tc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 79,
+      "config": "configs/batch_004F_full240/079_batch_004D_full240_0079_oGrMajgH2Tc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\079_batch_004D_full240_0079_oGrMajgH2Tc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 80,
+      "config": "configs/batch_004F_full240/080_batch_004D_full240_0080_oGrMajgH2Tc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\080_batch_004D_full240_0080_oGrMajgH2Tc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 81,
+      "config": "configs/batch_004F_full240/081_batch_004D_full240_0081_oGrMajgH2Tc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\081_batch_004D_full240_0081_oGrMajgH2Tc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 82,
+      "config": "configs/batch_004F_full240/082_batch_004D_full240_0082_oGrMajgH2Tc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\082_batch_004D_full240_0082_oGrMajgH2Tc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 83,
+      "config": "configs/batch_004F_full240/083_batch_004D_full240_0083_oGrMajgH2Tc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\083_batch_004D_full240_0083_oGrMajgH2Tc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 84,
+      "config": "configs/batch_004F_full240/084_batch_004D_full240_0084_oGrMajgH2Tc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\084_batch_004D_full240_0084_oGrMajgH2Tc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 85,
+      "config": "configs/batch_004F_full240/085_batch_004D_full240_0085_z5dZV6g_rXM.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\085_batch_004D_full240_0085_z5dZV6g_rXM.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 86,
+      "config": "configs/batch_004F_full240/086_batch_004D_full240_0086_z5dZV6g_rXM.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\086_batch_004D_full240_0086_z5dZV6g_rXM.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 87,
+      "config": "configs/batch_004F_full240/087_batch_004D_full240_0087_z5dZV6g_rXM.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\087_batch_004D_full240_0087_z5dZV6g_rXM.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 88,
+      "config": "configs/batch_004F_full240/088_batch_004D_full240_0088_z5dZV6g_rXM.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\088_batch_004D_full240_0088_z5dZV6g_rXM.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 89,
+      "config": "configs/batch_004F_full240/089_batch_004D_full240_0089_z5dZV6g_rXM.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\089_batch_004D_full240_0089_z5dZV6g_rXM.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 90,
+      "config": "configs/batch_004F_full240/090_batch_004D_full240_0090_z5dZV6g_rXM.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\090_batch_004D_full240_0090_z5dZV6g_rXM.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 91,
+      "config": "configs/batch_004F_full240/091_batch_004D_full240_0091_z5dZV6g_rXM.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\091_batch_004D_full240_0091_z5dZV6g_rXM.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 92,
+      "config": "configs/batch_004F_full240/092_batch_004D_full240_0092_z5dZV6g_rXM.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\092_batch_004D_full240_0092_z5dZV6g_rXM.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 93,
+      "config": "configs/batch_004F_full240/093_batch_004D_full240_0093_z5dZV6g_rXM.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\093_batch_004D_full240_0093_z5dZV6g_rXM.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 94,
+      "config": "configs/batch_004F_full240/094_batch_004D_full240_0094_z5dZV6g_rXM.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\094_batch_004D_full240_0094_z5dZV6g_rXM.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 95,
+      "config": "configs/batch_004F_full240/095_batch_004D_full240_0095_z5dZV6g_rXM.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\095_batch_004D_full240_0095_z5dZV6g_rXM.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 96,
+      "config": "configs/batch_004F_full240/096_batch_004D_full240_0096_z5dZV6g_rXM.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\096_batch_004D_full240_0096_z5dZV6g_rXM.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 97,
+      "config": "configs/batch_004F_full240/097_batch_004D_full240_0097_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\097_batch_004D_full240_0097_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 98,
+      "config": "configs/batch_004F_full240/098_batch_004D_full240_0098_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\098_batch_004D_full240_0098_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 99,
+      "config": "configs/batch_004F_full240/099_batch_004D_full240_0099_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\099_batch_004D_full240_0099_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 100,
+      "config": "configs/batch_004F_full240/100_batch_004D_full240_0100_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\100_batch_004D_full240_0100_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 101,
+      "config": "configs/batch_004F_full240/101_batch_004D_full240_0101_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\101_batch_004D_full240_0101_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 102,
+      "config": "configs/batch_004F_full240/102_batch_004D_full240_0102_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\102_batch_004D_full240_0102_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 103,
+      "config": "configs/batch_004F_full240/103_batch_004D_full240_0103_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\103_batch_004D_full240_0103_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 104,
+      "config": "configs/batch_004F_full240/104_batch_004D_full240_0104_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\104_batch_004D_full240_0104_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 105,
+      "config": "configs/batch_004F_full240/105_batch_004D_full240_0105_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\105_batch_004D_full240_0105_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 106,
+      "config": "configs/batch_004F_full240/106_batch_004D_full240_0106_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\106_batch_004D_full240_0106_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 107,
+      "config": "configs/batch_004F_full240/107_batch_004D_full240_0107_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\107_batch_004D_full240_0107_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 108,
+      "config": "configs/batch_004F_full240/108_batch_004D_full240_0108_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\108_batch_004D_full240_0108_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 109,
+      "config": "configs/batch_004F_full240/109_batch_004D_full240_0109_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\109_batch_004D_full240_0109_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 110,
+      "config": "configs/batch_004F_full240/110_batch_004D_full240_0110_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\110_batch_004D_full240_0110_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 111,
+      "config": "configs/batch_004F_full240/111_batch_004D_full240_0111_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\111_batch_004D_full240_0111_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 112,
+      "config": "configs/batch_004F_full240/112_batch_004D_full240_0112_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\112_batch_004D_full240_0112_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 113,
+      "config": "configs/batch_004F_full240/113_batch_004D_full240_0113_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\113_batch_004D_full240_0113_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 114,
+      "config": "configs/batch_004F_full240/114_batch_004D_full240_0114_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\114_batch_004D_full240_0114_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 115,
+      "config": "configs/batch_004F_full240/115_batch_004D_full240_0115_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\115_batch_004D_full240_0115_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 116,
+      "config": "configs/batch_004F_full240/116_batch_004D_full240_0116_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\116_batch_004D_full240_0116_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 117,
+      "config": "configs/batch_004F_full240/117_batch_004D_full240_0117_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\117_batch_004D_full240_0117_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 118,
+      "config": "configs/batch_004F_full240/118_batch_004D_full240_0118_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\118_batch_004D_full240_0118_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 119,
+      "config": "configs/batch_004F_full240/119_batch_004D_full240_0119_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\119_batch_004D_full240_0119_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 120,
+      "config": "configs/batch_004F_full240/120_batch_004D_full240_0120_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\120_batch_004D_full240_0120_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 121,
+      "config": "configs/batch_004F_full240/121_batch_004D_full240_0121_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\121_batch_004D_full240_0121_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 122,
+      "config": "configs/batch_004F_full240/122_batch_004D_full240_0122_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\122_batch_004D_full240_0122_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 123,
+      "config": "configs/batch_004F_full240/123_batch_004D_full240_0123_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\123_batch_004D_full240_0123_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 124,
+      "config": "configs/batch_004F_full240/124_batch_004D_full240_0124_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\124_batch_004D_full240_0124_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 125,
+      "config": "configs/batch_004F_full240/125_batch_004D_full240_0125_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\125_batch_004D_full240_0125_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 126,
+      "config": "configs/batch_004F_full240/126_batch_004D_full240_0126_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\126_batch_004D_full240_0126_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 127,
+      "config": "configs/batch_004F_full240/127_batch_004D_full240_0127_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\127_batch_004D_full240_0127_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 128,
+      "config": "configs/batch_004F_full240/128_batch_004D_full240_0128_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\128_batch_004D_full240_0128_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 129,
+      "config": "configs/batch_004F_full240/129_batch_004D_full240_0129_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\129_batch_004D_full240_0129_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 130,
+      "config": "configs/batch_004F_full240/130_batch_004D_full240_0130_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\130_batch_004D_full240_0130_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 131,
+      "config": "configs/batch_004F_full240/131_batch_004D_full240_0131_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\131_batch_004D_full240_0131_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 132,
+      "config": "configs/batch_004F_full240/132_batch_004D_full240_0132_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\132_batch_004D_full240_0132_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 133,
+      "config": "configs/batch_004F_full240/133_batch_004D_full240_0133_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\133_batch_004D_full240_0133_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 134,
+      "config": "configs/batch_004F_full240/134_batch_004D_full240_0134_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\134_batch_004D_full240_0134_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 135,
+      "config": "configs/batch_004F_full240/135_batch_004D_full240_0135_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\135_batch_004D_full240_0135_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 136,
+      "config": "configs/batch_004F_full240/136_batch_004D_full240_0136_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\136_batch_004D_full240_0136_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 137,
+      "config": "configs/batch_004F_full240/137_batch_004D_full240_0137_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\137_batch_004D_full240_0137_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 138,
+      "config": "configs/batch_004F_full240/138_batch_004D_full240_0138_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\138_batch_004D_full240_0138_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 139,
+      "config": "configs/batch_004F_full240/139_batch_004D_full240_0139_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\139_batch_004D_full240_0139_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 140,
+      "config": "configs/batch_004F_full240/140_batch_004D_full240_0140_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\140_batch_004D_full240_0140_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 141,
+      "config": "configs/batch_004F_full240/141_batch_004D_full240_0141_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\141_batch_004D_full240_0141_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 142,
+      "config": "configs/batch_004F_full240/142_batch_004D_full240_0142_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\142_batch_004D_full240_0142_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 143,
+      "config": "configs/batch_004F_full240/143_batch_004D_full240_0143_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\143_batch_004D_full240_0143_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 144,
+      "config": "configs/batch_004F_full240/144_batch_004D_full240_0144_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\144_batch_004D_full240_0144_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 145,
+      "config": "configs/batch_004F_full240/145_batch_004D_full240_0145_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\145_batch_004D_full240_0145_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 146,
+      "config": "configs/batch_004F_full240/146_batch_004D_full240_0146_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\146_batch_004D_full240_0146_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 147,
+      "config": "configs/batch_004F_full240/147_batch_004D_full240_0147_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\147_batch_004D_full240_0147_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 148,
+      "config": "configs/batch_004F_full240/148_batch_004D_full240_0148_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\148_batch_004D_full240_0148_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 149,
+      "config": "configs/batch_004F_full240/149_batch_004D_full240_0149_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\149_batch_004D_full240_0149_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 150,
+      "config": "configs/batch_004F_full240/150_batch_004D_full240_0150_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\150_batch_004D_full240_0150_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 151,
+      "config": "configs/batch_004F_full240/151_batch_004D_full240_0151_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\151_batch_004D_full240_0151_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 152,
+      "config": "configs/batch_004F_full240/152_batch_004D_full240_0152_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\152_batch_004D_full240_0152_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 153,
+      "config": "configs/batch_004F_full240/153_batch_004D_full240_0153_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\153_batch_004D_full240_0153_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 154,
+      "config": "configs/batch_004F_full240/154_batch_004D_full240_0154_dQSoZh7ZjEQ.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\154_batch_004D_full240_0154_dQSoZh7ZjEQ.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 155,
+      "config": "configs/batch_004F_full240/155_batch_004D_full240_0155_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\155_batch_004D_full240_0155_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 156,
+      "config": "configs/batch_004F_full240/156_batch_004D_full240_0156_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\156_batch_004D_full240_0156_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 157,
+      "config": "configs/batch_004F_full240/157_batch_004D_full240_0157_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\157_batch_004D_full240_0157_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 158,
+      "config": "configs/batch_004F_full240/158_batch_004D_full240_0158_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\158_batch_004D_full240_0158_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 159,
+      "config": "configs/batch_004F_full240/159_batch_004D_full240_0159_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\159_batch_004D_full240_0159_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 160,
+      "config": "configs/batch_004F_full240/160_batch_004D_full240_0160_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\160_batch_004D_full240_0160_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 161,
+      "config": "configs/batch_004F_full240/161_batch_004D_full240_0161_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\161_batch_004D_full240_0161_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 162,
+      "config": "configs/batch_004F_full240/162_batch_004D_full240_0162_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\162_batch_004D_full240_0162_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 163,
+      "config": "configs/batch_004F_full240/163_batch_004D_full240_0163_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\163_batch_004D_full240_0163_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 164,
+      "config": "configs/batch_004F_full240/164_batch_004D_full240_0164_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\164_batch_004D_full240_0164_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 165,
+      "config": "configs/batch_004F_full240/165_batch_004D_full240_0165_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\165_batch_004D_full240_0165_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 166,
+      "config": "configs/batch_004F_full240/166_batch_004D_full240_0166_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\166_batch_004D_full240_0166_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 167,
+      "config": "configs/batch_004F_full240/167_batch_004D_full240_0167_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\167_batch_004D_full240_0167_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 168,
+      "config": "configs/batch_004F_full240/168_batch_004D_full240_0168_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\168_batch_004D_full240_0168_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 169,
+      "config": "configs/batch_004F_full240/169_batch_004D_full240_0169_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\169_batch_004D_full240_0169_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 170,
+      "config": "configs/batch_004F_full240/170_batch_004D_full240_0170_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\170_batch_004D_full240_0170_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 171,
+      "config": "configs/batch_004F_full240/171_batch_004D_full240_0171_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\171_batch_004D_full240_0171_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 172,
+      "config": "configs/batch_004F_full240/172_batch_004D_full240_0172_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\172_batch_004D_full240_0172_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 173,
+      "config": "configs/batch_004F_full240/173_batch_004D_full240_0173_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\173_batch_004D_full240_0173_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 174,
+      "config": "configs/batch_004F_full240/174_batch_004D_full240_0174_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\174_batch_004D_full240_0174_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 175,
+      "config": "configs/batch_004F_full240/175_batch_004D_full240_0175_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\175_batch_004D_full240_0175_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 176,
+      "config": "configs/batch_004F_full240/176_batch_004D_full240_0176_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\176_batch_004D_full240_0176_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 177,
+      "config": "configs/batch_004F_full240/177_batch_004D_full240_0177_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\177_batch_004D_full240_0177_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 178,
+      "config": "configs/batch_004F_full240/178_batch_004D_full240_0178_NQ4qXZsIrx8.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\178_batch_004D_full240_0178_NQ4qXZsIrx8.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 179,
+      "config": "configs/batch_004F_full240/179_batch_004D_full240_0179_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\179_batch_004D_full240_0179_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 180,
+      "config": "configs/batch_004F_full240/180_batch_004D_full240_0180_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\180_batch_004D_full240_0180_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 181,
+      "config": "configs/batch_004F_full240/181_batch_004D_full240_0181_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\181_batch_004D_full240_0181_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 182,
+      "config": "configs/batch_004F_full240/182_batch_004D_full240_0182_-0bM0t0qS8Q.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\182_batch_004D_full240_0182_-0bM0t0qS8Q.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 183,
+      "config": "configs/batch_004F_full240/183_batch_004D_full240_0183_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\183_batch_004D_full240_0183_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 184,
+      "config": "configs/batch_004F_full240/184_batch_004D_full240_0184_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\184_batch_004D_full240_0184_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 185,
+      "config": "configs/batch_004F_full240/185_batch_004D_full240_0185_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\185_batch_004D_full240_0185_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 186,
+      "config": "configs/batch_004F_full240/186_batch_004D_full240_0186_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\186_batch_004D_full240_0186_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 187,
+      "config": "configs/batch_004F_full240/187_batch_004D_full240_0187_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\187_batch_004D_full240_0187_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 188,
+      "config": "configs/batch_004F_full240/188_batch_004D_full240_0188_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\188_batch_004D_full240_0188_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 189,
+      "config": "configs/batch_004F_full240/189_batch_004D_full240_0189_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\189_batch_004D_full240_0189_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 190,
+      "config": "configs/batch_004F_full240/190_batch_004D_full240_0190_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\190_batch_004D_full240_0190_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 191,
+      "config": "configs/batch_004F_full240/191_batch_004D_full240_0191_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\191_batch_004D_full240_0191_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 192,
+      "config": "configs/batch_004F_full240/192_batch_004D_full240_0192_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\192_batch_004D_full240_0192_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 193,
+      "config": "configs/batch_004F_full240/193_batch_004D_full240_0193_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\193_batch_004D_full240_0193_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 194,
+      "config": "configs/batch_004F_full240/194_batch_004D_full240_0194_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\194_batch_004D_full240_0194_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 195,
+      "config": "configs/batch_004F_full240/195_batch_004D_full240_0195_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\195_batch_004D_full240_0195_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 196,
+      "config": "configs/batch_004F_full240/196_batch_004D_full240_0196_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\196_batch_004D_full240_0196_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 197,
+      "config": "configs/batch_004F_full240/197_batch_004D_full240_0197_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\197_batch_004D_full240_0197_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 198,
+      "config": "configs/batch_004F_full240/198_batch_004D_full240_0198_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\198_batch_004D_full240_0198_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 199,
+      "config": "configs/batch_004F_full240/199_batch_004D_full240_0199_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\199_batch_004D_full240_0199_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 200,
+      "config": "configs/batch_004F_full240/200_batch_004D_full240_0200_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\200_batch_004D_full240_0200_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 201,
+      "config": "configs/batch_004F_full240/201_batch_004D_full240_0201_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\201_batch_004D_full240_0201_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 202,
+      "config": "configs/batch_004F_full240/202_batch_004D_full240_0202_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\202_batch_004D_full240_0202_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 203,
+      "config": "configs/batch_004F_full240/203_batch_004D_full240_0203_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\203_batch_004D_full240_0203_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 204,
+      "config": "configs/batch_004F_full240/204_batch_004D_full240_0204_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\204_batch_004D_full240_0204_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 205,
+      "config": "configs/batch_004F_full240/205_batch_004D_full240_0205_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\205_batch_004D_full240_0205_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 206,
+      "config": "configs/batch_004F_full240/206_batch_004D_full240_0206_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\206_batch_004D_full240_0206_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 207,
+      "config": "configs/batch_004F_full240/207_batch_004D_full240_0207_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\207_batch_004D_full240_0207_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 208,
+      "config": "configs/batch_004F_full240/208_batch_004D_full240_0208_zQdMfh8tM_k.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\208_batch_004D_full240_0208_zQdMfh8tM_k.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 209,
+      "config": "configs/batch_004F_full240/209_batch_004D_full240_0209_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\209_batch_004D_full240_0209_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 210,
+      "config": "configs/batch_004F_full240/210_batch_004D_full240_0210_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\210_batch_004D_full240_0210_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 211,
+      "config": "configs/batch_004F_full240/211_batch_004D_full240_0211_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\211_batch_004D_full240_0211_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 212,
+      "config": "configs/batch_004F_full240/212_batch_004D_full240_0212_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\212_batch_004D_full240_0212_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 213,
+      "config": "configs/batch_004F_full240/213_batch_004D_full240_0213_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\213_batch_004D_full240_0213_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 214,
+      "config": "configs/batch_004F_full240/214_batch_004D_full240_0214_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\214_batch_004D_full240_0214_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 215,
+      "config": "configs/batch_004F_full240/215_batch_004D_full240_0215_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\215_batch_004D_full240_0215_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 216,
+      "config": "configs/batch_004F_full240/216_batch_004D_full240_0216_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\216_batch_004D_full240_0216_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 217,
+      "config": "configs/batch_004F_full240/217_batch_004D_full240_0217_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\217_batch_004D_full240_0217_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 218,
+      "config": "configs/batch_004F_full240/218_batch_004D_full240_0218_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\218_batch_004D_full240_0218_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 219,
+      "config": "configs/batch_004F_full240/219_batch_004D_full240_0219_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\219_batch_004D_full240_0219_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 220,
+      "config": "configs/batch_004F_full240/220_batch_004D_full240_0220_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\220_batch_004D_full240_0220_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 221,
+      "config": "configs/batch_004F_full240/221_batch_004D_full240_0221_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\221_batch_004D_full240_0221_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 222,
+      "config": "configs/batch_004F_full240/222_batch_004D_full240_0222_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\222_batch_004D_full240_0222_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 223,
+      "config": "configs/batch_004F_full240/223_batch_004D_full240_0223_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\223_batch_004D_full240_0223_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 224,
+      "config": "configs/batch_004F_full240/224_batch_004D_full240_0224_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\224_batch_004D_full240_0224_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 225,
+      "config": "configs/batch_004F_full240/225_batch_004D_full240_0225_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\225_batch_004D_full240_0225_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 226,
+      "config": "configs/batch_004F_full240/226_batch_004D_full240_0226_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\226_batch_004D_full240_0226_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 227,
+      "config": "configs/batch_004F_full240/227_batch_004D_full240_0227_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\227_batch_004D_full240_0227_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 228,
+      "config": "configs/batch_004F_full240/228_batch_004D_full240_0228_M2forQBQaZc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\228_batch_004D_full240_0228_M2forQBQaZc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 229,
+      "config": "configs/batch_004F_full240/229_batch_004D_full240_0229_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\229_batch_004D_full240_0229_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 230,
+      "config": "configs/batch_004F_full240/230_batch_004D_full240_0230_KaVr4kbGZRE.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\230_batch_004D_full240_0230_KaVr4kbGZRE.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 231,
+      "config": "configs/batch_004F_full240/231_batch_004D_full240_0231_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\231_batch_004D_full240_0231_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 232,
+      "config": "configs/batch_004F_full240/232_batch_004D_full240_0232_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\232_batch_004D_full240_0232_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 233,
+      "config": "configs/batch_004F_full240/233_batch_004D_full240_0233_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\233_batch_004D_full240_0233_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 234,
+      "config": "configs/batch_004F_full240/234_batch_004D_full240_0234_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\234_batch_004D_full240_0234_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 235,
+      "config": "configs/batch_004F_full240/235_batch_004D_full240_0235_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\235_batch_004D_full240_0235_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 236,
+      "config": "configs/batch_004F_full240/236_batch_004D_full240_0236_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\236_batch_004D_full240_0236_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 237,
+      "config": "configs/batch_004F_full240/237_batch_004D_full240_0237_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\237_batch_004D_full240_0237_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 238,
+      "config": "configs/batch_004F_full240/238_batch_004D_full240_0238_cJskrO-DANo.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\238_batch_004D_full240_0238_cJskrO-DANo.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 239,
+      "config": "configs/batch_004F_full240/239_batch_004D_full240_0239_oGrMajgH2Tc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\239_batch_004D_full240_0239_oGrMajgH2Tc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    },
+    {
+      "idx": 240,
+      "config": "configs/batch_004F_full240/240_batch_004D_full240_0240_oGrMajgH2Tc.json",
+      "source_config": "C:\\Users\\micka\\Desktop\\développement\\ping\\TTFlux\\configs\\batch_004D_full240\\240_batch_004D_full240_0240_oGrMajgH2Tc.json",
+      "points_csv": "runs/dataset_points_004E_full240/raw_tracking_points_004E.csv"
+    }
+  ]
+}
