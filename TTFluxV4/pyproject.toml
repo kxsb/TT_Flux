@@ -1,0 +1,25 @@
+[project]
+name = "ttflux"
+version = "0.4.0"
+description = "TTFlux V4 - measurable table-tennis video analysis pipeline"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+video = [
+  "opencv-python>=4.8",
+  "numpy>=1.24",
+]
+ui = [
+  "streamlit>=1.36",
+]
+dev = [
+  "pytest>=8.0",
+]
+
+[project.scripts]
+ttflux = "ttflux.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
