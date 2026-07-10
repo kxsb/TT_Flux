@@ -38,4 +38,4 @@ Lancer l'interface :
 
     .\.venv\Scripts\python.exe -m ttflux serve
 
-Adresse : http://127.0.0.1:8787
+
