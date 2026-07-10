@@ -4,6 +4,7 @@
 
 - [x] V0.0 — Socle propre et bibliothèque vidéo
 - [x] V0.1 — Contrat des runs metadata-only
+- [x] V0.1.1 — Exécution et cycle d'état metadata-only
 - [ ] V0.2 — Baseline balle 2D
 - [ ] V0.3 — Review humaine
 - [ ] V0.4 — Contexte table
@@ -22,6 +23,14 @@
 - métadonnées vidéo ;
 - état du traitement ;
 - historique des analyses.
+
+## V0.1.1 — Exécution metadata-only
+
+- cycle `created → running → completed / failed` ;
+- écriture atomique des états ;
+- production de `analysis.json` ;
+- métriques vidéo déterministes ;
+- persistance d'une erreur structurée en cas d'échec.
 
 ## V0.2 — Baseline balle
 

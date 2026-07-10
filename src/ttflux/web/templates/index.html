@@ -174,7 +174,7 @@
                 </span>
 
                 <span id="analysis-status">
-                    Prêt à créer un run metadata-only
+                    Prêt à exécuter l’analyse metadata-only
                 </span>
             </div>
         </section>
@@ -225,7 +225,7 @@
             player.load();
 
             analyseButton.disabled = false;
-            analysisStatus.textContent = "Prêt à créer un run metadata-only";
+            analysisStatus.textContent = "Prêt à exécuter l’analyse metadata-only";
         }
 
         cards.forEach((card) => {
@@ -240,8 +240,8 @@
             }
 
             analyseButton.disabled = true;
-            analyseButton.textContent = "Création…";
-            analysisStatus.textContent = "Écriture de run.json et video.json…";
+            analyseButton.textContent = "Analyse…";
+            analysisStatus.textContent = "Création du run et calcul de analysis.json…";
 
             try {
                 const response = await fetch(
@@ -258,11 +258,11 @@
 
                 if (!response.ok) {
                     throw new Error(
-                        payload.detail || "Échec de création du run"
+                        payload.detail || "Échec de l’analyse"
                     );
                 }
 
-                analysisStatus.textContent = `Run créé : ${payload.run.run_id}`;
+                analysisStatus.textContent = `Analyse terminée : ${payload.run.run_id}`;
                 window.location.reload();
             } catch (error) {
                 analysisStatus.textContent = error.message;

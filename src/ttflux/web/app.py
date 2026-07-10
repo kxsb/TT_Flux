@@ -9,7 +9,11 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from ttflux import __version__
-from ttflux.analysis.runs import UnknownVideoError, create_run, list_runs
+from ttflux.analysis.runs import (
+    UnknownVideoError,
+    create_and_execute_run,
+    list_runs,
+)
 from ttflux.video.catalog import find_video, scan_videos
 
 
@@ -72,11 +76,16 @@ def api_runs():
 @app.post("/api/runs/{video_id}", status_code=status.HTTP_201_CREATED)
 def api_create_run(video_id: str):
     try:
-        run = create_run(video_id)
+        run = create_and_execute_run(video_id)
     except UnknownVideoError as exc:
         raise HTTPException(
             status_code=404,
             detail="Vidéo introuvable",
+        ) from exc
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Échec de l'analyse metadata-only : {exc}",
         ) from exc
 
     return {"run": run}

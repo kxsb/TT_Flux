@@ -412,3 +412,26 @@ video {
         min-height: 360px;
     }
 }
+.run-status-created {
+    color: #9bbce2;
+    border-color: #3d5879;
+    background: rgba(61, 88, 121, 0.16);
+}
+
+.run-status-running {
+    color: #e6c77d;
+    border-color: #6f5b2c;
+    background: rgba(111, 91, 44, 0.16);
+}
+
+.run-status-completed {
+    color: #83cea1;
+    border-color: #365844;
+    background: rgba(62, 122, 84, 0.12);
+}
+
+.run-status-failed {
+    color: #e9a0a0;
+    border-color: #704040;
+    background: rgba(112, 64, 64, 0.16);
+}

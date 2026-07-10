@@ -17,6 +17,14 @@ class UnknownVideoError(LookupError):
     """La vidéo demandée n'existe pas dans la bibliothèque locale."""
 
 
+class UnknownRunError(LookupError):
+    """Le run demandé n'existe pas."""
+
+
+class InvalidRunStateError(RuntimeError):
+    """Le run ne peut pas être exécuté depuis son état courant."""
+
+
 _SLUG_PATTERN = re.compile(r"[^a-z0-9]+")
 _VIDEO_SNAPSHOT_KEYS = (
     "id",
@@ -37,7 +45,11 @@ _VIDEO_SNAPSHOT_KEYS = (
 def slugify(value: str, fallback: str = "video") -> str:
     """Produit un fragment lisible et sûr pour un identifiant de run."""
 
-    ascii_value = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode("ascii")
+    ascii_value = (
+        unicodedata.normalize("NFKD", value)
+        .encode("ascii", "ignore")
+        .decode("ascii")
+    )
     slug = _SLUG_PATTERN.sub("-", ascii_value.lower()).strip("-")
     return slug[:48] or fallback
 
@@ -49,6 +61,18 @@ def _write_json_atomic(path: Path, payload: dict[str, Any]) -> None:
         encoding="utf-8",
     )
     temporary_path.replace(path)
+
+
+def _read_json_object(path: Path) -> dict[str, Any]:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        raise UnknownRunError(path.parent.name) from None
+
+    if not isinstance(payload, dict):
+        raise ValueError(f"Objet JSON attendu dans {path.name}")
+
+    return payload
 
 
 def _video_snapshot(video: dict[str, Any]) -> dict[str, Any]:
@@ -65,8 +89,26 @@ def _new_run_id(video: dict[str, Any], created_at: datetime) -> str:
     return f"{timestamp}_{video_slug}_{token}"
 
 
+def _resolve_run_dir(run_id: str) -> Path:
+    if (
+        not run_id
+        or run_id in {".", ".."}
+        or Path(run_id).name != run_id
+        or "/" in run_id
+        or "\\" in run_id
+    ):
+        raise UnknownRunError(run_id)
+
+    run_dir = RUNS_DIR / run_id
+
+    if not run_dir.is_dir():
+        raise UnknownRunError(run_id)
+
+    return run_dir
+
+
 def create_run(video_id: str) -> dict[str, Any]:
-    """Crée un run metadata-only et ses deux contrats JSON."""
+    """Crée un run metadata-only dans l'état created."""
 
     ensure_project_layout()
     video = find_video(video_id)
@@ -99,7 +141,7 @@ def create_run(video_id: str) -> dict[str, Any]:
         "status": "created",
         "pipeline": {
             "name": "metadata_only",
-            "version": 1,
+            "version": 2,
         },
         "configuration": {
             "ball_tracking_enabled": False,
@@ -120,6 +162,100 @@ def create_run(video_id: str) -> dict[str, Any]:
         raise
 
     return run_payload
+
+
+def _positive_number(value: Any) -> float | None:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return None
+
+    number = float(value)
+    return number if number > 0 else None
+
+
+def _build_analysis(
+    run_payload: dict[str, Any],
+    video_payload: dict[str, Any],
+    generated_at: datetime,
+) -> dict[str, Any]:
+    fps = _positive_number(video_payload.get("fps"))
+    frame_interval_ms = round(1000.0 / fps, 3) if fps else None
+
+    return {
+        "schema_version": 1,
+        "run_id": run_payload["run_id"],
+        "video_id": run_payload["video_id"],
+        "video_filename": run_payload["video_filename"],
+        "generated_at": generated_at.isoformat(timespec="seconds"),
+        "frame_count": video_payload.get("frame_count"),
+        "duration_s": video_payload.get("duration_s"),
+        "fps": video_payload.get("fps"),
+        "resolution": {
+            "width": video_payload.get("width"),
+            "height": video_payload.get("height"),
+        },
+        "estimated_frame_interval_ms": frame_interval_ms,
+    }
+
+
+def execute_run(run_id: str) -> dict[str, Any]:
+    """Exécute le pipeline metadata-only et persiste son cycle d'état."""
+
+    ensure_project_layout()
+    run_dir = _resolve_run_dir(run_id)
+    run_path = run_dir / "run.json"
+    video_path = run_dir / "video.json"
+
+    run_payload = _read_json_object(run_path)
+    video_payload = _read_json_object(video_path)
+
+    current_status = run_payload.get("status")
+
+    if current_status != "created":
+        raise InvalidRunStateError(
+            f"Run {run_id} non exécutable depuis l'état {current_status!r}"
+        )
+
+    started_at = datetime.now().astimezone()
+    run_payload["status"] = "running"
+    run_payload["started_at"] = started_at.isoformat(timespec="seconds")
+    run_payload.pop("completed_at", None)
+    run_payload.pop("failed_at", None)
+    run_payload.pop("error", None)
+    _write_json_atomic(run_path, run_payload)
+
+    try:
+        generated_at = datetime.now().astimezone()
+        analysis_payload = _build_analysis(
+            run_payload,
+            video_payload,
+            generated_at,
+        )
+        _write_json_atomic(run_dir / "analysis.json", analysis_payload)
+
+        completed_at = datetime.now().astimezone()
+        run_payload["status"] = "completed"
+        run_payload["completed_at"] = completed_at.isoformat(timespec="seconds")
+        run_payload["artifacts"]["analysis"] = "analysis.json"
+        _write_json_atomic(run_path, run_payload)
+    except Exception as exc:
+        failed_at = datetime.now().astimezone()
+        run_payload["status"] = "failed"
+        run_payload["failed_at"] = failed_at.isoformat(timespec="seconds")
+        run_payload["error"] = {
+            "type": type(exc).__name__,
+            "message": str(exc),
+        }
+        _write_json_atomic(run_path, run_payload)
+        raise
+
+    return run_payload
+
+
+def create_and_execute_run(video_id: str) -> dict[str, Any]:
+    """Crée puis exécute immédiatement un run metadata-only."""
+
+    created_run = create_run(video_id)
+    return execute_run(str(created_run["run_id"]))
 
 
 def _created_label(value: Any) -> str:
@@ -155,7 +291,11 @@ def list_runs() -> list[dict[str, Any]]:
         runs.append(summary)
 
     runs.sort(
-        key=lambda item: str(item.get("created_at") or item.get("run_id") or ""),
+        key=lambda item: str(
+            item.get("created_at")
+            or item.get("run_id")
+            or ""
+        ),
         reverse=True,
     )
     return runs
