@@ -5,6 +5,7 @@
 - [x] V0.0 — Socle propre et bibliothèque vidéo
 - [x] V0.1 — Contrat des runs metadata-only
 - [x] V0.1.1 — Exécution et cycle d'état metadata-only
+- [x] V0.1.2 — Extraction reproductible d'un segment
 - [ ] V0.2 — Baseline balle 2D
 - [ ] V0.3 — Review humaine
 - [ ] V0.4 — Contexte table
@@ -29,8 +30,15 @@
 - cycle `created → running → completed / failed` ;
 - écriture atomique des états ;
 - production de `analysis.json` ;
-- métriques vidéo déterministes ;
 - persistance d'une erreur structurée en cas d'échec.
+
+## V0.1.2 — Segment d'analyse
+
+- début et durée choisis depuis le lecteur ;
+- validation d'une plage de 1 à 60 secondes ;
+- extraction FFmpeg H.264 ;
+- production de `source_clip.mp4` et `clip.json` ;
+- lecture du segment depuis l'historique.
 
 ## V0.2 — Baseline balle
 

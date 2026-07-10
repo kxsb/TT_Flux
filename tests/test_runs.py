@@ -19,8 +19,8 @@ def sample_video() -> dict[str, object]:
         "width": 1280,
         "height": 720,
         "fps": 50.0,
-        "duration_s": 10.0,
-        "frame_count": 500,
+        "duration_s": 120.0,
+        "frame_count": 6000,
         "codec": "h264",
         "probe_error": None,
     }
@@ -31,6 +31,10 @@ def configure_store(
     monkeypatch: pytest.MonkeyPatch,
 ) -> dict[str, object]:
     video = sample_video()
+    source_path = tmp_path / "source.mp4"
+    source_path.write_bytes(b"source")
+    video["absolute_path"] = str(source_path)
+
     monkeypatch.setattr(run_store, "RUNS_DIR", tmp_path)
     monkeypatch.setattr(run_store, "ensure_project_layout", lambda: None)
     monkeypatch.setattr(run_store, "find_video", lambda video_id: video)
@@ -42,18 +46,40 @@ def test_slugify() -> None:
     assert run_store.slugify("***") == "video"
 
 
-def test_create_run_writes_json_contracts(
+def test_validate_clip_range() -> None:
+    video = sample_video()
+
+    assert run_store.validate_clip_range(
+        video,
+        12.3456,
+        15.5555,
+    ) == (12.346, 15.556)
+
+    with pytest.raises(run_store.InvalidClipRangeError):
+        run_store.validate_clip_range(video, -1, 10)
+
+    with pytest.raises(run_store.InvalidClipRangeError):
+        run_store.validate_clip_range(video, 0, 0.5)
+
+    with pytest.raises(run_store.InvalidClipRangeError):
+        run_store.validate_clip_range(video, 0, 61)
+
+    with pytest.raises(run_store.InvalidClipRangeError):
+        run_store.validate_clip_range(video, 115, 10)
+
+
+def test_create_run_writes_clip_configuration(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     configure_store(tmp_path, monkeypatch)
 
-    run = run_store.create_run("video-123")
+    run = run_store.create_run(
+        "video-123",
+        clip_start_s=12.5,
+        clip_duration_s=15.0,
+    )
     run_dir = tmp_path / str(run["run_id"])
-
-    assert (run_dir / "run.json").is_file()
-    assert (run_dir / "video.json").is_file()
-    assert not (run_dir / "analysis.json").exists()
 
     saved_run = json.loads(
         (run_dir / "run.json").read_text(encoding="utf-8")
@@ -64,10 +90,11 @@ def test_create_run_writes_json_contracts(
 
     assert saved_run["status"] == "created"
     assert saved_run["pipeline"] == {
-        "name": "metadata_only",
-        "version": 2,
+        "name": "clip_extract",
+        "version": 1,
     }
-    assert saved_run["video_id"] == "video-123"
+    assert saved_run["configuration"]["clip_start_s"] == 12.5
+    assert saved_run["configuration"]["clip_duration_s"] == 15.0
     assert saved_video["filename"] == "Match Démo 01.mp4"
     assert "absolute_path" not in saved_video
 
@@ -84,39 +111,69 @@ def test_create_run_rejects_unknown_video(
         run_store.create_run("missing")
 
 
-def test_execute_run_writes_analysis_and_completes(
+def test_execute_run_extracts_clip_and_completes(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     configure_store(tmp_path, monkeypatch)
-    created = run_store.create_run("video-123")
+    created = run_store.create_run(
+        "video-123",
+        clip_start_s=20.0,
+        clip_duration_s=10.0,
+    )
+    run_id = str(created["run_id"])
+    run_dir = tmp_path / run_id
+    extraction_calls: list[tuple[float, float]] = []
 
-    completed = run_store.execute_run(str(created["run_id"]))
-    run_dir = tmp_path / str(created["run_id"])
+    def fake_extract(
+        source_path: Path,
+        destination_path: Path,
+        start_s: float,
+        duration_s: float,
+    ) -> None:
+        extraction_calls.append((start_s, duration_s))
+        destination_path.write_bytes(b"clip")
+
+    monkeypatch.setattr(run_store, "_extract_clip", fake_extract)
+    monkeypatch.setattr(
+        run_store,
+        "probe_video",
+        lambda path: {
+            "width": 1280,
+            "height": 720,
+            "fps": 50.0,
+            "duration_s": 10.0,
+            "frame_count": 500,
+            "codec": "h264",
+            "probe_error": None,
+        },
+    )
+
+    completed = run_store.execute_run(run_id)
 
     saved_run = json.loads(
         (run_dir / "run.json").read_text(encoding="utf-8")
+    )
+    clip = json.loads(
+        (run_dir / "clip.json").read_text(encoding="utf-8")
     )
     analysis = json.loads(
         (run_dir / "analysis.json").read_text(encoding="utf-8")
     )
 
+    assert extraction_calls == [(20.0, 10.0)]
     assert completed["status"] == "completed"
     assert saved_run["status"] == "completed"
-    assert saved_run["artifacts"]["analysis"] == "analysis.json"
-    assert "started_at" in saved_run
-    assert "completed_at" in saved_run
-    assert analysis["frame_count"] == 500
-    assert analysis["duration_s"] == 10.0
-    assert analysis["fps"] == 50.0
-    assert analysis["resolution"] == {
-        "width": 1280,
-        "height": 720,
-    }
-    assert analysis["estimated_frame_interval_ms"] == 20.0
+    assert saved_run["artifacts"]["source_clip"] == "source_clip.mp4"
+    assert (run_dir / "source_clip.mp4").is_file()
+    assert clip["requested_start_s"] == 20.0
+    assert clip["requested_duration_s"] == 10.0
+    assert clip["frame_count"] == 500
+    assert analysis["schema_version"] == 2
+    assert analysis["clip"]["actual_duration_s"] == 10.0
 
 
-def test_running_state_is_persisted_before_analysis(
+def test_running_state_is_persisted_before_extraction(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -125,25 +182,34 @@ def test_running_state_is_persisted_before_analysis(
     run_id = str(created["run_id"])
     run_path = tmp_path / run_id / "run.json"
     observed_statuses: list[str] = []
-    original_builder = run_store._build_analysis
 
-    def observing_builder(
-        run_payload: dict[str, object],
-        video_payload: dict[str, object],
-        generated_at,
-    ) -> dict[str, object]:
+    def observing_extract(
+        source_path: Path,
+        destination_path: Path,
+        start_s: float,
+        duration_s: float,
+    ) -> None:
         persisted = json.loads(run_path.read_text(encoding="utf-8"))
         observed_statuses.append(str(persisted["status"]))
-        return original_builder(
-            run_payload,
-            video_payload,
-            generated_at,
-        )
+        destination_path.write_bytes(b"clip")
 
     monkeypatch.setattr(
         run_store,
-        "_build_analysis",
-        observing_builder,
+        "_extract_clip",
+        observing_extract,
+    )
+    monkeypatch.setattr(
+        run_store,
+        "probe_video",
+        lambda path: {
+            "width": 1280,
+            "height": 720,
+            "fps": 50.0,
+            "duration_s": 15.0,
+            "frame_count": 750,
+            "codec": "h264",
+            "probe_error": None,
+        },
     )
 
     run_store.execute_run(run_id)
@@ -151,7 +217,7 @@ def test_running_state_is_persisted_before_analysis(
     assert observed_statuses == ["running"]
 
 
-def test_failed_execution_is_persisted(
+def test_failed_extraction_is_persisted(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -160,10 +226,10 @@ def test_failed_execution_is_persisted(
     run_id = str(created["run_id"])
     run_dir = tmp_path / run_id
 
-    def fail_builder(*args, **kwargs):
+    def fail_extract(*args, **kwargs):
         raise RuntimeError("échec simulé")
 
-    monkeypatch.setattr(run_store, "_build_analysis", fail_builder)
+    monkeypatch.setattr(run_store, "_extract_clip", fail_extract)
 
     with pytest.raises(RuntimeError, match="échec simulé"):
         run_store.execute_run(run_id)
@@ -178,18 +244,30 @@ def test_failed_execution_is_persisted(
         "message": "échec simulé",
     }
     assert "failed_at" in failed_run
-    assert not (run_dir / "analysis.json").exists()
+    assert not (run_dir / "clip.json").exists()
 
 
-def test_execute_run_rejects_unknown_run(
+def test_get_run_clip_path(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setattr(run_store, "RUNS_DIR", tmp_path)
-    monkeypatch.setattr(run_store, "ensure_project_layout", lambda: None)
+    configure_store(tmp_path, monkeypatch)
+    created = run_store.create_run("video-123")
+    run_id = str(created["run_id"])
+    run_dir = tmp_path / run_id
+    clip_path = run_dir / "source_clip.mp4"
+    clip_path.write_bytes(b"clip")
 
-    with pytest.raises(run_store.UnknownRunError):
-        run_store.execute_run("missing")
+    run_payload = json.loads(
+        (run_dir / "run.json").read_text(encoding="utf-8")
+    )
+    run_payload["artifacts"]["source_clip"] = "source_clip.mp4"
+    (run_dir / "run.json").write_text(
+        json.dumps(run_payload),
+        encoding="utf-8",
+    )
+
+    assert run_store.get_run_clip_path(run_id) == clip_path
 
 
 def test_completed_run_cannot_be_executed_twice(
@@ -199,6 +277,27 @@ def test_completed_run_cannot_be_executed_twice(
     configure_store(tmp_path, monkeypatch)
     created = run_store.create_run("video-123")
     run_id = str(created["run_id"])
+
+    monkeypatch.setattr(
+        run_store,
+        "_extract_clip",
+        lambda source, destination, start, duration:
+            destination.write_bytes(b"clip"),
+    )
+    monkeypatch.setattr(
+        run_store,
+        "probe_video",
+        lambda path: {
+            "width": 1280,
+            "height": 720,
+            "fps": 50.0,
+            "duration_s": 15.0,
+            "frame_count": 750,
+            "codec": "h264",
+            "probe_error": None,
+        },
+    )
+
     run_store.execute_run(run_id)
 
     with pytest.raises(run_store.InvalidRunStateError):

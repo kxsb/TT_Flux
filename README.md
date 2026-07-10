@@ -3,7 +3,7 @@
 TTFlux est un pipeline local, reproductible et mesurable d'analyse
 vidéo de tennis de table.
 
-## État actuel — V0.1.1
+## État actuel — V0.1.2
 
 Fonctionnalités présentes :
 
@@ -12,14 +12,15 @@ Fonctionnalités présentes :
 - catalogue et lecture des vidéos brutes ;
 - création reproductible de runs d'analyse ;
 - cycle d'exécution `created → running → completed / failed` ;
-- contrats `run.json`, `video.json` et `analysis.json` ;
-- historique local des analyses ;
-- API minimale ;
+- choix d'un début et d'une durée depuis l'interface ;
+- extraction FFmpeg d'un segment MP4 borné ;
+- contrats `run.json`, `video.json`, `clip.json` et `analysis.json` ;
+- lecture du segment extrait depuis l'historique ;
 - tests automatiques.
 
 Le tracking de balle n'est pas encore intégré. Le pipeline courant est
-`metadata_only` : il vérifie l'orchestration et produit des métriques
-déterministes à partir des métadonnées vidéo.
+`clip_extract`. Il prépare un segment court et reproductible qui servira
+d'entrée à la première baseline balle 2D.
 
 ## Commandes
 
@@ -45,18 +46,16 @@ Lancer l'interface :
 
 Adresse : http://127.0.0.1:8787
 
-## Contrat d'un run V0.1.1
+## Contrat d'un run V0.1.2
 
     runs/<run_id>/
     ├── run.json
     ├── video.json
+    ├── source_clip.mp4
+    ├── clip.json
     └── analysis.json
 
-`analysis.json` contient actuellement :
-
-- nombre d'images ;
-- durée et cadence ;
-- résolution ;
-- intervalle temporel estimé entre deux images.
+Le segment est réencodé en H.264, sans audio, avec une durée comprise
+entre 1 et 60 secondes.
 
 Les contenus de `runs/` restent locaux et sont exclus de Git.

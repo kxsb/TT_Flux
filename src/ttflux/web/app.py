@@ -7,14 +7,23 @@ from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel, Field
 
 from ttflux import __version__
 from ttflux.analysis.runs import (
+    InvalidClipRangeError,
+    UnknownRunError,
     UnknownVideoError,
-    create_and_execute_run,
+    create_and_execute_clip_run,
+    get_run_clip_path,
     list_runs,
 )
 from ttflux.video.catalog import find_video, scan_videos
+
+
+class ClipRunRequest(BaseModel):
+    start_s: float = Field(default=0.0, ge=0)
+    duration_s: float = Field(default=15.0, ge=1, le=60)
 
 
 WEB_DIR = Path(__file__).resolve().parent
@@ -74,21 +83,51 @@ def api_runs():
 
 
 @app.post("/api/runs/{video_id}", status_code=status.HTTP_201_CREATED)
-def api_create_run(video_id: str):
+def api_create_run(video_id: str, request: ClipRunRequest):
     try:
-        run = create_and_execute_run(video_id)
+        run = create_and_execute_clip_run(
+            video_id,
+            clip_start_s=request.start_s,
+            clip_duration_s=request.duration_s,
+        )
     except UnknownVideoError as exc:
         raise HTTPException(
             status_code=404,
             detail="Vidéo introuvable",
         ) from exc
+    except InvalidClipRangeError as exc:
+        raise HTTPException(
+            status_code=400,
+            detail=str(exc),
+        ) from exc
     except Exception as exc:
         raise HTTPException(
             status_code=500,
-            detail=f"Échec de l'analyse metadata-only : {exc}",
+            detail=f"Échec de la préparation du segment : {exc}",
         ) from exc
 
     return {"run": run}
+
+
+@app.get("/runs/{run_id}/clip", name="run_clip")
+def run_clip(run_id: str):
+    try:
+        path = get_run_clip_path(run_id)
+    except (UnknownRunError, FileNotFoundError) as exc:
+        raise HTTPException(
+            status_code=404,
+            detail=str(exc),
+        ) from exc
+
+    return FileResponse(
+        path=str(path),
+        media_type="video/mp4",
+        filename=path.name,
+        headers={
+            "Accept-Ranges": "bytes",
+            "Cache-Control": "no-store",
+        },
+    )
 
 
 @app.get("/media/{video_id}", name="media")

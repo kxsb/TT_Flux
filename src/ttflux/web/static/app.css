@@ -435,3 +435,85 @@ video {
     border-color: #704040;
     background: rgba(112, 64, 64, 0.16);
 }
+
+.clip-controls {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    border: 1px solid #252d37;
+    border-radius: 12px;
+    background: #10151c;
+}
+
+.clip-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.clip-field span,
+.clip-help {
+    color: #748091;
+    font-size: 10px;
+}
+
+.clip-field input {
+    width: 105px;
+    padding: 8px 10px;
+    color: #e4ebf4;
+    border: 1px solid #303a47;
+    border-radius: 8px;
+    outline: none;
+    background: #0b0f14;
+}
+
+.clip-field input:focus {
+    border-color: #54769a;
+}
+
+.secondary-button {
+    padding: 8px 12px;
+    color: #b9c7d8;
+    border: 1px solid #354455;
+    border-radius: 8px;
+    background: #19222d;
+    cursor: pointer;
+}
+
+.secondary-button:disabled {
+    color: #626d7a;
+    border-color: #29313b;
+    background: #14191f;
+    cursor: not-allowed;
+}
+
+.clip-help {
+    margin-left: auto;
+    padding-bottom: 9px;
+}
+
+.run-clip-link {
+    display: inline-block;
+    margin-top: 9px;
+    color: #9dbfe5;
+    font-size: 10px;
+    text-decoration: none;
+}
+
+.run-clip-link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 1100px) {
+    .clip-controls {
+        flex-wrap: wrap;
+    }
+
+    .clip-help {
+        width: 100%;
+        margin-left: 0;
+        padding-bottom: 0;
+    }
+}

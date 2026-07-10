@@ -50,6 +50,7 @@
                         data-video-url="{{ url_for('media', video_id=video.id) }}"
                         data-video-name="{{ video.filename }}"
                         data-video-path="{{ video.relative_path }}"
+                        data-video-duration="{{ video.duration_s or '' }}"
                         data-video-details="{% if video.width and video.height %}{{ video.width }} × {{ video.height }}{% else %}Résolution inconnue{% endif %} · {% if video.fps %}{{ video.fps }} fps{% else %}FPS inconnu{% endif %} · {% if video.duration_s %}{{ video.duration_s }} s{% else %}Durée inconnue{% endif %}"
                     >
                         <span class="video-icon">▶</span>
@@ -63,9 +64,7 @@
                                 {% else %}
                                     Résolution inconnue
                                 {% endif %}
-
                                 ·
-
                                 {% if video.fps %}
                                     {{ video.fps }} fps
                                 {% else %}
@@ -84,13 +83,10 @@
                     {% else %}
                     <div class="empty-library">
                         <div class="empty-icon">＋</div>
-
                         <h2>Aucune vidéo</h2>
-
                         <p>
                             Dépose un fichier MP4, MOV, MKV ou AVI dans :
                         </p>
-
                         <code>data/videos/</code>
                     </div>
                     {% endfor %}
@@ -119,7 +115,26 @@
                         </div>
 
                         <span>{{ run.created_label }}</span>
+
+                        {% if run.configuration and run.configuration.clip_duration_s %}
+                        <span>
+                            Segment {{ run.configuration.clip_start_s }} s
+                            → {{ run.configuration.clip_duration_s }} s
+                        </span>
+                        {% endif %}
+
                         <code>{{ run.run_id }}</code>
+
+                        {% if run.artifacts and run.artifacts.source_clip %}
+                        <a
+                            class="run-clip-link"
+                            href="{{ url_for('run_clip', run_id=run.run_id) }}"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            Lire le segment
+                        </a>
+                        {% endif %}
                     </article>
                     {% else %}
                     <div class="empty-runs">
@@ -148,8 +163,46 @@
                     type="button"
                     disabled
                 >
-                    Analyser
+                    Préparer le segment
                 </button>
+            </div>
+
+            <div class="clip-controls">
+                <label class="clip-field">
+                    <span>Début (s)</span>
+                    <input
+                        id="clip-start"
+                        type="number"
+                        min="0"
+                        step="0.1"
+                        value="0"
+                    >
+                </label>
+
+                <button
+                    id="use-current-time"
+                    class="secondary-button"
+                    type="button"
+                    disabled
+                >
+                    Prendre la position du lecteur
+                </button>
+
+                <label class="clip-field">
+                    <span>Durée (s)</span>
+                    <input
+                        id="clip-duration"
+                        type="number"
+                        min="1"
+                        max="60"
+                        step="0.5"
+                        value="15"
+                    >
+                </label>
+
+                <span class="clip-help">
+                    1 à 60 secondes. Le segment sera réencodé en MP4.
+                </span>
             </div>
 
             <div class="player-shell">
@@ -174,7 +227,7 @@
                 </span>
 
                 <span id="analysis-status">
-                    Prêt à exécuter l’analyse metadata-only
+                    Choisis le début et la durée du segment.
                 </span>
             </div>
         </section>
@@ -204,8 +257,16 @@
         const analysisStatus = document.getElementById(
             "analysis-status"
         );
+        const clipStart = document.getElementById("clip-start");
+        const clipDuration = document.getElementById(
+            "clip-duration"
+        );
+        const useCurrentTime = document.getElementById(
+            "use-current-time"
+        );
 
         let selectedVideoId = null;
+        let selectedVideoDuration = null;
 
         function selectVideo(card) {
             cards.forEach((item) => {
@@ -214,6 +275,13 @@
 
             card.classList.add("active");
             selectedVideoId = card.dataset.videoId;
+
+            const parsedDuration = Number(
+                card.dataset.videoDuration
+            );
+            selectedVideoDuration = Number.isFinite(parsedDuration)
+                ? parsedDuration
+                : null;
 
             title.textContent = card.dataset.videoName;
             details.textContent = card.dataset.videoDetails;
@@ -225,7 +293,47 @@
             player.load();
 
             analyseButton.disabled = false;
-            analysisStatus.textContent = "Prêt à exécuter l’analyse metadata-only";
+            useCurrentTime.disabled = false;
+            analysisStatus.textContent =
+                "Choisis le début et la durée du segment.";
+        }
+
+        function readClipRange() {
+            const start = Number(clipStart.value);
+            const duration = Number(clipDuration.value);
+
+            if (!Number.isFinite(start) || start < 0) {
+                throw new Error(
+                    "Le début doit être un nombre positif."
+                );
+            }
+
+            if (
+                !Number.isFinite(duration)
+                || duration < 1
+                || duration > 60
+            ) {
+                throw new Error(
+                    "La durée doit être comprise entre 1 et 60 secondes."
+                );
+            }
+
+            if (
+                selectedVideoDuration !== null
+                && start + duration > selectedVideoDuration + 0.01
+            ) {
+                const remaining = Math.max(
+                    0,
+                    selectedVideoDuration - start
+                );
+
+                throw new Error(
+                    `Le segment dépasse la vidéo : `
+                    + `${remaining.toFixed(2)} s disponibles.`
+                );
+            }
+
+            return {start, duration};
         }
 
         cards.forEach((card) => {
@@ -234,14 +342,34 @@
             });
         });
 
+        useCurrentTime.addEventListener("click", () => {
+            const current = Number(player.currentTime || 0);
+            clipStart.value = (
+                Math.round(current * 10) / 10
+            ).toFixed(1);
+            analysisStatus.textContent =
+                `Début placé à ${clipStart.value} s.`;
+        });
+
         analyseButton.addEventListener("click", async () => {
             if (!selectedVideoId) {
                 return;
             }
 
+            let clipRange;
+
+            try {
+                clipRange = readClipRange();
+            } catch (error) {
+                analysisStatus.textContent = error.message;
+                return;
+            }
+
             analyseButton.disabled = true;
-            analyseButton.textContent = "Analyse…";
-            analysisStatus.textContent = "Création du run et calcul de analysis.json…";
+            analyseButton.textContent = "Extraction…";
+            useCurrentTime.disabled = true;
+            analysisStatus.textContent =
+                "Extraction FFmpeg du segment en cours…";
 
             try {
                 const response = await fetch(
@@ -249,8 +377,13 @@
                     {
                         method: "POST",
                         headers: {
-                            "Accept": "application/json"
-                        }
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            start_s: clipRange.start,
+                            duration_s: clipRange.duration
+                        })
                     }
                 );
 
@@ -258,16 +391,19 @@
 
                 if (!response.ok) {
                     throw new Error(
-                        payload.detail || "Échec de l’analyse"
+                        payload.detail
+                        || "Échec de préparation du segment"
                     );
                 }
 
-                analysisStatus.textContent = `Analyse terminée : ${payload.run.run_id}`;
+                analysisStatus.textContent =
+                    `Segment prêt : ${payload.run.run_id}`;
                 window.location.reload();
             } catch (error) {
                 analysisStatus.textContent = error.message;
                 analyseButton.disabled = false;
-                analyseButton.textContent = "Analyser";
+                analyseButton.textContent = "Préparer le segment";
+                useCurrentTime.disabled = false;
             }
         });
 
