@@ -14,5 +14,4 @@ Ce dépôt ne contient pas encore :
 - calibration caméra
 - modèle IA lourd
 
-Le noyau conservé vient de la réussite 018H :
-CSV track v71 -> sélection segment -> overlay vidéo.
+Ce code n'est pas utilisable en l'état.
