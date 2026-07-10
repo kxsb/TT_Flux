@@ -1,0 +1,37 @@
+# Roadmap TTFlux V0
+
+## V0.0 — Socle propre
+
+- package Python installable ;
+- diagnostic de l'environnement ;
+- catalogue des vidéos ;
+- interface de lecture locale.
+
+## V0.1 — Contrat des analyses
+
+- création d'un run ;
+- configuration sauvegardée ;
+- métadonnées vidéo ;
+- état du traitement ;
+- historique des analyses.
+
+## V0.2 — Baseline balle
+
+- candidats par frame ;
+- trajectoire sélectionnée ;
+- overlay ;
+- métriques de couverture et de gaps.
+
+## V0.3 — Review humaine
+
+- navigation frame par frame ;
+- correct / wrong / missing / invisible ;
+- corrections manuelles ;
+- export d'annotations.
+
+## V0.4 — Contexte table
+
+- coins de table ;
+- homographie ;
+- vue top-down ;
+- contraintes géométriques légères.

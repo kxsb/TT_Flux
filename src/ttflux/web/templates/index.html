@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+    <title>TTFlux — Bibliothèque vidéo</title>
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', path='app.css') }}"
+    >
+</head>
+
+<body>
+    <header class="topbar">
+        <div>
+            <div class="brand">TTFlux</div>
+            <div class="subtitle">
+                Pipeline local d’analyse vidéo
+            </div>
+        </div>
+
+        <div class="topbar-status">
+            <span class="status-dot"></span>
+            Version {{ version }}
+        </div>
+    </header>
+
+    <main class="workspace">
+        <aside class="library-panel">
+            <div class="panel-header">
+                <div>
+                    <h1>Vidéos brutes</h1>
+                    <p>
+                        {{ video_count }}
+                        vidéo{% if video_count != 1 %}s{% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="video-list">
+                {% for video in videos %}
+                <button
+                    class="video-card"
+                    type="button"
+                    data-video-url="{{ url_for('media', video_id=video.id) }}"
+                    data-video-name="{{ video.filename }}"
+                    data-video-path="{{ video.relative_path }}"
+                    data-video-details="{% if video.width and video.height %}{{ video.width }} × {{ video.height }}{% else %}Résolution inconnue{% endif %} · {% if video.fps %}{{ video.fps }} fps{% else %}FPS inconnu{% endif %} · {% if video.duration_s %}{{ video.duration_s }} s{% else %}Durée inconnue{% endif %}"
+                >
+                    <span class="video-icon">▶</span>
+
+                    <span class="video-card-body">
+                        <strong>{{ video.filename }}</strong>
+
+                        <span>
+                            {% if video.width and video.height %}
+                                {{ video.width }} × {{ video.height }}
+                            {% else %}
+                                Résolution inconnue
+                            {% endif %}
+
+                            ·
+
+                            {% if video.fps %}
+                                {{ video.fps }} fps
+                            {% else %}
+                                FPS inconnu
+                            {% endif %}
+                        </span>
+
+                        <span>
+                            {{ video.size_mb }} Mo
+                            {% if video.duration_s %}
+                                · {{ video.duration_s }} s
+                            {% endif %}
+                        </span>
+                    </span>
+                </button>
+                {% else %}
+                <div class="empty-library">
+                    <div class="empty-icon">＋</div>
+
+                    <h2>Aucune vidéo</h2>
+
+                    <p>
+                        Dépose un fichier MP4, MOV, MKV ou AVI dans :
+                    </p>
+
+                    <code>data/videos/</code>
+                </div>
+                {% endfor %}
+            </div>
+        </aside>
+
+        <section class="viewer-panel">
+            <div class="viewer-header">
+                <div>
+                    <div class="eyebrow">LECTEUR</div>
+                    <h2 id="current-video-name">
+                        Sélectionne une vidéo
+                    </h2>
+                    <p id="current-video-details">
+                        La vidéo brute apparaîtra ici.
+                    </p>
+                </div>
+
+                <button
+                    class="analyse-button"
+                    type="button"
+                    disabled
+                    title="Le moteur d’analyse arrivera au prochain sprint"
+                >
+                    Analyser
+                </button>
+            </div>
+
+            <div class="player-shell">
+                <video
+                    id="video-player"
+                    controls
+                    preload="metadata"
+                ></video>
+
+                <div
+                    id="player-placeholder"
+                    class="player-placeholder"
+                >
+                    <div class="placeholder-mark">TT</div>
+                    <p>Aucune vidéo sélectionnée</p>
+                </div>
+            </div>
+
+            <div class="viewer-footer">
+                <span id="current-video-path">
+                    data/videos/
+                </span>
+
+                <span>
+                    Analyse désactivée dans V0.0
+                </span>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const cards = Array.from(
+            document.querySelectorAll(".video-card")
+        );
+
+        const player = document.getElementById("video-player");
+        const placeholder = document.getElementById(
+            "player-placeholder"
+        );
+
+        const title = document.getElementById(
+            "current-video-name"
+        );
+
+        const details = document.getElementById(
+            "current-video-details"
+        );
+
+        const path = document.getElementById(
+            "current-video-path"
+        );
+
+        function selectVideo(card) {
+            cards.forEach((item) => {
+                item.classList.remove("active");
+            });
+
+            card.classList.add("active");
+
+            title.textContent = card.dataset.videoName;
+            details.textContent = card.dataset.videoDetails;
+            path.textContent = card.dataset.videoPath;
+
+            player.src = card.dataset.videoUrl;
+            player.style.display = "block";
+            placeholder.style.display = "none";
+            player.load();
+        }
+
+        cards.forEach((card) => {
+            card.addEventListener("click", () => {
+                selectVideo(card);
+            });
+        });
+
+        if (cards.length > 0) {
+            selectVideo(cards[0]);
+        }
+    </script>
+</body>
+</html>

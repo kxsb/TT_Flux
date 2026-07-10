@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Données locales
+data/videos/*
+!data/videos/.gitkeep
+
+data/annotations/*
+!data/annotations/.gitkeep
+
+runs/*
+!runs/.gitkeep
+
+# Catalogues générés
+data/video_catalog.json
+
+# Système
+.DS_Store
+Thumbs.db
