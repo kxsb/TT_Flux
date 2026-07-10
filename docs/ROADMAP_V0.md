@@ -1,5 +1,13 @@
 # Roadmap TTFlux V0
 
+## État
+
+- [x] V0.0 — Socle propre et bibliothèque vidéo
+- [x] V0.1 — Contrat des runs metadata-only
+- [ ] V0.2 — Baseline balle 2D
+- [ ] V0.3 — Review humaine
+- [ ] V0.4 — Contexte table
+
 ## V0.0 — Socle propre
 
 - package Python installable ;

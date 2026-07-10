@@ -83,30 +83,40 @@ video {
 }
 
 .library-panel {
+    max-height: calc(100vh - 72px);
+    overflow-y: auto;
     border-right: 1px solid #242a34;
     background: rgba(13, 17, 23, 0.82);
 }
 
-.panel-header {
-    min-height: 92px;
+.sidebar-section + .sidebar-section {
+    border-top: 1px solid #242a34;
+}
+
+.panel-header,
+.section-header {
+    min-height: 86px;
     display: flex;
     align-items: center;
-    padding: 22px;
+    padding: 20px 22px;
     border-bottom: 1px solid #242a34;
 }
 
-.panel-header h1 {
+.panel-header h1,
+.section-header h2 {
     margin: 0;
     font-size: 16px;
 }
 
-.panel-header p {
+.panel-header p,
+.section-header p {
     margin: 5px 0 0;
     color: #737e8e;
     font-size: 12px;
 }
 
-.video-list {
+.video-list,
+.run-list {
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -209,6 +219,58 @@ video {
     font-size: 22px;
 }
 
+.run-card {
+    padding: 12px;
+    border: 1px solid #252e39;
+    border-radius: 10px;
+    background: #11161d;
+}
+
+.run-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.run-card strong {
+    min-width: 0;
+    overflow: hidden;
+    color: #dce4ee;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.run-card > span,
+.run-card code {
+    display: block;
+    margin-top: 6px;
+    overflow: hidden;
+    color: #707c8c;
+    font-size: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.run-status {
+    flex: 0 0 auto;
+    padding: 3px 6px;
+    border: 1px solid #365844;
+    border-radius: 999px;
+    color: #83cea1;
+    background: rgba(62, 122, 84, 0.12);
+    font-size: 9px;
+    text-transform: uppercase;
+}
+
+.empty-runs {
+    padding: 20px 10px;
+    color: #697585;
+    font-size: 11px;
+    text-align: center;
+}
+
 .viewer-panel {
     min-width: 0;
     display: flex;
@@ -247,9 +309,24 @@ video {
 .analyse-button {
     min-width: 108px;
     padding: 10px 16px;
-    color: #67717e;
-    border: 1px solid #2b313b;
+    color: #dce8f7;
+    border: 1px solid #496785;
     border-radius: 9px;
+    background: #20354d;
+    cursor: pointer;
+    transition:
+        background 120ms ease,
+        border-color 120ms ease;
+}
+
+.analyse-button:hover:not(:disabled) {
+    border-color: #6387ad;
+    background: #294461;
+}
+
+.analyse-button:disabled {
+    color: #67717e;
+    border-color: #2b313b;
     background: #171b22;
     cursor: not-allowed;
 }
@@ -316,12 +393,17 @@ video {
     font-size: 11px;
 }
 
+#analysis-status {
+    text-align: right;
+}
+
 @media (max-width: 900px) {
     .workspace {
         grid-template-columns: 1fr;
     }
 
     .library-panel {
+        max-height: none;
         border-right: 0;
         border-bottom: 1px solid #242a34;
     }

@@ -3,12 +3,13 @@ from __future__ import annotations
 import mimetypes
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from ttflux import __version__
+from ttflux.analysis.runs import UnknownVideoError, create_run, list_runs
 from ttflux.video.catalog import find_video, scan_videos
 
 
@@ -33,6 +34,7 @@ templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
     videos = scan_videos()
+    runs = list_runs()
 
     return templates.TemplateResponse(
         request=request,
@@ -40,6 +42,8 @@ def home(request: Request):
         context={
             "videos": videos,
             "video_count": len(videos),
+            "runs": runs,
+            "run_count": len(runs),
             "version": __version__,
         },
     )
@@ -55,6 +59,29 @@ def api_videos():
     }
 
 
+@app.get("/api/runs")
+def api_runs():
+    runs = list_runs()
+
+    return {
+        "run_count": len(runs),
+        "runs": runs,
+    }
+
+
+@app.post("/api/runs/{video_id}", status_code=status.HTTP_201_CREATED)
+def api_create_run(video_id: str):
+    try:
+        run = create_run(video_id)
+    except UnknownVideoError as exc:
+        raise HTTPException(
+            status_code=404,
+            detail="Vidéo introuvable",
+        ) from exc
+
+    return {"run": run}
+
+
 @app.get("/media/{video_id}", name="media")
 def media(video_id: str):
     video = find_video(video_id)
@@ -62,7 +89,7 @@ def media(video_id: str):
     if video is None:
         raise HTTPException(
             status_code=404,
-            detail="VidÃ©o introuvable",
+            detail="Vidéo introuvable",
         )
 
     path = Path(video["absolute_path"])
@@ -70,7 +97,7 @@ def media(video_id: str):
     if not path.is_file():
         raise HTTPException(
             status_code=404,
-            detail="Fichier vidÃ©o absent",
+            detail="Fichier vidéo absent",
         )
 
     media_type = (

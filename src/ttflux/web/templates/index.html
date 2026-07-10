@@ -30,69 +30,104 @@
 
     <main class="workspace">
         <aside class="library-panel">
-            <div class="panel-header">
-                <div>
-                    <h1>Vidéos brutes</h1>
-                    <p>
-                        {{ video_count }}
-                        vidéo{% if video_count != 1 %}s{% endif %}
-                    </p>
+            <section class="sidebar-section">
+                <div class="panel-header">
+                    <div>
+                        <h1>Vidéos brutes</h1>
+                        <p>
+                            {{ video_count }}
+                            vidéo{% if video_count != 1 %}s{% endif %}
+                        </p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="video-list">
-                {% for video in videos %}
-                <button
-                    class="video-card"
-                    type="button"
-                    data-video-url="{{ url_for('media', video_id=video.id) }}"
-                    data-video-name="{{ video.filename }}"
-                    data-video-path="{{ video.relative_path }}"
-                    data-video-details="{% if video.width and video.height %}{{ video.width }} × {{ video.height }}{% else %}Résolution inconnue{% endif %} · {% if video.fps %}{{ video.fps }} fps{% else %}FPS inconnu{% endif %} · {% if video.duration_s %}{{ video.duration_s }} s{% else %}Durée inconnue{% endif %}"
-                >
-                    <span class="video-icon">▶</span>
+                <div class="video-list">
+                    {% for video in videos %}
+                    <button
+                        class="video-card"
+                        type="button"
+                        data-video-id="{{ video.id }}"
+                        data-video-url="{{ url_for('media', video_id=video.id) }}"
+                        data-video-name="{{ video.filename }}"
+                        data-video-path="{{ video.relative_path }}"
+                        data-video-details="{% if video.width and video.height %}{{ video.width }} × {{ video.height }}{% else %}Résolution inconnue{% endif %} · {% if video.fps %}{{ video.fps }} fps{% else %}FPS inconnu{% endif %} · {% if video.duration_s %}{{ video.duration_s }} s{% else %}Durée inconnue{% endif %}"
+                    >
+                        <span class="video-icon">▶</span>
 
-                    <span class="video-card-body">
-                        <strong>{{ video.filename }}</strong>
+                        <span class="video-card-body">
+                            <strong>{{ video.filename }}</strong>
 
-                        <span>
-                            {% if video.width and video.height %}
-                                {{ video.width }} × {{ video.height }}
-                            {% else %}
-                                Résolution inconnue
-                            {% endif %}
+                            <span>
+                                {% if video.width and video.height %}
+                                    {{ video.width }} × {{ video.height }}
+                                {% else %}
+                                    Résolution inconnue
+                                {% endif %}
 
-                            ·
+                                ·
 
-                            {% if video.fps %}
-                                {{ video.fps }} fps
-                            {% else %}
-                                FPS inconnu
-                            {% endif %}
+                                {% if video.fps %}
+                                    {{ video.fps }} fps
+                                {% else %}
+                                    FPS inconnu
+                                {% endif %}
+                            </span>
+
+                            <span>
+                                {{ video.size_mb }} Mo
+                                {% if video.duration_s %}
+                                    · {{ video.duration_s }} s
+                                {% endif %}
+                            </span>
                         </span>
+                    </button>
+                    {% else %}
+                    <div class="empty-library">
+                        <div class="empty-icon">＋</div>
 
-                        <span>
-                            {{ video.size_mb }} Mo
-                            {% if video.duration_s %}
-                                · {{ video.duration_s }} s
-                            {% endif %}
-                        </span>
-                    </span>
-                </button>
-                {% else %}
-                <div class="empty-library">
-                    <div class="empty-icon">＋</div>
+                        <h2>Aucune vidéo</h2>
 
-                    <h2>Aucune vidéo</h2>
+                        <p>
+                            Dépose un fichier MP4, MOV, MKV ou AVI dans :
+                        </p>
 
-                    <p>
-                        Dépose un fichier MP4, MOV, MKV ou AVI dans :
-                    </p>
-
-                    <code>data/videos/</code>
+                        <code>data/videos/</code>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-            </div>
+            </section>
+
+            <section class="sidebar-section runs-section">
+                <div class="section-header">
+                    <div>
+                        <h2>Analyses</h2>
+                        <p>
+                            {{ run_count }}
+                            run{% if run_count != 1 %}s{% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="run-list">
+                    {% for run in runs %}
+                    <article class="run-card">
+                        <div class="run-card-header">
+                            <strong>{{ run.video_filename }}</strong>
+                            <span class="run-status run-status-{{ run.status }}">
+                                {{ run.status }}
+                            </span>
+                        </div>
+
+                        <span>{{ run.created_label }}</span>
+                        <code>{{ run.run_id }}</code>
+                    </article>
+                    {% else %}
+                    <div class="empty-runs">
+                        Aucune analyse enregistrée.
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
         </aside>
 
         <section class="viewer-panel">
@@ -108,10 +143,10 @@
                 </div>
 
                 <button
+                    id="analyse-button"
                     class="analyse-button"
                     type="button"
                     disabled
-                    title="Le moteur d’analyse arrivera au prochain sprint"
                 >
                     Analyser
                 </button>
@@ -138,8 +173,8 @@
                     data/videos/
                 </span>
 
-                <span>
-                    Analyse désactivée dans V0.0
+                <span id="analysis-status">
+                    Prêt à créer un run metadata-only
                 </span>
             </div>
         </section>
@@ -154,18 +189,23 @@
         const placeholder = document.getElementById(
             "player-placeholder"
         );
-
         const title = document.getElementById(
             "current-video-name"
         );
-
         const details = document.getElementById(
             "current-video-details"
         );
-
         const path = document.getElementById(
             "current-video-path"
         );
+        const analyseButton = document.getElementById(
+            "analyse-button"
+        );
+        const analysisStatus = document.getElementById(
+            "analysis-status"
+        );
+
+        let selectedVideoId = null;
 
         function selectVideo(card) {
             cards.forEach((item) => {
@@ -173,6 +213,7 @@
             });
 
             card.classList.add("active");
+            selectedVideoId = card.dataset.videoId;
 
             title.textContent = card.dataset.videoName;
             details.textContent = card.dataset.videoDetails;
@@ -182,12 +223,52 @@
             player.style.display = "block";
             placeholder.style.display = "none";
             player.load();
+
+            analyseButton.disabled = false;
+            analysisStatus.textContent = "Prêt à créer un run metadata-only";
         }
 
         cards.forEach((card) => {
             card.addEventListener("click", () => {
                 selectVideo(card);
             });
+        });
+
+        analyseButton.addEventListener("click", async () => {
+            if (!selectedVideoId) {
+                return;
+            }
+
+            analyseButton.disabled = true;
+            analyseButton.textContent = "Création…";
+            analysisStatus.textContent = "Écriture de run.json et video.json…";
+
+            try {
+                const response = await fetch(
+                    `/api/runs/${encodeURIComponent(selectedVideoId)}`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    }
+                );
+
+                const payload = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(
+                        payload.detail || "Échec de création du run"
+                    );
+                }
+
+                analysisStatus.textContent = `Run créé : ${payload.run.run_id}`;
+                window.location.reload();
+            } catch (error) {
+                analysisStatus.textContent = error.message;
+                analyseButton.disabled = false;
+                analyseButton.textContent = "Analyser";
+            }
         });
 
         if (cards.length > 0) {

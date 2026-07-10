@@ -3,18 +3,21 @@
 TTFlux est un pipeline local, reproductible et mesurable d'analyse
 vidéo de tennis de table.
 
-## V0.0
+## État actuel — V0.1
 
 Fonctionnalités présentes :
 
 - structure de projet propre ;
 - diagnostic local ;
-- catalogue vidéo ;
-- lecture des vidéos brutes dans une interface locale ;
+- catalogue et lecture des vidéos brutes ;
+- création reproductible de runs d'analyse ;
+- contrats `run.json` et `video.json` ;
+- historique local des analyses ;
 - API minimale ;
 - tests automatiques.
 
-Le tracking de balle n'est pas encore intégré.
+Le tracking de balle n'est pas encore intégré. Le pipeline courant est
+`metadata_only`.
 
 ## Commandes
 
@@ -38,4 +41,12 @@ Lancer l'interface :
 
     .\.venv\Scripts\python.exe -m ttflux serve
 
+Adresse : http://127.0.0.1:8787
 
+## Contrat d'un run V0.1
+
+    runs/<run_id>/
+    ├── run.json
+    └── video.json
+
+Les contenus de `runs/` restent locaux et sont exclus de Git.
