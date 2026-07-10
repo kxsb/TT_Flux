@@ -8,6 +8,39 @@ import pytest
 import ttflux.analysis.runs as run_store
 
 
+@pytest.fixture(autouse=True)
+def stub_candidate_analysis(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def fake_analyze(
+        video_path: Path,
+        csv_path: Path,
+        metrics_path: Path,
+        overlay_path: Path,
+        config=None,
+    ) -> dict[str, object]:
+        summary = {
+            "analyzed_frames": 498,
+            "frames_with_candidates": 400,
+            "coverage_ratio": 0.803213,
+            "total_candidates": 1200,
+            "mean_candidates_per_frame": 2.41,
+            "median_candidates_per_frame": 2.0,
+            "max_candidates_per_frame": 8,
+            "mean_candidate_score": 0.5,
+            "max_candidate_score": 0.9,
+        }
+        csv_path.write_text("candidate_id,frame\n", encoding="utf-8")
+        metrics_path.write_text(
+            json.dumps({"summary": summary}),
+            encoding="utf-8",
+        )
+        overlay_path.write_bytes(b"overlay")
+        return {"summary": summary}
+
+    monkeypatch.setattr(run_store, "analyze_candidates", fake_analyze)
+
+
 def sample_video() -> dict[str, object]:
     return {
         "id": "video-123",
@@ -90,7 +123,7 @@ def test_create_run_writes_clip_configuration(
 
     assert saved_run["status"] == "created"
     assert saved_run["pipeline"] == {
-        "name": "clip_extract",
+        "name": "motion_candidates",
         "version": 1,
     }
     assert saved_run["configuration"]["clip_start_s"] == 12.5
@@ -171,6 +204,14 @@ def test_execute_run_extracts_clip_and_completes(
     assert clip["frame_count"] == 500
     assert analysis["schema_version"] == 2
     assert analysis["clip"]["actual_duration_s"] == 10.0
+    assert analysis["candidates"]["total_candidates"] == 1200
+    assert saved_run["metrics"]["coverage_ratio"] == 0.803213
+    assert saved_run["artifacts"]["candidates"] == "candidates.csv"
+    assert saved_run["artifacts"]["candidate_overlay"] == (
+        "overlay_candidates.mp4"
+    )
+    assert (run_dir / "candidates_metrics.json").is_file()
+    assert (run_dir / "overlay_candidates.mp4").is_file()
 
 
 def test_running_state_is_persisted_before_extraction(

@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
+from ttflux.analysis.candidates import analyze_candidates
 from ttflux.core.paths import RUNS_DIR, ensure_project_layout
 from ttflux.video.catalog import find_video, probe_video
 
@@ -208,12 +209,13 @@ def create_run(
         "created_at": created_at.isoformat(timespec="seconds"),
         "status": "created",
         "pipeline": {
-            "name": "clip_extract",
+            "name": "motion_candidates",
             "version": 1,
         },
         "configuration": {
             "clip_start_s": start_s,
             "clip_duration_s": duration_s,
+            "candidate_detection_enabled": True,
             "ball_tracking_enabled": False,
             "table_context_enabled": False,
             "pose_enabled": False,
@@ -324,6 +326,7 @@ def _build_analysis(
     run_payload: dict[str, Any],
     video_payload: dict[str, Any],
     clip_payload: dict[str, Any],
+    candidate_metrics: dict[str, Any],
     generated_at: datetime,
 ) -> dict[str, Any]:
     return {
@@ -354,6 +357,7 @@ def _build_analysis(
                 "height": clip_payload.get("height"),
             },
         },
+        "candidates": candidate_metrics["summary"],
     }
 
 
@@ -395,6 +399,9 @@ def execute_run(run_id: str) -> dict[str, Any]:
 
     clip_path = run_dir / "source_clip.mp4"
     clip_json_path = run_dir / "clip.json"
+    candidates_path = run_dir / "candidates.csv"
+    candidate_metrics_path = run_dir / "candidates_metrics.json"
+    candidate_overlay_path = run_dir / "overlay_candidates.mp4"
     analysis_path = run_dir / "analysis.json"
 
     try:
@@ -412,11 +419,19 @@ def execute_run(run_id: str) -> dict[str, Any]:
         )
         _write_json_atomic(clip_json_path, clip_payload)
 
+        candidate_metrics = analyze_candidates(
+            clip_path,
+            candidates_path,
+            candidate_metrics_path,
+            candidate_overlay_path,
+        )
+
         generated_at = datetime.now().astimezone()
         analysis_payload = _build_analysis(
             run_payload,
             video_payload,
             clip_payload,
+            candidate_metrics,
             generated_at,
         )
         _write_json_atomic(analysis_path, analysis_payload)
@@ -428,9 +443,13 @@ def execute_run(run_id: str) -> dict[str, Any]:
             {
                 "source_clip": "source_clip.mp4",
                 "clip": "clip.json",
+                "candidates": "candidates.csv",
+                "candidate_metrics": "candidates_metrics.json",
+                "candidate_overlay": "overlay_candidates.mp4",
                 "analysis": "analysis.json",
             }
         )
+        run_payload["metrics"] = candidate_metrics["summary"]
         _write_json_atomic(run_path, run_payload)
     except Exception as exc:
         failed_at = datetime.now().astimezone()
@@ -483,6 +502,30 @@ def get_run_clip_path(run_id: str) -> Path:
         )
 
     return clip_path
+
+
+def get_run_overlay_path(run_id: str) -> Path:
+    """Retourne l’overlay des candidats d’un run terminé."""
+
+    run_dir = _resolve_run_dir(run_id)
+    run_payload = _read_json_object(run_dir / "run.json")
+    artifact_name = (
+        run_payload.get("artifacts", {}).get("candidate_overlay")
+    )
+
+    if artifact_name != "overlay_candidates.mp4":
+        raise FileNotFoundError(
+            f"Aucun overlay candidat disponible pour le run {run_id}."
+        )
+
+    overlay_path = run_dir / artifact_name
+
+    if not overlay_path.is_file():
+        raise FileNotFoundError(
+            f"Overlay candidat absent pour le run {run_id}."
+        )
+
+    return overlay_path
 
 
 def _created_label(value: Any) -> str:

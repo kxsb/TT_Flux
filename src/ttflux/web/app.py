@@ -16,6 +16,7 @@ from ttflux.analysis.runs import (
     UnknownVideoError,
     create_and_execute_clip_run,
     get_run_clip_path,
+    get_run_overlay_path,
     list_runs,
 )
 from ttflux.video.catalog import find_video, scan_videos
@@ -103,7 +104,7 @@ def api_create_run(video_id: str, request: ClipRunRequest):
     except Exception as exc:
         raise HTTPException(
             status_code=500,
-            detail=f"Échec de la préparation du segment : {exc}",
+            detail=f"Échec de l’analyse du segment : {exc}",
         ) from exc
 
     return {"run": run}
@@ -113,6 +114,27 @@ def api_create_run(video_id: str, request: ClipRunRequest):
 def run_clip(run_id: str):
     try:
         path = get_run_clip_path(run_id)
+    except (UnknownRunError, FileNotFoundError) as exc:
+        raise HTTPException(
+            status_code=404,
+            detail=str(exc),
+        ) from exc
+
+    return FileResponse(
+        path=str(path),
+        media_type="video/mp4",
+        filename=path.name,
+        headers={
+            "Accept-Ranges": "bytes",
+            "Cache-Control": "no-store",
+        },
+    )
+
+
+@app.get("/runs/{run_id}/overlay", name="run_overlay")
+def run_overlay(run_id: str):
+    try:
+        path = get_run_overlay_path(run_id)
     except (UnknownRunError, FileNotFoundError) as exc:
         raise HTTPException(
             status_code=404,

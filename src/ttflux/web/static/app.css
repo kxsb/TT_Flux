@@ -517,3 +517,21 @@ video {
         padding-bottom: 0;
     }
 }
+
+.run-metrics {
+    display: block;
+    margin-top: 7px;
+    color: #9aa9ba;
+    font-size: 10px;
+}
+
+.run-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 9px;
+}
+
+.run-links .run-clip-link {
+    margin-top: 0;
+}

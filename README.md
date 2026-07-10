@@ -3,7 +3,7 @@
 TTFlux est un pipeline local, reproductible et mesurable d'analyse
 vidéo de tennis de table.
 
-## État actuel — V0.1.2
+## État actuel — V0.1.3
 
 Fonctionnalités présentes :
 
@@ -14,13 +14,14 @@ Fonctionnalités présentes :
 - cycle d'exécution `created → running → completed / failed` ;
 - choix d'un début et d'une durée depuis l'interface ;
 - extraction FFmpeg d'un segment MP4 borné ;
-- contrats `run.json`, `video.json`, `clip.json` et `analysis.json` ;
-- lecture du segment extrait depuis l'historique ;
+- génération d'un réservoir brut de petits objets mobiles ;
+- export `candidates.csv`, métriques et overlay diagnostic ;
+- lecture du segment et de l'overlay depuis l'historique ;
 - tests automatiques.
 
-Le tracking de balle n'est pas encore intégré. Le pipeline courant est
-`clip_extract`. Il prépare un segment court et reproductible qui servira
-d'entrée à la première baseline balle 2D.
+Le pipeline courant est `motion_candidates`. Il ne choisit pas encore une
+trajectoire de balle. Son rôle est de vérifier que la balle apparaît bien
+dans le réservoir de candidats avant d'ajouter du relinking.
 
 ## Commandes
 
@@ -46,16 +47,20 @@ Lancer l'interface :
 
 Adresse : http://127.0.0.1:8787
 
-## Contrat d'un run V0.1.2
+## Contrat d'un run V0.1.3
 
     runs/<run_id>/
     ├── run.json
     ├── video.json
     ├── source_clip.mp4
     ├── clip.json
+    ├── candidates.csv
+    ├── candidates_metrics.json
+    ├── overlay_candidates.mp4
     └── analysis.json
 
-Le segment est réencodé en H.264, sans audio, avec une durée comprise
-entre 1 et 60 secondes.
+Le détecteur utilise une différence temporelle symétrique sur trois
+images, puis conserve de petits composants mobiles. Les résultats restent
+des candidats bruts, pas une trajectoire validée.
 
 Les contenus de `runs/` restent locaux et sont exclus de Git.

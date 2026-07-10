@@ -123,18 +123,38 @@
                         </span>
                         {% endif %}
 
+                        {% if run.metrics %}
+                        <span class="run-metrics">
+                            {{ run.metrics.total_candidates }} candidats ·
+                            {{ (run.metrics.coverage_ratio * 100) | round(1) }} % des frames
+                        </span>
+                        {% endif %}
+
                         <code>{{ run.run_id }}</code>
 
-                        {% if run.artifacts and run.artifacts.source_clip %}
-                        <a
-                            class="run-clip-link"
-                            href="{{ url_for('run_clip', run_id=run.run_id) }}"
-                            target="_blank"
-                            rel="noopener"
-                        >
-                            Lire le segment
-                        </a>
-                        {% endif %}
+                        <div class="run-links">
+                            {% if run.artifacts and run.artifacts.source_clip %}
+                            <a
+                                class="run-clip-link"
+                                href="{{ url_for('run_clip', run_id=run.run_id) }}"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                Segment brut
+                            </a>
+                            {% endif %}
+
+                            {% if run.artifacts and run.artifacts.candidate_overlay %}
+                            <a
+                                class="run-clip-link"
+                                href="{{ url_for('run_overlay', run_id=run.run_id) }}"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                Voir les candidats
+                            </a>
+                            {% endif %}
+                        </div>
                     </article>
                     {% else %}
                     <div class="empty-runs">
@@ -163,7 +183,7 @@
                     type="button"
                     disabled
                 >
-                    Préparer le segment
+                    Analyser le segment
                 </button>
             </div>
 
@@ -201,7 +221,7 @@
                 </label>
 
                 <span class="clip-help">
-                    1 à 60 secondes. Le segment sera réencodé en MP4.
+                    1 à 60 secondes. Extraction puis détection des petits objets mobiles.
                 </span>
             </div>
 
@@ -366,10 +386,10 @@
             }
 
             analyseButton.disabled = true;
-            analyseButton.textContent = "Extraction…";
+            analyseButton.textContent = "Analyse…";
             useCurrentTime.disabled = true;
             analysisStatus.textContent =
-                "Extraction FFmpeg du segment en cours…";
+                "Extraction puis détection des candidats en cours…";
 
             try {
                 const response = await fetch(
@@ -392,17 +412,17 @@
                 if (!response.ok) {
                     throw new Error(
                         payload.detail
-                        || "Échec de préparation du segment"
+                        || "Échec de l’analyse du segment"
                     );
                 }
 
                 analysisStatus.textContent =
-                    `Segment prêt : ${payload.run.run_id}`;
+                    `Analyse terminée : ${payload.run.run_id}`;
                 window.location.reload();
             } catch (error) {
                 analysisStatus.textContent = error.message;
                 analyseButton.disabled = false;
-                analyseButton.textContent = "Préparer le segment";
+                analyseButton.textContent = "Analyser le segment";
                 useCurrentTime.disabled = false;
             }
         });

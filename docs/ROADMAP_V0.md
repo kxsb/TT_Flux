@@ -6,6 +6,7 @@
 - [x] V0.1 — Contrat des runs metadata-only
 - [x] V0.1.1 — Exécution et cycle d'état metadata-only
 - [x] V0.1.2 — Extraction reproductible d'un segment
+- [x] V0.1.3 — Réservoir brut de candidats balle
 - [ ] V0.2 — Baseline balle 2D
 - [ ] V0.3 — Review humaine
 - [ ] V0.4 — Contexte table
@@ -40,11 +41,20 @@
 - production de `source_clip.mp4` et `clip.json` ;
 - lecture du segment depuis l'historique.
 
+## V0.1.3 — Réservoir de candidats
+
+- différence temporelle symétrique sur trois images ;
+- filtrage de petits composants mobiles ;
+- classement local par score ;
+- `candidates.csv` ;
+- `candidates_metrics.json` ;
+- `overlay_candidates.mp4`.
+
 ## V0.2 — Baseline balle
 
-- candidats par frame ;
-- trajectoire sélectionnée ;
-- overlay ;
+- sélection d'une trajectoire parmi les candidats ;
+- contraintes temporelles légères ;
+- overlay de trajectoire ;
 - métriques de couverture et de gaps.
 
 ## V0.3 — Review humaine
