@@ -211,3 +211,22 @@ Créer 003D-I8 :
 - ne pas travailler sur la table, les joueurs, le score ou la 3D ;
 - ne pas réentraîner TTNet avant l’audit I8 ;
 - conserver `test_1` à `test_7` comme benchmark figé.
+
+## Erratum 003D-I10
+
+Les mauvais résultats TTNet rapportés dans 003D-I7 provenaient d'une
+convention temporelle incorrecte dans le benchmark.
+
+TTNet prédit la position de balle de la dernière image de la séquence de neuf
+images, et non celle de l'image centrale.
+
+Après correction :
+
+- sortie raffinée valide : 0.982 ;
+- rappel à 5 px : 0.918 ;
+- rappel à 10 px : 0.971 ;
+- rappel à 20 px : 0.975 ;
+- erreur médiane : 2.00 px.
+
+La conclusion négative concernant `ttnet_120fps` dans I7 est donc annulée.
+Voir `003D-I10_ttnet_last_frame_target.md`.
