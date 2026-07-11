@@ -1,6 +1,6 @@
-﻿# 003D-I10 — Correction de la cible temporelle TTNet
+# 003D-I10 — Correction de la cible temporelle TTNet
 
-Date : 2026-07-11  
+Date : 2026-07-11
 Statut : `VALIDATED`
 
 ## Objet
