@@ -43,6 +43,41 @@ def read_csv(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
+def validate_label_rows(
+    expected_run_id: str,
+    rows: list[dict[str, str]],
+) -> None:
+    if not rows:
+        raise ValueError(
+            "Le fichier d'?tiquettes est vide."
+        )
+
+    required = {
+        "run_id",
+        "track_id",
+        "label",
+    }
+    missing = required.difference(rows[0])
+
+    if missing:
+        raise ValueError(
+            "Colonnes d'?tiquettes absentes : "
+            + ", ".join(sorted(missing))
+        )
+
+    run_ids = {
+        str(row.get("run_id") or "").strip()
+        for row in rows
+    }
+
+    if run_ids != {expected_run_id}:
+        found = ", ".join(sorted(run_ids)) or "<vide>"
+        raise ValueError(
+            "Le fichier d'?tiquettes appartient ? un autre run "
+            f"(attendu={expected_run_id}, trouv?={found})."
+        )
+
+
 def number(value: Any) -> float:
     try:
         result = float(value)
@@ -282,6 +317,10 @@ def audit(run_dir: Path, labels_path: Path) -> dict[str, Any]:
     candidate_rows = read_csv(run_dir / "candidates.csv")
     track_rows = read_csv(run_dir / "tracks_probe.csv")
     label_rows = read_csv(labels_path)
+    validate_label_rows(
+        run_dir.name,
+        label_rows,
+    )
 
     candidates = {
         row["candidate_id"]: row

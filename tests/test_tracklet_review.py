@@ -55,7 +55,9 @@ def test_review_manifest_and_html(tmp_path: Path) -> None:
     page = render_html(rows, "run_demo")
     assert "clips/T001.mp4" in page
     assert 'data-label="ball"' in page
-    assert "tracklet_labels.csv" in page
+    assert 'const runId="run_demo"' in page
+    assert '["run_id","track_id","label","notes"]' in page
+    assert "tracklet_labels_${runId}.csv" in page
 
 
 def test_transcode_review_clip_uses_h264(

@@ -349,6 +349,7 @@ erreur {row['mean_prediction_error_px']:.2f}px</span></header>
 
     cards_html = "\n".join(cards)
     safe_run_id = html.escape(run_id)
+    js_run_id = json.dumps(run_id, ensure_ascii=False)
 
     return f"""<!doctype html>
 <html lang="fr">
@@ -378,6 +379,7 @@ margin-top:7px;padding:7px;box-sizing:border-box}} #export{{padding:9px 12px}}
 </header>
 <main>{cards_html}</main>
 <script>
+const runId={js_run_id};
 const key="ttflux-review:{safe_run_id}";
 const state=JSON.parse(localStorage.getItem(key)||"{{}}");
 const save=()=>{{localStorage.setItem(key,JSON.stringify(state));progress()}};
@@ -395,13 +397,14 @@ document.querySelectorAll("article").forEach(card=>{{
  text.oninput=()=>{{state[id]={{label:(state[id]||{{}}).label||"",notes:text.value}};save();}};
 }});
 document.querySelector("#export").onclick=()=>{{
- const lines=[["track_id","label","notes"]];
+ const lines=[["run_id","track_id","label","notes"]];
  document.querySelectorAll("article").forEach(card=>{{const x=state[card.dataset.id]||{{label:"",notes:""}};
- lines.push([card.dataset.id,x.label,x.notes]);}});
+ lines.push([runId,card.dataset.id,x.label,x.notes]);}});
  const q=x=>`"${{String(x??"").replaceAll('"','""')}}"`;
  const blob=new Blob([lines.map(r=>r.map(q).join(",")).join("\\r\\n")],
  {{type:"text/csv;charset=utf-8"}});const a=document.createElement("a");
- a.href=URL.createObjectURL(blob);a.download="tracklet_labels.csv";a.click();
+ a.href=URL.createObjectURL(blob);
+ a.download=`tracklet_labels_${{runId}}.csv`;a.click();
  URL.revokeObjectURL(a.href);
 }};
 progress();
