@@ -12,11 +12,14 @@ from pydantic import BaseModel, Field
 from ttflux import __version__
 from ttflux.analysis.runs import (
     InvalidClipRangeError,
+    InvalidRunStateError,
     UnknownRunError,
     UnknownVideoError,
     create_and_execute_clip_run,
+    delete_run,
     get_run_clip_path,
     get_run_overlay_path,
+    get_run_tracks_overlay_path,
     list_runs,
 )
 from ttflux.video.catalog import find_video, scan_videos
@@ -110,6 +113,30 @@ def api_create_run(video_id: str, request: ClipRunRequest):
     return {"run": run}
 
 
+
+@app.delete("/api/runs/{run_id}")
+def api_delete_run(run_id: str):
+    try:
+        deleted = delete_run(run_id)
+    except UnknownRunError as exc:
+        raise HTTPException(
+            status_code=404,
+            detail="Run introuvable",
+        ) from exc
+    except InvalidRunStateError as exc:
+        raise HTTPException(
+            status_code=409,
+            detail=str(exc),
+        ) from exc
+    except OSError as exc:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Suppression du run impossible : {exc}",
+        ) from exc
+
+    return {"deleted": deleted}
+
+
 @app.get("/runs/{run_id}/clip", name="run_clip")
 def run_clip(run_id: str):
     try:
@@ -123,7 +150,6 @@ def run_clip(run_id: str):
     return FileResponse(
         path=str(path),
         media_type="video/mp4",
-        filename=path.name,
         headers={
             "Accept-Ranges": "bytes",
             "Cache-Control": "no-store",
@@ -144,7 +170,26 @@ def run_overlay(run_id: str):
     return FileResponse(
         path=str(path),
         media_type="video/mp4",
-        filename=path.name,
+        headers={
+            "Accept-Ranges": "bytes",
+            "Cache-Control": "no-store",
+        },
+    )
+
+
+@app.get("/runs/{run_id}/tracks", name="run_tracks_overlay")
+def run_tracks_overlay(run_id: str):
+    try:
+        path = get_run_tracks_overlay_path(run_id)
+    except (UnknownRunError, FileNotFoundError) as exc:
+        raise HTTPException(
+            status_code=404,
+            detail=str(exc),
+        ) from exc
+
+    return FileResponse(
+        path=str(path),
+        media_type="video/mp4",
         headers={
             "Accept-Ranges": "bytes",
             "Cache-Control": "no-store",

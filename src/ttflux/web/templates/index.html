@@ -130,6 +130,14 @@
                         </span>
                         {% endif %}
 
+                        {% if run.track_metrics %}
+                        <span class="run-metrics">
+                            {{ run.track_metrics.selected_tracks }} pistes ·
+                            meilleure longueur :
+                            {{ run.track_metrics.longest_track_points }} points
+                        </span>
+                        {% endif %}
+
                         <code>{{ run.run_id }}</code>
 
                         <div class="run-links">
@@ -137,10 +145,8 @@
                             <a
                                 class="run-clip-link"
                                 href="{{ url_for('run_clip', run_id=run.run_id) }}"
-                                target="_blank"
-                                rel="noopener"
                             >
-                                Segment brut
+                                Lire le segment
                             </a>
                             {% endif %}
 
@@ -148,10 +154,17 @@
                             <a
                                 class="run-clip-link"
                                 href="{{ url_for('run_overlay', run_id=run.run_id) }}"
-                                target="_blank"
-                                rel="noopener"
                             >
-                                Voir les candidats
+                                Lire les candidats
+                            </a>
+                            {% endif %}
+
+                            {% if run.artifacts and run.artifacts.track_overlay %}
+                            <a
+                                class="run-clip-link"
+                                href="{{ url_for('run_tracks_overlay', run_id=run.run_id) }}"
+                            >
+                                Lire les pistes
                             </a>
                             {% endif %}
                         </div>
@@ -285,8 +298,52 @@
             "use-current-time"
         );
 
+        const runVideoLinks = Array.from(
+            document.querySelectorAll(".run-links a")
+        );
+
         let selectedVideoId = null;
         let selectedVideoDuration = null;
+
+        function playRunArtifact(event, link) {
+            event.preventDefault();
+
+            const card = link.closest(".run-card");
+            const sourceName = card
+                ?.querySelector(".run-card-header strong")
+                ?.textContent
+                ?.trim() || "Run TTFlux";
+
+            selectedVideoId = null;
+            selectedVideoDuration = null;
+
+            cards.forEach((item) => {
+                item.classList.remove("active");
+            });
+
+            player.src = link.href;
+            player.style.display = "block";
+            placeholder.style.display = "none";
+            player.load();
+
+            title.textContent =
+                `${link.textContent.trim()} — ${sourceName}`;
+            details.textContent =
+                "Artefact du run chargé dans le lecteur principal.";
+            path.textContent = new URL(link.href).pathname;
+
+            analyseButton.disabled = true;
+            useCurrentTime.disabled = true;
+            analysisStatus.textContent =
+                "Lecture d’un artefact d’analyse.";
+
+            player.play().catch(() => {});
+
+            document.querySelector(".viewer-panel").scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
 
         function selectVideo(card) {
             cards.forEach((item) => {
@@ -355,6 +412,12 @@
 
             return {start, duration};
         }
+
+        runVideoLinks.forEach((link) => {
+            link.addEventListener("click", (event) => {
+                playRunArtifact(event, link);
+            });
+        });
 
         cards.forEach((card) => {
             card.addEventListener("click", () => {
@@ -431,5 +494,1091 @@
             selectVideo(cards[0]);
         }
     </script>
+
+<script>
+(() => {
+    // TTFLUX_RUN_LIBRARY_V1
+    const storageKey = "ttflux.runLibrary.v1";
+    const runList = document.querySelector(".run-list");
+    const runsSection = document.querySelector(".runs-section");
+    const sectionHeader = runsSection?.querySelector(".section-header");
+    const runCards = Array.from(
+        runList?.querySelectorAll(".run-card") || []
+    );
+
+    if (!runList || !runsSection || !sectionHeader) {
+        return;
+    }
+
+    function loadMetadata() {
+        try {
+            const parsed = JSON.parse(
+                localStorage.getItem(storageKey) || "{}"
+            );
+
+            return (
+                parsed
+                && typeof parsed === "object"
+                && !Array.isArray(parsed)
+            ) ? parsed : {};
+        } catch {
+            return {};
+        }
+    }
+
+    let metadata = loadMetadata();
+
+    function metadataFor(runId) {
+        const current = metadata[runId];
+
+        if (
+            !current
+            || typeof current !== "object"
+            || Array.isArray(current)
+        ) {
+            metadata[runId] = {
+                label: "",
+                pinned: false,
+                archived: false
+            };
+        }
+
+        return metadata[runId];
+    }
+
+    function saveMetadata() {
+        localStorage.setItem(
+            storageKey,
+            JSON.stringify(metadata)
+        );
+    }
+
+    const toolbar = document.createElement("div");
+    toolbar.className = "run-library-toolbar";
+    toolbar.innerHTML = `
+        <label class="run-library-search-field">
+            <span>Rechercher</span>
+            <input
+                id="run-library-search"
+                type="search"
+                placeholder="Étiquette, run, date…"
+                autocomplete="off"
+            >
+        </label>
+
+        <div class="run-library-filter-grid">
+            <label>
+                <span>Afficher</span>
+                <select id="run-library-filter">
+                    <option value="all">Tous les runs</option>
+                    <option value="pinned">Épinglés</option>
+                    <option value="tracks">Avec pistes</option>
+                    <option value="candidates">Avec candidats</option>
+                    <option value="failed">Échecs</option>
+                    <option value="unlabeled">Sans étiquette</option>
+                </select>
+            </label>
+
+            <label>
+                <span>Trier</span>
+                <select id="run-library-sort">
+                    <option value="pinned-newest">
+                        Épinglés puis récents
+                    </option>
+                    <option value="newest">Plus récents</option>
+                    <option value="oldest">Plus anciens</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="run-library-toolbar-footer">
+            <label class="run-library-archive-toggle">
+                <input
+                    id="run-library-show-archived"
+                    type="checkbox"
+                >
+                <span>Afficher les archivés</span>
+            </label>
+
+            <span id="run-library-count"></span>
+        </div>
+
+        <p>
+            Étiquettes, favoris et archives enregistrés localement
+            dans ce navigateur.
+        </p>
+    `;
+
+    sectionHeader.insertAdjacentElement("afterend", toolbar);
+
+    const searchInput = toolbar.querySelector(
+        "#run-library-search"
+    );
+    const filterSelect = toolbar.querySelector(
+        "#run-library-filter"
+    );
+    const sortSelect = toolbar.querySelector(
+        "#run-library-sort"
+    );
+    const showArchivedInput = toolbar.querySelector(
+        "#run-library-show-archived"
+    );
+    const countLabel = toolbar.querySelector(
+        "#run-library-count"
+    );
+
+    const records = runCards.map((card, index) => {
+        const code = card.querySelector("code");
+        const runId = code?.textContent?.trim()
+            || `run-${index + 1}`;
+        const header = card.querySelector(".run-card-header");
+        const title = header
+            ?.querySelector("strong")
+            ?.textContent
+            ?.trim() || "Run TTFlux";
+        const status = card
+            .querySelector(".run-status")
+            ?.textContent
+            ?.trim()
+            ?.toLowerCase() || "";
+        const linksText = Array.from(
+            card.querySelectorAll(".run-links a")
+        )
+            .map((link) => link.textContent.trim().toLowerCase())
+            .join(" ");
+        const baseText = card.textContent.toLowerCase();
+        const meta = metadataFor(runId);
+
+        card.classList.add("run-library-card");
+        card.dataset.runLibraryId = runId;
+
+        const controls = document.createElement("div");
+        controls.className = "run-library-card-controls";
+        controls.innerHTML = `
+            <button
+                class="run-library-pin"
+                type="button"
+                title="Épingler ce run"
+                aria-label="Épingler ce run"
+            ></button>
+
+            <input
+                class="run-library-label"
+                type="text"
+                maxlength="80"
+                placeholder="Nommer ce run…"
+                aria-label="Étiquette du run"
+            >
+
+            <button
+                class="run-library-details"
+                type="button"
+            >
+                Détails
+            </button>
+
+            <button
+                class="run-library-archive"
+                type="button"
+            ></button>
+        `;
+
+        header?.insertAdjacentElement("afterend", controls);
+
+        const pinButton = controls.querySelector(
+            ".run-library-pin"
+        );
+        const labelInput = controls.querySelector(
+            ".run-library-label"
+        );
+        const detailsButton = controls.querySelector(
+            ".run-library-details"
+        );
+        const archiveButton = controls.querySelector(
+            ".run-library-archive"
+        );
+
+        labelInput.value = meta.label || "";
+
+        function updateCardDecoration() {
+            const current = metadataFor(runId);
+
+            card.classList.toggle(
+                "is-pinned",
+                Boolean(current.pinned)
+            );
+            card.classList.toggle(
+                "is-archived",
+                Boolean(current.archived)
+            );
+
+            pinButton.textContent = current.pinned ? "★" : "☆";
+            pinButton.title = current.pinned
+                ? "Retirer des favoris"
+                : "Épingler ce run";
+            pinButton.setAttribute(
+                "aria-label",
+                pinButton.title
+            );
+
+            archiveButton.textContent = current.archived
+                ? "Restaurer"
+                : "Archiver";
+        }
+
+        pinButton.addEventListener("click", () => {
+            const current = metadataFor(runId);
+            current.pinned = !current.pinned;
+            saveMetadata();
+            updateCardDecoration();
+            applyLibraryView();
+        });
+
+        labelInput.addEventListener("input", () => {
+            const current = metadataFor(runId);
+            current.label = labelInput.value.trim();
+            saveMetadata();
+            applyLibraryView();
+        });
+
+        detailsButton.addEventListener("click", () => {
+            const expanded = card.classList.toggle(
+                "run-expanded"
+            );
+
+            detailsButton.textContent = expanded
+                ? "Réduire"
+                : "Détails";
+        });
+
+        archiveButton.addEventListener("click", () => {
+            const current = metadataFor(runId);
+            current.archived = !current.archived;
+            saveMetadata();
+            updateCardDecoration();
+            applyLibraryView();
+        });
+
+        updateCardDecoration();
+
+        return {
+            card,
+            runId,
+            title,
+            status,
+            linksText,
+            baseText,
+            labelInput
+        };
+    });
+
+    function matchesFilter(record, filterValue) {
+        const meta = metadataFor(record.runId);
+
+        if (filterValue === "pinned") {
+            return Boolean(meta.pinned);
+        }
+
+        if (filterValue === "tracks") {
+            return record.linksText.includes("pistes");
+        }
+
+        if (filterValue === "candidates") {
+            return record.linksText.includes("candidats");
+        }
+
+        if (filterValue === "failed") {
+            return record.status === "failed";
+        }
+
+        if (filterValue === "unlabeled") {
+            return !(meta.label || "").trim();
+        }
+
+        return true;
+    }
+
+    function compareRecords(left, right, sortMode) {
+        const leftMeta = metadataFor(left.runId);
+        const rightMeta = metadataFor(right.runId);
+
+        if (sortMode === "pinned-newest") {
+            const pinnedDifference = (
+                Number(Boolean(rightMeta.pinned))
+                - Number(Boolean(leftMeta.pinned))
+            );
+
+            if (pinnedDifference !== 0) {
+                return pinnedDifference;
+            }
+        }
+
+        if (sortMode === "oldest") {
+            return left.runId.localeCompare(right.runId);
+        }
+
+        return right.runId.localeCompare(left.runId);
+    }
+
+    function applyLibraryView() {
+        const query = searchInput.value
+            .trim()
+            .toLowerCase();
+        const filterValue = filterSelect.value;
+        const sortMode = sortSelect.value;
+        const showArchived = showArchivedInput.checked;
+
+        const ordered = [...records].sort(
+            (left, right) => compareRecords(
+                left,
+                right,
+                sortMode
+            )
+        );
+
+        let visibleCount = 0;
+
+        ordered.forEach((record) => {
+            const meta = metadataFor(record.runId);
+            const searchable = [
+                record.title,
+                record.runId,
+                record.status,
+                record.baseText,
+                meta.label || ""
+            ]
+                .join(" ")
+                .toLowerCase();
+
+            const visible = (
+                (!meta.archived || showArchived)
+                && (!query || searchable.includes(query))
+                && matchesFilter(record, filterValue)
+            );
+
+            record.card.classList.toggle(
+                "run-library-hidden",
+                !visible
+            );
+
+            if (visible) {
+                visibleCount += 1;
+            }
+
+            runList.appendChild(record.card);
+        });
+
+        countLabel.textContent =
+            `${visibleCount} / ${records.length}`;
+    }
+
+    [
+        searchInput,
+        filterSelect,
+        sortSelect,
+        showArchivedInput
+    ].forEach((control) => {
+        control.addEventListener("input", applyLibraryView);
+        control.addEventListener("change", applyLibraryView);
+    });
+
+    applyLibraryView();
+})();
+</script>
+
+<script>
+/* PATCH 004B COMPACT LIBRARY START */
+(() => {
+    function normalizedText(element) {
+        return (element?.textContent || "")
+            .replace(/\s+/g, " ")
+            .trim();
+    }
+
+    function findButton(card, matcher) {
+        return Array.from(
+            card.querySelectorAll("button")
+        ).find((button) => matcher(normalizedText(button)));
+    }
+
+    function directMetadata(card) {
+        return Array.from(card.children).filter((element) => {
+            return (
+                element.matches("span")
+                || element.matches("code")
+                || element.classList.contains("run-metrics")
+            );
+        });
+    }
+
+    function findOption(select, searchText) {
+        if (!select) {
+            return null;
+        }
+
+        const lowered = searchText.toLocaleLowerCase("fr");
+
+        return Array.from(select.options).find((option) => {
+            return option.textContent
+                .toLocaleLowerCase("fr")
+                .includes(lowered);
+        }) || null;
+    }
+
+    function setSelectByText(select, text) {
+        const option = findOption(select, text);
+
+        if (!option) {
+            return false;
+        }
+
+        select.value = option.value;
+        select.dispatchEvent(
+            new Event("change", {bubbles: true})
+        );
+
+        return true;
+    }
+
+    function buildSummary(card) {
+        const metadata = directMetadata(card);
+
+        const texts = metadata
+            .map(normalizedText)
+            .filter(Boolean);
+
+        metadata.forEach((element) => {
+            element.classList.add("run-card-source-meta");
+        });
+
+        const date = texts.find((text) => {
+            return /\d{2}\/\d{2}\/\d{4}/.test(text);
+        });
+
+        const segment = texts.find((text) => {
+            return text.toLocaleLowerCase("fr")
+                .startsWith("segment");
+        });
+
+        const candidates = texts.find((text) => {
+            return text.toLocaleLowerCase("fr")
+                .includes("candidat");
+        });
+
+        const tracks = texts.find((text) => {
+            return text.toLocaleLowerCase("fr")
+                .includes("piste");
+        });
+
+        const primaryParts = [];
+
+        if (date) {
+            const timeMatch = date.match(/\d{2}:\d{2}:\d{2}/);
+            primaryParts.push(
+                timeMatch ? timeMatch[0] : date
+            );
+        }
+
+        if (segment) {
+            primaryParts.push(
+                segment.replace(/^Segment\s*/i, "")
+            );
+        }
+
+        const secondaryParts = [];
+
+        if (candidates) {
+            secondaryParts.push(candidates);
+        }
+
+        if (tracks) {
+            secondaryParts.push(tracks);
+        }
+
+        const summary = document.createElement("div");
+        summary.className = "run-card-summary";
+
+        const primary = document.createElement("div");
+        primary.className = "run-card-summary-primary";
+        primary.textContent = (
+            primaryParts.join(" · ")
+            || "Run local"
+        );
+
+        const secondary = document.createElement("div");
+        secondary.className = "run-card-summary-secondary";
+        secondary.textContent = (
+            secondaryParts.join(" · ")
+            || "Aucune métrique disponible"
+        );
+
+        summary.append(primary, secondary);
+
+        const header = card.querySelector(".run-card-header");
+
+        if (header) {
+            header.insertAdjacentElement(
+                "afterend",
+                summary
+            );
+        } else {
+            card.prepend(summary);
+        }
+    }
+
+    function compactCard(card) {
+        if (card.classList.contains("compact-run-card")) {
+            return;
+        }
+
+        card.classList.add("compact-run-card");
+
+        buildSummary(card);
+
+        const header = card.querySelector(".run-card-header");
+
+        if (!header) {
+            return;
+        }
+
+        const status = header.querySelector(".run-status");
+        const labelInput = card.querySelector(
+            'input[type="text"]'
+        );
+
+        const detailsButton = findButton(
+            card,
+            (text) => /détails|details/i.test(text)
+        );
+
+        const archiveButton = findButton(
+            card,
+            (text) => /archiver|restaurer/i.test(text)
+        );
+
+        const starButton = Array.from(
+            card.querySelectorAll("button")
+        ).find((button) => {
+            const text = normalizedText(button);
+            const label = button.getAttribute("aria-label") || "";
+
+            return (
+                /★|☆/.test(text)
+                || /favori|épingl/i.test(label)
+            );
+        });
+
+        const tools = document.createElement("div");
+        tools.className = "run-card-header-tools";
+
+        if (status) {
+            tools.append(status);
+        }
+
+        if (starButton) {
+            starButton.classList.add("run-star-control");
+            tools.append(starButton);
+        }
+
+        const menuButton = document.createElement("button");
+        menuButton.type = "button";
+        menuButton.className = "run-card-menu-button";
+        menuButton.textContent = "⋯";
+        menuButton.title = "Organiser ce run";
+        menuButton.setAttribute(
+            "aria-label",
+            "Organiser ce run"
+        );
+
+        menuButton.addEventListener("click", () => {
+            const isOpen = card.classList.toggle(
+                "run-card-menu-open"
+            );
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                String(isOpen)
+            );
+        });
+
+        tools.append(menuButton);
+        header.append(tools);
+
+        const editor = document.createElement("div");
+        editor.className = "run-card-editor";
+
+        if (labelInput) {
+            labelInput.classList.add(
+                "run-edit-control",
+                "run-label-editor"
+            );
+            labelInput.placeholder = "Nom du run";
+            editor.append(labelInput);
+        }
+
+        if (detailsButton) {
+            detailsButton.classList.add(
+                "run-edit-control",
+                "run-details-control"
+            );
+            editor.append(detailsButton);
+        }
+
+        if (archiveButton) {
+            archiveButton.classList.add(
+                "run-edit-control",
+                "run-archive-control"
+            );
+            editor.append(archiveButton);
+        }
+
+        if (editor.children.length > 0) {
+            const links = card.querySelector(".run-links");
+
+            if (links) {
+                links.insertAdjacentElement(
+                    "beforebegin",
+                    editor
+                );
+            } else {
+                card.append(editor);
+            }
+        }
+    }
+
+    function initializeLibrary() {
+        const section = (
+            document.querySelector(".runs-section")
+            || Array.from(
+                document.querySelectorAll("section")
+            ).find((candidate) => {
+                return normalizedText(candidate)
+                    .includes("Analyses");
+            })
+        );
+
+        if (!section) {
+            return;
+        }
+
+        const title = section.querySelector(
+            ".section-header h2, h2"
+        );
+
+        if (title) {
+            title.textContent = "Bibliothèque";
+        }
+
+        const runList = section.querySelector(".run-list");
+
+        if (!runList) {
+            return;
+        }
+
+        const searchInput = (
+            section.querySelector("#run-search")
+            || section.querySelector(
+                'input[type="search"]'
+            )
+            || section.querySelector(
+                'input[placeholder*="tiquette"]'
+            )
+            || section.querySelector(
+                'input[placeholder*="run"]'
+            )
+        );
+
+        const selects = Array.from(
+            section.querySelectorAll("select")
+        );
+
+        const filterSelect = (
+            section.querySelector("#run-filter")
+            || selects[0]
+            || null
+        );
+
+        const sortSelect = (
+            section.querySelector("#run-sort")
+            || selects[1]
+            || null
+        );
+
+        const archiveCheckbox = (
+            section.querySelector("#show-archived")
+            || section.querySelector(
+                'input[type="checkbox"]'
+            )
+        );
+
+        const oldNote = Array.from(
+            section.querySelectorAll("p, span")
+        ).find((element) => {
+            const text = normalizedText(element);
+
+            return (
+                text.includes("enregistrés localement")
+                || text.includes("favoris et archives")
+            );
+        });
+
+        if (oldNote) {
+            oldNote.style.display = "none";
+        }
+
+        const bar = document.createElement("div");
+        bar.className = "run-library-compact-bar";
+
+        const searchRow = document.createElement("div");
+        searchRow.className = "run-library-search-row";
+
+        if (searchInput) {
+            searchInput.placeholder = "Rechercher un run…";
+            searchRow.append(searchInput);
+        }
+
+        const drawer = document.createElement("details");
+        drawer.className = "run-filter-drawer";
+
+        const summary = document.createElement("summary");
+        summary.textContent = "Filtres";
+
+        const drawerBody = document.createElement("div");
+        drawerBody.className = "run-filter-drawer-body";
+
+        if (filterSelect) {
+            const filterLabel = document.createElement("label");
+            filterLabel.textContent = "Afficher";
+            filterLabel.append(filterSelect);
+            drawerBody.append(filterLabel);
+        }
+
+        if (sortSelect) {
+            const sortLabel = document.createElement("label");
+            sortLabel.textContent = "Trier";
+            sortLabel.append(sortSelect);
+            drawerBody.append(sortLabel);
+        }
+
+        if (archiveCheckbox) {
+            const archiveLabel = document.createElement("label");
+            archiveLabel.textContent = "Archives";
+            archiveLabel.style.display = "flex";
+            archiveLabel.style.gridTemplateColumns = "auto 1fr";
+            archiveLabel.style.alignItems = "center";
+
+            const archiveText = document.createElement("span");
+            archiveText.textContent = "Afficher les archivés";
+
+            archiveLabel.append(
+                archiveCheckbox,
+                archiveText
+            );
+
+            drawerBody.append(archiveLabel);
+        }
+
+        drawer.append(summary, drawerBody);
+        searchRow.append(drawer);
+
+        const quickFilters = document.createElement("div");
+        quickFilters.className = "run-quick-filters";
+
+        const quickDefinitions = [
+            ["Tous", "Tous"],
+            ["Épinglés", "Épinglés"],
+            ["Avec pistes", "pistes"],
+        ];
+
+        const quickButtons = [];
+
+        quickDefinitions.forEach(([label, optionText]) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "run-quick-filter";
+            button.textContent = label;
+
+            button.addEventListener("click", () => {
+                if (!setSelectByText(filterSelect, optionText)) {
+                    return;
+                }
+
+                quickButtons.forEach((item) => {
+                    item.classList.remove("active");
+                });
+
+                button.classList.add("active");
+            });
+
+            quickButtons.push(button);
+            quickFilters.append(button);
+        });
+
+        const resultCount = document.createElement("span");
+        resultCount.className = "run-library-result-count";
+
+        const existingCount = (
+            section.querySelector("#run-visible-count")
+            || Array.from(
+                section.querySelectorAll("span")
+            ).find((element) => {
+                return /^\d+\s*\/\s*\d+$/.test(
+                    normalizedText(element)
+                );
+            })
+        );
+
+        if (existingCount) {
+            const updateCount = () => {
+                resultCount.textContent = normalizedText(
+                    existingCount
+                );
+            };
+
+            updateCount();
+
+            new MutationObserver(updateCount).observe(
+                existingCount,
+                {
+                    childList: true,
+                    characterData: true,
+                    subtree: true,
+                }
+            );
+
+            existingCount.style.display = "none";
+        }
+
+        quickFilters.append(resultCount);
+        bar.append(searchRow, quickFilters);
+
+        runList.insertAdjacentElement(
+            "beforebegin",
+            bar
+        );
+
+        runList.querySelectorAll(".run-card").forEach(
+            compactCard
+        );
+
+        const observer = new MutationObserver(() => {
+            runList.querySelectorAll(".run-card").forEach(
+                compactCard
+            );
+        });
+
+        observer.observe(runList, {
+            childList: true,
+            subtree: true,
+        });
+
+        const allOption = findOption(
+            filterSelect,
+            "Tous"
+        );
+
+        if (
+            allOption
+            && filterSelect.value === allOption.value
+        ) {
+            quickButtons[0]?.classList.add("active");
+        }
+
+        filterSelect?.addEventListener("change", () => {
+            quickButtons.forEach((button) => {
+                button.classList.remove("active");
+            });
+
+            quickDefinitions.forEach(
+                ([, optionText], index) => {
+                    const option = findOption(
+                        filterSelect,
+                        optionText
+                    );
+
+                    if (
+                        option
+                        && option.value === filterSelect.value
+                    ) {
+                        quickButtons[index]?.classList.add(
+                            "active"
+                        );
+                    }
+                }
+            );
+        });
+
+        document.addEventListener("click", (event) => {
+            if (!drawer.open) {
+                return;
+            }
+
+            if (!drawer.contains(event.target)) {
+                drawer.open = false;
+            }
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initializeLibrary
+        );
+    } else {
+        initializeLibrary();
+    }
+})();
+/* PATCH 004B COMPACT LIBRARY END */
+</script>
+<script>
+/* PATCH 004C RUN DELETE START */
+(() => {
+    function runIdFromCard(card) {
+        return card.querySelector("code")
+            ?.textContent
+            ?.trim() || "";
+    }
+
+    function ensureEditor(card) {
+        let editor = card.querySelector(".run-card-editor");
+
+        if (editor) {
+            return editor;
+        }
+
+        editor = document.createElement("div");
+        editor.className = "run-card-editor";
+
+        const links = card.querySelector(".run-links");
+
+        if (links) {
+            links.insertAdjacentElement("beforebegin", editor);
+        } else {
+            card.append(editor);
+        }
+
+        return editor;
+    }
+
+    async function deleteRun(card, button) {
+        const runId = runIdFromCard(card);
+
+        if (!runId) {
+            window.alert("Identifiant du run introuvable.");
+            return;
+        }
+
+        const title = card.querySelector(
+            ".run-card-header strong"
+        )?.textContent?.trim() || runId;
+
+        const confirmed = window.confirm(
+            `Supprimer définitivement ce run ?\n\n`
+            + `${title}\n${runId}\n\n`
+            + "Le segment, les CSV, les métriques et les overlays "
+            + "seront supprimés. La vidéo source sera conservée."
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        button.disabled = true;
+        button.textContent = "Suppression…";
+
+        try {
+            const response = await fetch(
+                `/api/runs/${encodeURIComponent(runId)}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                }
+            );
+
+            const payload = await response.json().catch(
+                () => ({})
+            );
+
+            if (!response.ok) {
+                throw new Error(
+                    payload.detail
+                    || "Suppression du run impossible."
+                );
+            }
+
+            window.location.reload();
+        } catch (error) {
+            button.disabled = false;
+            button.textContent = "Supprimer définitivement";
+            window.alert(error.message);
+        }
+    }
+
+    function attachDeleteControl(card) {
+        if (card.dataset.deleteControlReady === "true") {
+            return;
+        }
+
+        const runId = runIdFromCard(card);
+
+        if (!runId) {
+            return;
+        }
+
+        const editor = ensureEditor(card);
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.className = "run-delete-control";
+        button.textContent = "Supprimer définitivement";
+        button.title = (
+            "Supprime uniquement ce run et ses artefacts locaux"
+        );
+
+        button.addEventListener("click", () => {
+            deleteRun(card, button);
+        });
+
+        editor.append(button);
+        card.dataset.deleteControlReady = "true";
+    }
+
+    function attachAll() {
+        document.querySelectorAll(".run-card").forEach(
+            attachDeleteControl
+        );
+    }
+
+    function initialize() {
+        window.setTimeout(attachAll, 0);
+
+        const runList = document.querySelector(".run-list");
+
+        if (!runList) {
+            return;
+        }
+
+        new MutationObserver(attachAll).observe(
+            runList,
+            {
+                childList: true,
+                subtree: true,
+            }
+        );
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initialize
+        );
+    } else {
+        initialize();
+    }
+})();
+/* PATCH 004C RUN DELETE END */
+</script>
 </body>
 </html>

@@ -7,7 +7,8 @@
 - [x] V0.1.1 — Exécution et cycle d'état metadata-only
 - [x] V0.1.2 — Extraction reproductible d'un segment
 - [x] V0.1.3 — Réservoir brut de candidats balle
-- [ ] V0.2 — Baseline balle 2D
+- [x] V0.1.4 — Pistes temporelles exploratoires
+- [ ] V0.2 — Baseline balle 2D sélectionnée
 - [ ] V0.3 — Review humaine
 - [ ] V0.4 — Contexte table
 
@@ -50,12 +51,23 @@
 - `candidates_metrics.json` ;
 - `overlay_candidates.mp4`.
 
-## V0.2 — Baseline balle
+## V0.1.4 — Pistes temporelles exploratoires
 
-- sélection d'une trajectoire parmi les candidats ;
-- contraintes temporelles légères ;
-- overlay de trajectoire ;
-- métriques de couverture et de gaps.
+- recherche en faisceau bornée ;
+- connexion entre images voisines ;
+- prédiction par vitesse récente ;
+- tolérance de trois images manquantes ;
+- conservation de plusieurs pistes concurrentes ;
+- `tracks_probe.csv` ;
+- `tracks_metrics.json` ;
+- `overlay_tracks_probe.mp4`.
+
+## V0.2 — Baseline balle sélectionnée
+
+- sélection d'une trajectoire parmi les pistes ;
+- métriques de couverture et de gaps ;
+- comparaison à une annotation humaine ;
+- règles de rejet explicites.
 
 ## V0.3 — Review humaine
 

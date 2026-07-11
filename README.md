@@ -3,7 +3,7 @@
 TTFlux est un pipeline local, reproductible et mesurable d'analyse
 vidéo de tennis de table.
 
-## État actuel — V0.1.3
+## État actuel — V0.1.4
 
 Fonctionnalités présentes :
 
@@ -12,16 +12,21 @@ Fonctionnalités présentes :
 - catalogue et lecture des vidéos brutes ;
 - création reproductible de runs d'analyse ;
 - cycle d'exécution `created → running → completed / failed` ;
-- choix d'un début et d'une durée depuis l'interface ;
-- extraction FFmpeg d'un segment MP4 borné ;
+- choix et extraction FFmpeg d'un segment MP4 borné ;
 - génération d'un réservoir brut de petits objets mobiles ;
-- export `candidates.csv`, métriques et overlay diagnostic ;
-- lecture du segment et de l'overlay depuis l'historique ;
+- chaînage temporel exploratoire de plusieurs pistes concurrentes ;
+- exports CSV, métriques et overlays diagnostiques ;
+- lecture des artefacts vidéo depuis l'historique ;
 - tests automatiques.
 
-Le pipeline courant est `motion_candidates`. Il ne choisit pas encore une
-trajectoire de balle. Son rôle est de vérifier que la balle apparaît bien
-dans le réservoir de candidats avant d'ajouter du relinking.
+Le pipeline courant est `motion_tracks_probe`. Il conserve les candidats
+bruts, puis construit jusqu'à dix pistes concurrentes avec une recherche
+temporelle légère, une prédiction de vitesse et une tolérance de trois
+images manquantes.
+
+Ces pistes ne constituent pas encore une trajectoire de balle validée.
+Elles servent à mesurer si la continuité temporelle sépare la balle des
+mouvements des joueurs.
 
 ## Commandes
 
@@ -47,7 +52,7 @@ Lancer l'interface :
 
 Adresse : http://127.0.0.1:8787
 
-## Contrat d'un run V0.1.3
+## Contrat d'un run V0.1.4
 
     runs/<run_id>/
     ├── run.json
@@ -57,10 +62,12 @@ Adresse : http://127.0.0.1:8787
     ├── candidates.csv
     ├── candidates_metrics.json
     ├── overlay_candidates.mp4
+    ├── tracks_probe.csv
+    ├── tracks_metrics.json
+    ├── overlay_tracks_probe.mp4
     └── analysis.json
 
-Le détecteur utilise une différence temporelle symétrique sur trois
-images, puis conserve de petits composants mobiles. Les résultats restent
-des candidats bruts, pas une trajectoire validée.
+`candidates.csv` reste la source brute. `tracks_probe.csv` ajoute des
+hypothèses temporelles sans supprimer ni réécrire les candidats.
 
 Les contenus de `runs/` restent locaux et sont exclus de Git.

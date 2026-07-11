@@ -11,6 +11,7 @@ from typing import Any
 from uuid import uuid4
 
 from ttflux.analysis.candidates import analyze_candidates
+from ttflux.analysis.tracks import analyze_tracks
 from ttflux.core.paths import RUNS_DIR, ensure_project_layout
 from ttflux.video.catalog import find_video, probe_video
 
@@ -209,13 +210,14 @@ def create_run(
         "created_at": created_at.isoformat(timespec="seconds"),
         "status": "created",
         "pipeline": {
-            "name": "motion_candidates",
+            "name": "motion_tracks_probe",
             "version": 1,
         },
         "configuration": {
             "clip_start_s": start_s,
             "clip_duration_s": duration_s,
             "candidate_detection_enabled": True,
+            "track_probe_enabled": True,
             "ball_tracking_enabled": False,
             "table_context_enabled": False,
             "pose_enabled": False,
@@ -327,10 +329,11 @@ def _build_analysis(
     video_payload: dict[str, Any],
     clip_payload: dict[str, Any],
     candidate_metrics: dict[str, Any],
+    track_metrics: dict[str, Any],
     generated_at: datetime,
 ) -> dict[str, Any]:
     return {
-        "schema_version": 2,
+        "schema_version": 3,
         "run_id": run_payload["run_id"],
         "video_id": run_payload["video_id"],
         "pipeline": run_payload["pipeline"],
@@ -358,6 +361,7 @@ def _build_analysis(
             },
         },
         "candidates": candidate_metrics["summary"],
+        "tracks_probe": track_metrics["summary"],
     }
 
 
@@ -402,6 +406,9 @@ def execute_run(run_id: str) -> dict[str, Any]:
     candidates_path = run_dir / "candidates.csv"
     candidate_metrics_path = run_dir / "candidates_metrics.json"
     candidate_overlay_path = run_dir / "overlay_candidates.mp4"
+    tracks_path = run_dir / "tracks_probe.csv"
+    track_metrics_path = run_dir / "tracks_metrics.json"
+    track_overlay_path = run_dir / "overlay_tracks_probe.mp4"
     analysis_path = run_dir / "analysis.json"
 
     try:
@@ -425,6 +432,13 @@ def execute_run(run_id: str) -> dict[str, Any]:
             candidate_metrics_path,
             candidate_overlay_path,
         )
+        track_metrics = analyze_tracks(
+            candidates_path,
+            clip_path,
+            tracks_path,
+            track_metrics_path,
+            track_overlay_path,
+        )
 
         generated_at = datetime.now().astimezone()
         analysis_payload = _build_analysis(
@@ -432,6 +446,7 @@ def execute_run(run_id: str) -> dict[str, Any]:
             video_payload,
             clip_payload,
             candidate_metrics,
+            track_metrics,
             generated_at,
         )
         _write_json_atomic(analysis_path, analysis_payload)
@@ -446,10 +461,14 @@ def execute_run(run_id: str) -> dict[str, Any]:
                 "candidates": "candidates.csv",
                 "candidate_metrics": "candidates_metrics.json",
                 "candidate_overlay": "overlay_candidates.mp4",
+                "tracks": "tracks_probe.csv",
+                "track_metrics": "tracks_metrics.json",
+                "track_overlay": "overlay_tracks_probe.mp4",
                 "analysis": "analysis.json",
             }
         )
         run_payload["metrics"] = candidate_metrics["summary"]
+        run_payload["track_metrics"] = track_metrics["summary"]
         _write_json_atomic(run_path, run_payload)
     except Exception as exc:
         failed_at = datetime.now().astimezone()
@@ -526,6 +545,55 @@ def get_run_overlay_path(run_id: str) -> Path:
         )
 
     return overlay_path
+
+
+def get_run_tracks_overlay_path(run_id: str) -> Path:
+    """Retourne l'overlay des pistes temporelles exploratoires."""
+
+    run_dir = _resolve_run_dir(run_id)
+    run_payload = _read_json_object(run_dir / "run.json")
+    artifact_name = (
+        run_payload.get("artifacts", {}).get("track_overlay")
+    )
+
+    if artifact_name != "overlay_tracks_probe.mp4":
+        raise FileNotFoundError(
+            f"Aucun overlay de pistes disponible pour le run {run_id}."
+        )
+
+    overlay_path = run_dir / artifact_name
+
+    if not overlay_path.is_file():
+        raise FileNotFoundError(
+            f"Overlay de pistes absent pour le run {run_id}."
+        )
+
+    return overlay_path
+
+
+
+def delete_run(run_id: str) -> dict[str, Any]:
+    # Supprime un run local sans toucher à sa vidéo source.
+
+    ensure_project_layout()
+    run_dir = _resolve_run_dir(run_id)
+    run_payload = _read_json_object(run_dir / "run.json")
+    current_status = run_payload.get("status")
+
+    if current_status == "running":
+        raise InvalidRunStateError(
+            f"Le run {run_id} est encore en cours d'exécution."
+        )
+
+    deleted = {
+        "run_id": run_id,
+        "status": current_status,
+        "video_id": run_payload.get("video_id"),
+        "video_filename": run_payload.get("video_filename"),
+    }
+
+    shutil.rmtree(run_dir)
+    return deleted
 
 
 def _created_label(value: Any) -> str:

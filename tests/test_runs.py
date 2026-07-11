@@ -38,7 +38,32 @@ def stub_candidate_analysis(
         overlay_path.write_bytes(b"overlay")
         return {"summary": summary}
 
-    monkeypatch.setattr(run_store, "analyze_candidates", fake_analyze)
+    monkeypatch.setattr(
+        run_store,
+        "analyze_candidates",
+        fake_analyze,
+    )
+
+    monkeypatch.setattr(
+        run_store,
+        "analyze_tracks",
+        lambda *args, **kwargs: {
+            "summary": {
+                "input_candidates": 1200,
+                "generated_tracks": 3,
+                "track_count": 3,
+                "selected_tracks": 3,
+                "selected_track_count": 3,
+                "tracked_points": 42,
+                "covered_frames": 36,
+                "coverage_ratio": 0.072,
+                "longest_track_points": 20,
+                "longest_track_span_frames": 24,
+                "mean_track_points": 14.0,
+                "median_track_points": 14.0,
+            }
+        },
+    )
 
 
 def sample_video() -> dict[str, object]:
@@ -123,7 +148,7 @@ def test_create_run_writes_clip_configuration(
 
     assert saved_run["status"] == "created"
     assert saved_run["pipeline"] == {
-        "name": "motion_candidates",
+        "name": "motion_tracks_probe",
         "version": 1,
     }
     assert saved_run["configuration"]["clip_start_s"] == 12.5
@@ -202,7 +227,7 @@ def test_execute_run_extracts_clip_and_completes(
     assert clip["requested_start_s"] == 20.0
     assert clip["requested_duration_s"] == 10.0
     assert clip["frame_count"] == 500
-    assert analysis["schema_version"] == 2
+    assert analysis["schema_version"] == 3
     assert analysis["clip"]["actual_duration_s"] == 10.0
     assert analysis["candidates"]["total_candidates"] == 1200
     assert saved_run["metrics"]["coverage_ratio"] == 0.803213
