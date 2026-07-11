@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from ttflux.analysis.review_tracklets import (
+    _transcode_review_clip,
     build_rows,
     load_metrics,
     load_tracks,
@@ -55,3 +56,33 @@ def test_review_manifest_and_html(tmp_path: Path) -> None:
     assert "clips/T001.mp4" in page
     assert 'data-label="ball"' in page
     assert "tracklet_labels.csv" in page
+
+
+def test_transcode_review_clip_uses_h264(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    clip = tmp_path / "T001.mp4"
+    clip.write_bytes(b"mp4v")
+
+    monkeypatch.setattr(
+        "ttflux.analysis.review_tracklets.shutil.which",
+        lambda name: "ffmpeg" if name == "ffmpeg" else None,
+    )
+
+    def fake_run(command, **kwargs):
+        assert "libx264" in command
+        assert "yuv420p" in command
+        Path(command[-1]).write_bytes(b"h264")
+
+    monkeypatch.setattr(
+        "ttflux.analysis.review_tracklets.subprocess.run",
+        fake_run,
+    )
+
+    _transcode_review_clip(clip)
+
+    assert clip.read_bytes() == b"h264"
+    assert not (
+        tmp_path / "T001.h264.partial.mp4"
+    ).exists()

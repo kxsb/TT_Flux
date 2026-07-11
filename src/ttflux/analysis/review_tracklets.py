@@ -4,6 +4,8 @@ import argparse
 import csv
 import html
 import json
+import shutil
+import subprocess
 from collections import defaultdict
 from pathlib import Path
 from typing import Any
@@ -170,6 +172,67 @@ def draw_overlay(
     return output
 
 
+
+def _transcode_review_clip(path: Path) -> None:
+    """Convertit un clip OpenCV en H.264 lisible par les navigateurs."""
+
+    ffmpeg = shutil.which("ffmpeg")
+
+    if ffmpeg is None:
+        raise RuntimeError("ffmpeg est introuvable dans le PATH.")
+
+    temporary = path.with_name(
+        path.stem + ".h264.partial.mp4"
+    )
+    temporary.unlink(missing_ok=True)
+
+    command = [
+        ffmpeg,
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-y",
+        "-i",
+        str(path),
+        "-an",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "veryfast",
+        "-crf",
+        "20",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        str(temporary),
+    ]
+
+    try:
+        subprocess.run(
+            command,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+        )
+        temporary.replace(path)
+    except subprocess.CalledProcessError as exc:
+        temporary.unlink(missing_ok=True)
+        message = (
+            exc.stderr.strip()
+            if exc.stderr
+            else "?chec inconnu de ffmpeg"
+        )
+        raise RuntimeError(
+            f"Encodage H.264 du clip review impossible : {message}"
+        ) from exc
+    except Exception:
+        temporary.unlink(missing_ok=True)
+        raise
+
+
 def export_clips(
     source_video: Path,
     output_dir: Path,
@@ -234,6 +297,10 @@ def export_clips(
                     frame_index += 1
             finally:
                 writer.release()
+
+            _transcode_review_clip(
+                output_dir / row["clip_path"],
+            )
     finally:
         capture.release()
 
