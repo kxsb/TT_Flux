@@ -8,7 +8,7 @@
 - [x] V0.1.2 — Extraction reproductible d'un segment
 - [x] V0.1.3 — Réservoir brut de candidats balle
 - [x] V0.1.4 — Pistes temporelles exploratoires
-- [ ] V0.2 — Baseline balle 2D sélectionnée
+- [ ] V0.2 — Baseline balle 2D sélectionnée — prévalidation I15A3
 - [ ] V0.3 — Review humaine
 - [ ] V0.4 — Contexte table
 
@@ -62,12 +62,41 @@
 - `tracks_metrics.json` ;
 - `overlay_tracks_probe.mp4`.
 
-## V0.2 — Baseline balle sélectionnée
+## V0.2 — Baseline balle 2D sélectionnée
 
-- sélection d'une trajectoire parmi les pistes ;
-- métriques de couverture et de gaps ;
-- comparaison à une annotation humaine ;
-- règles de rejet explicites.
+### Prévalidation terminée
+
+- [x] benchmark humain gelé de 450 images ;
+- [x] comparaison top-1, cap 24 et réservoir étendu ;
+- [x] audit de déterminisme du générateur de candidats ;
+- [x] audit de connectabilité temporelle ;
+- [x] audit des faux positifs et des abstentions ;
+- [x] diagnostics visuels des trajectoires ;
+- [x] contrat interchangeable `BallCandidateScorer` ;
+- [x] non-régression exacte de `heuristic_v1` ;
+- [x] manifeste candidat déterministe ;
+- [x] labels `ball / not_ball / ignore` ;
+- [x] identification de 81 hard negatives temporels.
+
+### Travail restant avant validation V0.2
+
+- [ ] fixer la géométrie locale et contextuelle des crops ;
+- [ ] exporter les crops `t-1 / t / t+1` ;
+- [ ] contrôler visuellement les crops et les labels ;
+- [ ] comparer les scorers en leave-one-clip-out ;
+- [ ] sélectionner le scorer final ;
+- [ ] intégrer le gagnant sans dégrader la baseline gelée ;
+- [ ] geler les métriques de couverture, gaps et erreurs ;
+- [ ] produire le MP4 comparatif de validation ;
+- [ ] déclarer la baseline V0.2 validée.
+
+### Critères de sortie
+
+- une trajectoire canonique est sélectionnée ;
+- les métriques sont comparées au benchmark humain ;
+- les règles de rejet et d'abstention sont explicites ;
+- les résultats sont reproductibles ;
+- le contrôle visuel final est validé.
 
 ## V0.3 — Review humaine
 
@@ -76,9 +105,15 @@
 - corrections manuelles ;
 - export d'annotations.
 
+Le benchmark gelé I12 prépare cette étape, mais ne remplace pas encore
+l'interface complète de review et de correction.
+
 ## V0.4 — Contexte table
 
 - coins de table ;
 - homographie ;
 - vue top-down ;
 - contraintes géométriques légères.
+
+Le contexte table ne doit être réintégré au moteur canonique qu'après la
+validation de la baseline balle V0.2.
