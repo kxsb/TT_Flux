@@ -3,6 +3,9 @@ from __future__ import annotations
 import cv2
 import numpy as np
 
+from ttflux.analysis.candidate_scorers import (
+    HeuristicV1BallCandidateScorer,
+)
 from ttflux.analysis.candidates import (
     CandidateConfig,
     detect_frame_candidates,
@@ -41,6 +44,17 @@ def test_detect_frame_candidates_finds_middle_object() -> None:
     assert abs(float(best["x"]) - 60.0) <= 1.0
     assert abs(float(best["y"]) - 50.0) <= 1.0
     assert int(best["area"]) >= 20
+    assert float(best["score"]) == 0.926096
+
+    explicit_candidates = detect_frame_candidates(
+        previous,
+        current,
+        following,
+        config,
+        HeuristicV1BallCandidateScorer(),
+    )
+
+    assert explicit_candidates == candidates
 
 
 def test_summarize_candidate_counts() -> None:

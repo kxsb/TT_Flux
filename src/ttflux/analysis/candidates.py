@@ -13,6 +13,12 @@ from typing import Any
 import cv2
 import numpy as np
 
+from ttflux.analysis.candidate_scorers import (
+    BallCandidateScorer,
+    BallCandidateScoringInput,
+    HeuristicV1BallCandidateScorer,
+)
+
 
 @dataclass(frozen=True)
 class CandidateConfig:
@@ -112,11 +118,13 @@ def detect_frame_candidates(
     current_gray: np.ndarray,
     next_gray: np.ndarray,
     config: CandidateConfig | None = None,
+    scorer: BallCandidateScorer | None = None,
 ) -> list[dict[str, float | int]]:
     """Détecte de petits composants mobiles sur la frame centrale."""
 
     resolved = config or CandidateConfig()
     resolved.validate()
+    resolved_scorer = scorer or HeuristicV1BallCandidateScorer()
 
     if (
         previous_gray.shape != current_gray.shape
@@ -190,26 +198,31 @@ def detect_frame_candidates(
         motion_strength = float(local_motion[local_mask].mean())
         circularity = _component_circularity(local_component * 255)
 
-        target_area = 28.0
-        size_score = math.exp(
-            -abs(float(area) - target_area) / target_area
-        )
-        motion_score = min(1.0, motion_strength / 100.0)
-        brightness_score = min(1.0, mean_brightness / 255.0)
-        compactness_score = min(1.0, fill_ratio / 0.70)
+        centroid_x = float(centroids[label_id][0])
+        centroid_y = float(centroids[label_id][1])
 
-        score = (
-            0.38 * motion_score
-            + 0.22 * brightness_score
-            + 0.16 * compactness_score
-            + 0.14 * circularity
-            + 0.10 * size_score
+        scoring_input = BallCandidateScoringInput(
+            previous_gray=previous_gray,
+            current_gray=current_gray,
+            next_gray=next_gray,
+            x=centroid_x,
+            y=centroid_y,
+            bbox_x=x,
+            bbox_y=y,
+            bbox_w=width,
+            bbox_h=height,
+            area=area,
+            mean_brightness=mean_brightness,
+            motion_strength=motion_strength,
+            fill_ratio=fill_ratio,
+            circularity=circularity,
         )
+        score = resolved_scorer.score(scoring_input)
 
         candidates.append(
             {
-                "x": round(float(centroids[label_id][0]), 3),
-                "y": round(float(centroids[label_id][1]), 3),
+                "x": round(centroid_x, 3),
+                "y": round(centroid_y, 3),
                 "bbox_x": x,
                 "bbox_y": y,
                 "bbox_w": width,
@@ -404,11 +417,13 @@ def analyze_candidates(
     metrics_path: Path,
     overlay_path: Path,
     config: CandidateConfig | None = None,
+    scorer: BallCandidateScorer | None = None,
 ) -> dict[str, Any]:
     """Produit le réservoir brut de candidats et son overlay diagnostic."""
 
     resolved = config or CandidateConfig()
     resolved.validate()
+    resolved_scorer = scorer or HeuristicV1BallCandidateScorer()
 
     capture = cv2.VideoCapture(str(video_path))
 
@@ -525,6 +540,7 @@ def analyze_candidates(
                 current_gray,
                 next_gray,
                 resolved,
+                resolved_scorer,
             )
 
             counts.append(len(candidates))
