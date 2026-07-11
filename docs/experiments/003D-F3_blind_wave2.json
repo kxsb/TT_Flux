@@ -1,0 +1,100 @@
+{
+  "experiment": "003D-F3_blind_wave2",
+  "status": "M0_RETAINED_EXPERIMENTAL",
+  "model": {
+    "sha256": "1789844aacf08be5e325a9ea3af5879cdd6acbfde15078461093b51c8821e368",
+    "threshold": 0.5,
+    "trained_on": "003D_F0_wave1",
+    "scikit_learn_version": "1.9.0",
+    "python_version": "3.13.9"
+  },
+  "wave1_oof": {
+    "evaluated": 95,
+    "tp": 29,
+    "fp": 8,
+    "tn": 49,
+    "fn": 9,
+    "precision": 0.7837837837837838,
+    "recall": 0.7631578947368421,
+    "f1": 0.7733333333333333,
+    "accuracy": 0.8210526315789474,
+    "balanced_accuracy": 0.8114035087719298,
+    "roc_auc": 0.8956602031394275
+  },
+  "wave2_blind": {
+    "R0": {
+      "evaluated": 113,
+      "tp": 46,
+      "fp": 2,
+      "tn": 31,
+      "fn": 34,
+      "precision": 0.9583333333333334,
+      "recall": 0.575,
+      "f1": 0.71875,
+      "accuracy": 0.6814159292035398,
+      "balanced_accuracy": 0.7571969696969697,
+      "roc_auc": null
+    },
+    "M0": {
+      "evaluated": 113,
+      "tp": 74,
+      "fp": 9,
+      "tn": 24,
+      "fn": 6,
+      "precision": 0.891566265060241,
+      "recall": 0.925,
+      "f1": 0.9079754601226994,
+      "accuracy": 0.8672566371681416,
+      "balanced_accuracy": 0.8261363636363637,
+      "roc_auc": 0.9
+    },
+    "by_source": {
+      "opentt_game4": {
+        "evaluated": 37,
+        "tp": 23,
+        "fp": 2,
+        "tn": 9,
+        "fn": 3,
+        "precision": 0.92,
+        "recall": 0.8846153846153846,
+        "f1": 0.9019607843137255,
+        "accuracy": 0.8648648648648649,
+        "balanced_accuracy": 0.8513986013986015,
+        "roc_auc": 0.9370629370629371
+      },
+      "v60_03": {
+        "evaluated": 32,
+        "tp": 23,
+        "fp": 1,
+        "tn": 6,
+        "fn": 2,
+        "precision": 0.9583333333333334,
+        "recall": 0.92,
+        "f1": 0.9387755102040817,
+        "accuracy": 0.90625,
+        "balanced_accuracy": 0.8885714285714286,
+        "roc_auc": 0.8914285714285713
+      },
+      "v60_08": {
+        "evaluated": 44,
+        "tp": 28,
+        "fp": 6,
+        "tn": 9,
+        "fn": 1,
+        "precision": 0.8235294117647058,
+        "recall": 0.9655172413793104,
+        "f1": 0.8888888888888888,
+        "accuracy": 0.8409090909090909,
+        "balanced_accuracy": 0.7827586206896552,
+        "roc_auc": 0.903448275862069
+      }
+    }
+  },
+  "known_limitations": [
+    "predominantly slow-motion corpus",
+    "positive tracklets can contain identity switches",
+    "no frame-level coverage metric yet",
+    "uncertain labels excluded"
+  ],
+  "decision": "retain M0 without retraining before realtime-only validation"
+}
