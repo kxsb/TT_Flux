@@ -4,7 +4,7 @@ from dataclasses import asdict, dataclass, field
 from typing import Any
 
 from ttflux.tracking.candidates.generator import CandidateConfig
-from ttflux.analysis.tracks import TrackConfig
+from ttflux.tracking.temporal.tracklets import TrackConfig
 
 
 @dataclass(frozen=True)

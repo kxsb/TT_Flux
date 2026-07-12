@@ -10,7 +10,7 @@ from ttflux.tracking.candidates.generator import (
     CandidateConfig,
     analyze_candidates,
 )
-from ttflux.analysis.tracks import (
+from ttflux.tracking.temporal.tracklets import (
     TrackConfig,
     analyze_tracks,
 )

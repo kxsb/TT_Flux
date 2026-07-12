@@ -3,7 +3,7 @@ from ttflux.tracking.candidates.scorers import (
     HeuristicV1BallCandidateScorer,
 )
 from ttflux.tracking.candidates.generator import CandidateConfig
-from ttflux.analysis.tracks import TrackConfig
+from ttflux.tracking.temporal.tracklets import TrackConfig
 from ttflux.tracking.artifacts import (
     BallTrackingArtifacts,
 )
