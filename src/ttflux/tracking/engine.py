@@ -16,6 +16,7 @@ from ttflux.analysis.tracks import (
     TrackConfig,
     analyze_tracks,
 )
+from ttflux.tracking.config import BallTrackingConfig
 
 
 ENGINE_NAME = "ball_tracking_engine"
@@ -157,22 +158,39 @@ class BallTrackingEngine:
     def __init__(
         self,
         *,
+        config: BallTrackingConfig | None = None,
         candidate_config: CandidateConfig | None = None,
         track_config: TrackConfig | None = None,
         scorer: BallCandidateScorer | None = None,
     ) -> None:
+        if config is not None and (
+            candidate_config is not None
+            or track_config is not None
+        ):
+            raise ValueError(
+                "Use either aggregate config or component "
+                "configuration arguments, not both."
+            )
+
+        resolved_config = config or BallTrackingConfig(
+            candidates=(
+                candidate_config or CandidateConfig()
+            ),
+            tracks=(
+                track_config or TrackConfig()
+            ),
+        )
+        resolved_config.validate()
+
         resolved_candidate_config = (
-            candidate_config or CandidateConfig()
+            resolved_config.candidates
         )
         resolved_track_config = (
-            track_config or TrackConfig()
+            resolved_config.tracks
         )
         resolved_scorer = (
             scorer or HeuristicV1BallCandidateScorer()
         )
-
-        resolved_candidate_config.validate()
-        resolved_track_config.validate()
 
         scorer_id = getattr(
             resolved_scorer,
@@ -189,12 +207,17 @@ class BallTrackingEngine:
                 "a non-empty scorer_id."
             )
 
+        self._config = resolved_config
         self._candidate_config = (
             resolved_candidate_config
         )
         self._track_config = resolved_track_config
         self._scorer = resolved_scorer
         self._scorer_id = scorer_id.strip()
+
+    @property
+    def config(self) -> BallTrackingConfig:
+        return self._config
 
     @property
     def candidate_config(self) -> CandidateConfig:
