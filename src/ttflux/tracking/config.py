@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
-from ttflux.analysis.candidates import CandidateConfig
+from ttflux.tracking.candidates.generator import CandidateConfig
 from ttflux.analysis.tracks import TrackConfig
 
 

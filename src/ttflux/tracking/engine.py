@@ -6,7 +6,7 @@ from ttflux.tracking.candidates.scorers import (
     BallCandidateScorer,
     HeuristicV1BallCandidateScorer,
 )
-from ttflux.analysis.candidates import (
+from ttflux.tracking.candidates.generator import (
     CandidateConfig,
     analyze_candidates,
 )
