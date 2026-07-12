@@ -25,3 +25,7 @@ data/video_catalog.json
 # Système
 .DS_Store
 Thumbs.db
+
+# Datasets externes volumineux
+data/blurball_dataset/
+data/tt3d_dataset/
