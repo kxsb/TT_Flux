@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import re
 import shutil
 import subprocess
@@ -34,6 +33,12 @@ from ttflux.pipeline.states import (
     RUN_FAILED,
     RUN_RUNNING,
 )
+from ttflux.pipeline.storage import (
+    read_json_object as _read_json_object,
+    resolve_run_dir,
+    try_read_json_object as _try_read_json_object,
+    write_json_atomic as _write_json_atomic,
+)
 from ttflux.tracking import BallTrackingEngine
 from ttflux.video.catalog import find_video, probe_video
 
@@ -53,27 +58,6 @@ def slugify(value: str, fallback: str = "video") -> str:
     return slug[:48] or fallback
 
 
-def _write_json_atomic(path: Path, payload: dict[str, Any]) -> None:
-    temporary_path = path.with_suffix(path.suffix + ".tmp")
-    temporary_path.write_text(
-        json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
-    temporary_path.replace(path)
-
-
-def _read_json_object(path: Path) -> dict[str, Any]:
-    try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except FileNotFoundError:
-        raise UnknownRunError(path.parent.name) from None
-
-    if not isinstance(payload, dict):
-        raise ValueError(f"Objet JSON attendu dans {path.name}")
-
-    return payload
-
-
 def _video_snapshot(video: dict[str, Any]) -> dict[str, Any]:
     return {
         "schema_version": VIDEO_SNAPSHOT_SCHEMA_VERSION,
@@ -89,21 +73,10 @@ def _new_run_id(video: dict[str, Any], created_at: datetime) -> str:
 
 
 def _resolve_run_dir(run_id: str) -> Path:
-    if (
-        not run_id
-        or run_id in {".", ".."}
-        or Path(run_id).name != run_id
-        or "/" in run_id
-        or "\\" in run_id
-    ):
-        raise UnknownRunError(run_id)
-
-    run_dir = RUNS_DIR / run_id
-
-    if not run_dir.is_dir():
-        raise UnknownRunError(run_id)
-
-    return run_dir
+    return resolve_run_dir(
+        run_id,
+        RUNS_DIR,
+    )
 
 
 def _positive_number(value: Any) -> float | None:
@@ -649,12 +622,11 @@ def list_runs() -> list[dict[str, Any]]:
     runs: list[dict[str, Any]] = []
 
     for run_json_path in RUNS_DIR.glob("*/run.json"):
-        try:
-            payload = json.loads(run_json_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            continue
+        payload = _try_read_json_object(
+            run_json_path
+        )
 
-        if not isinstance(payload, dict) or not payload.get("run_id"):
+        if payload is None or not payload.get("run_id"):
             continue
 
         summary = dict(payload)
