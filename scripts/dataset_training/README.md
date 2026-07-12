@@ -28,3 +28,16 @@ Les modules suivants restent ceux du checkpoint TTNet d'origine :
 - `segmentation`
 
 Les checkpoints et rapports volumineux sont produits sous `runs/` et ne sont pas versionnés.
+
+## Évaluation finale D1E
+
+5. `evaluate_blurball_final_test_d1e.py`
+
+Le test final utilise les matchs 22 à 25 avec la politique figée
+`refined_only` et les seuils 0.05 / 0.05.
+
+Le résultat synthétique versionné est disponible dans
+`blurball_d1_final_test_result.json`.
+
+Le split test D1 est désormais ouvert et ne doit plus servir à recalibrer
+le modèle D1.
