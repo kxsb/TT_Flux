@@ -1,10 +1,3 @@
-"""
-Compatibility imports for the historical analysis namespace.
-
-Canonical scorer implementations now live under
-ttflux.tracking.candidates.scorers.
-"""
-
 from ttflux.tracking.candidates.scorers import (
     BallCandidateScorer,
     BallCandidateScoringInput,

@@ -1,4 +1,4 @@
-from ttflux.analysis.candidate_scorers import (
+from ttflux.tracking.candidates.scorers import (
     BallCandidateScorer,
     HeuristicV1BallCandidateScorer,
 )

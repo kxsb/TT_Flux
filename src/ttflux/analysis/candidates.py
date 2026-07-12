@@ -13,7 +13,7 @@ from typing import Any
 import cv2
 import numpy as np
 
-from ttflux.analysis.candidate_scorers import (
+from ttflux.tracking.candidates.scorers import (
     BallCandidateScorer,
     BallCandidateScoringInput,
     HeuristicV1BallCandidateScorer,

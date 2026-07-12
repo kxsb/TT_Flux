@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from ttflux.analysis.candidate_scorers import (
+from ttflux.tracking.candidates.scorers import (
     BallCandidateScorer,
     HeuristicV1BallCandidateScorer,
 )
