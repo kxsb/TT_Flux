@@ -13,6 +13,10 @@ from ttflux.pipeline.clips import (
     build_clip_payload as _build_clip_payload_impl,
     extract_clip as _extract_clip_impl,
 )
+from ttflux.pipeline.catalog import (
+    created_label as _created_label_impl,
+    list_runs as _list_runs_impl,
+)
 from ttflux.pipeline.contracts import (
     PIPELINE_NAME,
     PIPELINE_VERSION,
@@ -430,42 +434,13 @@ def delete_run(run_id: str) -> dict[str, Any]:
 
 
 def _created_label(value: Any) -> str:
-    if not isinstance(value, str):
-        return "Date inconnue"
-
-    try:
-        parsed = datetime.fromisoformat(value)
-    except ValueError:
-        return value
-
-    return parsed.strftime("%d/%m/%Y %H:%M:%S")
+    return _created_label_impl(value)
 
 
 def list_runs() -> list[dict[str, Any]]:
-    """Relit les runs locaux valides, du plus récent au plus ancien."""
+    """Relit les runs locaux valides, du plus r?cent au plus ancien."""
 
     ensure_project_layout()
-    runs: list[dict[str, Any]] = []
-
-    for run_json_path in RUNS_DIR.glob("*/run.json"):
-        payload = _try_read_json_object(
-            run_json_path
-        )
-
-        if payload is None or not payload.get("run_id"):
-            continue
-
-        summary = dict(payload)
-        summary["created_label"] = _created_label(payload.get("created_at"))
-        summary["directory"] = run_json_path.parent.name
-        runs.append(summary)
-
-    runs.sort(
-        key=lambda item: str(
-            item.get("created_at")
-            or item.get("run_id")
-            or ""
-        ),
-        reverse=True,
+    return _list_runs_impl(
+        RUNS_DIR
     )
-    return runs
