@@ -10,7 +10,7 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, Field
 
 from ttflux import __version__
-from ttflux.analysis.runs import (
+from ttflux.pipeline.runs import (
     InvalidClipRangeError,
     InvalidRunStateError,
     UnknownRunError,

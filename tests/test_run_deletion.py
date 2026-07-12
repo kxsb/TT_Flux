@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-import ttflux.analysis.runs as run_store
+import ttflux.pipeline.runs as run_store
 
 
 def make_run(

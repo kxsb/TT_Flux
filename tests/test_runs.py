@@ -6,7 +6,7 @@ from types import SimpleNamespace
 
 import pytest
 
-import ttflux.analysis.runs as run_store
+import ttflux.pipeline.runs as run_store
 
 
 EXPECTED_TRACKING_DESCRIPTOR = {
