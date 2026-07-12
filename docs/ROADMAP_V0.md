@@ -9,7 +9,7 @@ Statut officiel du moteur de balle :
 La baseline balle est fig?e comme fondation exploratoire. Elle n'est pas
 d?clar?e valid?e en pr?cision.
 
-L'?tape active est R5A : contrats minimaux de compr?hension de sc?ne 2D.
+L'?tape active est R5B : persistance optionnelle du contexte de sc?ne.
 
 ## Jalons termin?s
 
@@ -22,6 +22,7 @@ L'?tape active est R5A : contrats minimaux de compr?hension de sc?ne 2D.
 - [x] I12 ? I16 ? Instrumentation et gel exploratoire de la baseline
 - [x] R1 ? R3 ? API et modules internes du tracking
 - [x] R4A ? R4G ? Modularisation du pipeline et des runs
+- [x] R5A ? Contrats minimaux de sc?ne 2D
 
 ## Baseline balle 2D ? ?tat fig?
 
@@ -95,32 +96,31 @@ inchang?s afin de servir de r?f?rence.
 
 ## R5 ? Compr?hension de sc?ne 2D
 
-### R5A ? Contrats de sc?ne
+### R5A ? Contrats de sc?ne ? termin?
+
+Gel? au commit `60b44d6`.
+
+- [x] cr?er `src/ttflux/scene/` ;
+- [x] d?finir un contrat de g?om?trie de table 2D ;
+- [x] repr?senter provenance, validit? et incertitude ;
+- [x] d?finir une s?rialisation stable ;
+- [x] tester les invariants g?om?triques ;
+- [x] ne modifier ni `BallTrackingEngine` ni les artefacts actuels ;
+- [x] rester importable sans d?pendance lourde ;
+- [x] rester ind?pendant de l'interface web ;
+- [x] n'ex?cuter aucune inf?rence ;
+- [x] pr?server les tests historiques.
+
+### R5B ? Persistance du contexte ? actif
 
 Objectif actuel et unique :
 
-- [ ] cr?er `src/ttflux/scene/` ;
-- [ ] d?finir un contrat de g?om?trie de table 2D ;
-- [ ] repr?senter provenance, validit? et incertitude ;
-- [ ] d?finir une s?rialisation stable ;
-- [ ] tester les invariants g?om?triques ;
-- [ ] ne modifier ni `BallTrackingEngine` ni les artefacts actuels.
-
-Crit?res de sortie R5A :
-
-- le package est importable sans d?pendance lourde ;
-- les contrats sont ind?pendants de l'interface web ;
-- aucune inf?rence n'est ex?cut?e ;
-- aucun nouvel artefact n'est encore impos? aux runs ;
-- les tests historiques restent verts.
-
-### R5B ? Persistance du contexte
-
-Apr?s validation de R5A seulement :
-
-- associer un contexte de sc?ne optionnel ? un run ;
-- d?finir un artefact versionn? ;
-- pr?server les runs historiques d?pourvus de contexte.
+- [ ] d?finir un artefact JSON de sc?ne versionn? ;
+- [ ] ?crire et lire cet artefact atomiquement ;
+- [ ] associer le contexte de mani?re optionnelle ? un run ;
+- [ ] pr?server les runs historiques d?pourvus de contexte ;
+- [ ] ne lancer aucune d?tection ou inf?rence ;
+- [ ] ne modifier ni le tracking ni ses m?triques.
 
 ### R5C ? Observation de la table
 
@@ -141,7 +141,7 @@ Apr?s mesure ind?pendante de la sc?ne :
 
 ## ?tapes diff?r?es
 
-Ces chantiers ne doivent pas ?tre ouverts pendant R5A :
+Ces chantiers ne doivent pas ?tre ouverts pendant R5B :
 
 - interface compl?te de review humaine ;
 - analyse du scoreboard ;

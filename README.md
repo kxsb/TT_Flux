@@ -58,29 +58,40 @@ Les anciens chemins sous `ttflux.analysis` ne doivent plus recevoir de
 nouvelle logique canonique. Ils sont conserv?s uniquement lorsqu'une
 compatibilit? historique est n?cessaire.
 
-## ?tape active ? R5A
+## R5A ? contrats de sc?ne 2D termin?s
 
-La prochaine ?tape unique est la cr?ation d'un socle de compr?hension de
-sc?ne 2D.
+R5A est gel? au commit `60b44d6`.
 
-R5A doit uniquement introduire :
+Le package `ttflux.scene` fournit d?sormais :
 
-- un package `ttflux.scene` minimal ;
-- des contrats explicites pour la g?om?trie 2D de la table ;
-- la provenance et l'incertitude des observations de sc?ne ;
-- des tests unitaires de s?rialisation et d'invariants g?om?triques.
+- un contrat de point 2D en coordonn?es image ;
+- une g?om?trie quadrilat?rale de table ;
+- des invariants de bornage, d'ordre et de convexit? ;
+- une provenance explicite ;
+- une confiance et une incertitude en pixels ;
+- un ?tat valide ou invalide explicite ;
+- une s?rialisation versionn?e et r?versible.
 
-R5A ne doit pas encore :
+Ces contrats restent ind?pendants du pipeline, du tracking, de l'interface
+web, d'OpenCV et de NumPy.
 
-- modifier le moteur de balle ;
-- entra?ner un nouveau r?seau ;
-- int?grer la pose humaine ;
-- reconstruire la sc?ne en 3D ;
-- estimer le spin ;
-- ajouter une nouvelle logique dans l'interface web.
+R5A n'a modifi? ni le moteur de balle ni le contrat historique des runs.
 
-Le contexte de sc?ne sera r?inject? dans le tracking seulement apr?s avoir
-?t? mesur? ind?pendamment.
+## ?tape active ? R5B
+
+R5B doit uniquement ajouter une persistance optionnelle du contexte de
+sc?ne.
+
+Cette ?tape doit :
+
+- d?finir un artefact de sc?ne versionn? ;
+- permettre son ?criture et sa lecture atomiques ;
+- l'associer facultativement ? un run ;
+- pr?server int?gralement les runs historiques sans contexte ;
+- ne lancer aucune d?tection ou inf?rence ;
+- ne modifier ni `BallTrackingEngine` ni ses m?triques.
+
+La d?tection de table et la r?injection dans le tracking restent diff?r?es.
 
 ## Fonctionnalit?s pr?sentes
 

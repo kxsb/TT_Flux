@@ -20,7 +20,7 @@ contrats des autres couches ni perdre la reproductibilit? des exp?riences.
         candidats, scoring et temporalit?
 
     scene
-        future compr?hension 2D de la table et de son environnement
+        contrats 2D, provenance et observations de table
 
     video
         catalogue, lecture, extraction et m?tadonn?es
@@ -28,7 +28,8 @@ contrats des autres couches ni perdre la reproductibilit? des exp?riences.
     validation
         tests, benchmarks et documents d'exp?riences
 
-Le package `scene` n'est pas encore impl?ment? au terme de R4.
+Le package `scene` est introduit par R5A sous la forme de contrats purs,
+sans inf?rence et sans d?pendance lourde.
 
 ## API publique du moteur de balle
 
@@ -121,7 +122,7 @@ couche de compatibilit? lorsqu'ils sont encore n?cessaires.
 - `web` et la CLI peuvent d?pendre de `pipeline` ;
 - `pipeline` peut d?pendre des API publiques des moteurs ;
 - `tracking` ne d?pend pas de `web` ;
-- le futur package `scene` ne d?pendra pas de `web` ;
+- `scene` ne d?pend pas de `web` ;
 - `tracking` ne d?pendra pas directement des impl?mentations internes de
   `scene` ;
 - les exp?riences ne sont pas import?es par le package runtime ;
@@ -163,21 +164,41 @@ Le refactor a :
 Aucune extraction suppl?mentaire de petite fonction hors de `runs.py`
 n'est pr?vue sans besoin fonctionnel concret.
 
-## Point de d?part R5A
+## R5A ? contrats de sc?ne termin?s
 
-R5A cr?e un package `ttflux.scene` minimal, sans mod?le d'inf?rence et
-sans modification du tracking existant.
+R5A introduit les objets publics suivants :
 
-Le premier contrat doit repr?senter une g?om?trie de table 2D observable,
-sa provenance, sa validit? et son incertitude.
+- `Point2D` ;
+- `TableGeometry2D` ;
+- `SceneProvenance` ;
+- `TableObservation2D`.
 
-Les ?tapes ult?rieures pourront ensuite traiter :
+Les contrats sont immuables, s?rialisables et valid?s sans d?pendance vers
+le tracking, le pipeline, le web, OpenCV ou NumPy.
 
-1. la persistance d'un contexte de sc?ne ;
-2. la d?tection ou l'annotation de la table ;
-3. l'agr?gation temporelle pour cam?ra fixe ;
-4. l'?valuation ind?pendante ;
-5. une int?gration exp?rimentale et r?versible dans le tracking.
+La g?om?trie de table utilise quatre coins s?mantiques ordonn?s dans
+l'espace image :
 
-La pose humaine, le scoreboard, la 3D et le spin restent hors du p?rim?tre
-de R5A.
+    near_left
+    near_right
+    far_right
+    far_left
+
+Une observation porte explicitement sa provenance, sa confiance, son
+incertitude et son ?ventuel motif d'invalidit?.
+
+## Point de d?part R5B
+
+R5B doit persister un contexte de sc?ne optionnel sans imposer de nouvel
+artefact aux runs historiques.
+
+La couche de persistance devra :
+
+1. utiliser un artefact JSON versionn? ;
+2. employer une ?criture atomique ;
+3. accepter l'absence totale de contexte ;
+4. rester ind?pendante du moteur de balle ;
+5. ne produire aucune inf?rence.
+
+La d?tection de table, l'agr?gation temporelle, la pose humaine, le
+scoreboard, la 3D et le spin restent hors du p?rim?tre de R5B.
