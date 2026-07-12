@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import re
 import shutil
-import subprocess
 import unicodedata
 from datetime import datetime
 from pathlib import Path
@@ -10,9 +9,12 @@ from typing import Any
 from uuid import uuid4
 
 from ttflux.core.paths import RUNS_DIR, ensure_project_layout
+from ttflux.pipeline.clips import (
+    build_clip_payload as _build_clip_payload_impl,
+    extract_clip as _extract_clip_impl,
+)
 from ttflux.pipeline.contracts import (
     ANALYSIS_SCHEMA_VERSION,
-    CLIP_SCHEMA_VERSION,
     PIPELINE_NAME,
     PIPELINE_VERSION,
     RUN_SCHEMA_VERSION,
@@ -217,84 +219,23 @@ def _extract_clip(
     start_s: float,
     duration_s: float,
 ) -> None:
-    ffmpeg = shutil.which("ffmpeg")
-
-    if ffmpeg is None:
-        raise RuntimeError("ffmpeg est introuvable dans le PATH.")
-
-    temporary_path = destination_path.with_name(
-        destination_path.stem + ".partial" + destination_path.suffix
+    _extract_clip_impl(
+        source_path,
+        destination_path,
+        start_s,
+        duration_s,
     )
-    temporary_path.unlink(missing_ok=True)
-
-    command = [
-        ffmpeg,
-        "-hide_banner",
-        "-loglevel",
-        "error",
-        "-y",
-        "-ss",
-        f"{start_s:.3f}",
-        "-i",
-        str(source_path),
-        "-t",
-        f"{duration_s:.3f}",
-        "-map",
-        "0:v:0",
-        "-an",
-        "-c:v",
-        "libx264",
-        "-preset",
-        "veryfast",
-        "-crf",
-        "18",
-        "-pix_fmt",
-        "yuv420p",
-        "-movflags",
-        "+faststart",
-        str(temporary_path),
-    ]
-
-    try:
-        subprocess.run(
-            command,
-            check=True,
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            errors="replace",
-        )
-        temporary_path.replace(destination_path)
-    except subprocess.CalledProcessError as exc:
-        temporary_path.unlink(missing_ok=True)
-        message = exc.stderr.strip() or "Échec inconnu de ffmpeg"
-        raise RuntimeError(f"Extraction FFmpeg impossible : {message}") from exc
-    except Exception:
-        temporary_path.unlink(missing_ok=True)
-        raise
 
 
 def _build_clip_payload(
     run_payload: RunPayload,
     clip_path: Path,
 ) -> dict[str, Any]:
-    probe = probe_video(clip_path)
-    configuration = run_payload["configuration"]
-
-    return {
-        "schema_version": CLIP_SCHEMA_VERSION,
-        "run_id": run_payload["run_id"],
-        "video_id": run_payload["video_id"],
-        "source_video_filename": run_payload["video_filename"],
-        "artifact": "source_clip.mp4",
-        "requested_start_s": configuration["clip_start_s"],
-        "requested_duration_s": configuration["clip_duration_s"],
-        "size_mb": round(
-            clip_path.stat().st_size / (1024 * 1024),
-            3,
-        ),
-        **probe,
-    }
+    return _build_clip_payload_impl(
+        run_payload,
+        clip_path,
+        probe_video_fn=probe_video,
+    )
 
 
 def _tracking_descriptor(
