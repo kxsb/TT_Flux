@@ -1,0 +1,40 @@
+{
+    "schema_version":  1,
+    "experiment":  "DSET_D1_FINAL_INFERENCE_POLICY",
+    "checkpoint_relative_path":  "runs/dataset_training/d1c_blurball_global_full/d1c_ttnet_global_best.pth",
+    "prediction_policy":  "refined_only",
+    "global_threshold":  0.05,
+    "local_threshold":  0.05,
+    "distance_threshold_px":  20,
+    "selection_split":  "validation",
+    "selection_match_ids":  [
+                                20,
+                                21
+                            ],
+    "frozen_test_match_ids":  [
+                                  22,
+                                  23,
+                                  24,
+                                  25
+                              ],
+    "local_stage":  "legacy_ttnet_local_stage",
+    "local_stage_retraining":  false,
+    "validation_metrics":  {
+                               "precision_at_20px":  0.95350821070590741,
+                               "recall_at_20px":  0.62610278672454833,
+                               "f1_at_20px":  0.75587489433643273,
+                               "median_valid_error_px":  2.3942315865428809,
+                               "false_positive_rate_invisible":  0.17102966841186737
+                           },
+    "calibration_diagnostics":  {
+                                    "conservative_global_threshold":  0.03,
+                                    "conservative_local_threshold":  0.05,
+                                    "conservative_f1_at_20px":  0.75595741085009294,
+                                    "conservative_f1_gain":  8.25165136602024E-05,
+                                    "overall_best_policy":  "refined_only",
+                                    "overall_best_global_threshold":  0.05,
+                                    "overall_best_local_threshold":  0.001,
+                                    "overall_best_f1_at_20px":  0.76897878961592
+                                },
+    "decision":  "Keep the original 0.05 global and local thresholds because the conservative validation gain is negligible."
+}
