@@ -9,6 +9,24 @@ import pytest
 import ttflux.analysis.runs as run_store
 
 
+EXPECTED_TRACKING_DESCRIPTOR = {
+    "schema_version": 1,
+    "engine": {
+        "name": "ball_tracking_engine",
+        "version": 1,
+    },
+    "scorer_id": "heuristic_v1",
+    "configuration": {
+        "candidates": {
+            "max_candidates_per_frame": 24,
+        },
+        "tracks": {
+            "max_output_tracks": 24,
+        },
+    },
+}
+
+
 @pytest.fixture(autouse=True)
 def stub_tracking_engine(
     monkeypatch: pytest.MonkeyPatch,
@@ -99,6 +117,23 @@ def stub_tracking_engine(
                 },
                 track_metrics={
                     "summary": track_summary,
+                },
+                to_dict=lambda: {
+                    **EXPECTED_TRACKING_DESCRIPTOR,
+                    "status": "completed",
+                    "clip": {
+                        "path": str(clip_path.resolve()),
+                        "filename": clip_path.name,
+                    },
+                    "output_dir": str(output_dir.resolve()),
+                    "metrics": {
+                        "candidates": candidate_summary,
+                        "tracks": track_summary,
+                    },
+                    "artifacts": {
+                        "candidates": "candidates.csv",
+                        "tracks": "tracks_probe.csv",
+                    },
                 },
             )
 
@@ -270,8 +305,16 @@ def test_execute_run_extracts_clip_and_completes(
     assert clip["requested_start_s"] == 20.0
     assert clip["requested_duration_s"] == 10.0
     assert clip["frame_count"] == 500
-    assert analysis["schema_version"] == 3
+    assert analysis["schema_version"] == 4
     assert analysis["clip"]["actual_duration_s"] == 10.0
+    assert analysis["tracking"] == (
+        EXPECTED_TRACKING_DESCRIPTOR
+    )
+    assert saved_run["tracking"] == (
+        EXPECTED_TRACKING_DESCRIPTOR
+    )
+    assert "clip" not in saved_run["tracking"]
+    assert "output_dir" not in saved_run["tracking"]
     assert analysis["candidates"]["total_candidates"] == 1200
     assert saved_run["metrics"]["coverage_ratio"] == 0.803213
     assert saved_run["artifacts"]["candidates"] == "candidates.csv"

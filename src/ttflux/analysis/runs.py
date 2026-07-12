@@ -323,19 +323,70 @@ def _build_clip_payload(
     }
 
 
+def _tracking_descriptor(
+    tracking_result: Any,
+) -> dict[str, Any]:
+    """Extracts portable provenance from a tracking result."""
+
+    payload = tracking_result.to_dict()
+
+    if not isinstance(payload, dict):
+        raise TypeError(
+            "Tracking result serialization must be an object."
+        )
+
+    required_keys = (
+        "schema_version",
+        "engine",
+        "scorer_id",
+        "configuration",
+    )
+    missing_keys = [
+        key
+        for key in required_keys
+        if key not in payload
+    ]
+
+    if missing_keys:
+        joined = ", ".join(missing_keys)
+        raise ValueError(
+            "Tracking result is missing provenance fields: "
+            f"{joined}"
+        )
+
+    if not isinstance(payload["engine"], dict):
+        raise TypeError(
+            "Tracking engine provenance must be an object."
+        )
+
+    if not isinstance(payload["configuration"], dict):
+        raise TypeError(
+            "Tracking configuration must be an object."
+        )
+
+    return {
+        "schema_version": payload["schema_version"],
+        "engine": dict(payload["engine"]),
+        "scorer_id": payload["scorer_id"],
+        "configuration": dict(payload["configuration"]),
+    }
+
+
 def _build_analysis(
     run_payload: dict[str, Any],
     video_payload: dict[str, Any],
     clip_payload: dict[str, Any],
     candidate_metrics: dict[str, Any],
     track_metrics: dict[str, Any],
+    tracking: dict[str, Any],
     generated_at: datetime,
 ) -> dict[str, Any]:
     return {
-        "schema_version": 3,
+        "schema_version": 4,
         "run_id": run_payload["run_id"],
         "video_id": run_payload["video_id"],
         "pipeline": run_payload["pipeline"],
+        "tracking": tracking,
         "generated_at": generated_at.isoformat(timespec="seconds"),
         "source": {
             "filename": run_payload["video_filename"],
@@ -429,6 +480,9 @@ def execute_run(run_id: str) -> dict[str, Any]:
         track_metrics = (
             tracking_result.track_metrics
         )
+        tracking_descriptor = _tracking_descriptor(
+            tracking_result
+        )
 
         generated_at = datetime.now().astimezone()
         analysis_payload = _build_analysis(
@@ -437,6 +491,7 @@ def execute_run(run_id: str) -> dict[str, Any]:
             clip_payload,
             candidate_metrics,
             track_metrics,
+            tracking_descriptor,
             generated_at,
         )
         _write_json_atomic(analysis_path, analysis_payload)
@@ -457,6 +512,7 @@ def execute_run(run_id: str) -> dict[str, Any]:
                 "analysis": "analysis.json",
             }
         )
+        run_payload["tracking"] = tracking_descriptor
         run_payload["metrics"] = candidate_metrics["summary"]
         run_payload["track_metrics"] = track_metrics["summary"]
         _write_json_atomic(run_path, run_payload)
