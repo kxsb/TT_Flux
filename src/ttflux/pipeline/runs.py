@@ -11,41 +11,34 @@ from typing import Any
 from uuid import uuid4
 
 from ttflux.core.paths import RUNS_DIR, ensure_project_layout
+from ttflux.pipeline.contracts import (
+    ANALYSIS_SCHEMA_VERSION,
+    CLIP_SCHEMA_VERSION,
+    PIPELINE_NAME,
+    PIPELINE_VERSION,
+    RUN_SCHEMA_VERSION,
+    TRACKING_DESCRIPTOR_REQUIRED_KEYS,
+    VIDEO_SNAPSHOT_KEYS,
+    VIDEO_SNAPSHOT_SCHEMA_VERSION,
+    RunPayload,
+)
+from ttflux.pipeline.errors import (
+    InvalidClipRangeError,
+    InvalidRunStateError,
+    UnknownRunError,
+    UnknownVideoError,
+)
+from ttflux.pipeline.states import (
+    RUN_COMPLETED,
+    RUN_CREATED,
+    RUN_FAILED,
+    RUN_RUNNING,
+)
 from ttflux.tracking import BallTrackingEngine
 from ttflux.video.catalog import find_video, probe_video
 
 
-class UnknownVideoError(LookupError):
-    """La vidéo demandée n'existe pas dans la bibliothèque locale."""
-
-
-class UnknownRunError(LookupError):
-    """Le run demandé n'existe pas."""
-
-
-class InvalidRunStateError(RuntimeError):
-    """Le run ne peut pas être exécuté depuis son état courant."""
-
-
-class InvalidClipRangeError(ValueError):
-    """La plage temporelle demandée est invalide."""
-
-
 _SLUG_PATTERN = re.compile(r"[^a-z0-9]+")
-_VIDEO_SNAPSHOT_KEYS = (
-    "id",
-    "filename",
-    "relative_path",
-    "extension",
-    "size_mb",
-    "width",
-    "height",
-    "fps",
-    "duration_s",
-    "frame_count",
-    "codec",
-    "probe_error",
-)
 
 
 def slugify(value: str, fallback: str = "video") -> str:
@@ -83,8 +76,8 @@ def _read_json_object(path: Path) -> dict[str, Any]:
 
 def _video_snapshot(video: dict[str, Any]) -> dict[str, Any]:
     return {
-        "schema_version": 1,
-        **{key: video.get(key) for key in _VIDEO_SNAPSHOT_KEYS},
+        "schema_version": VIDEO_SNAPSHOT_SCHEMA_VERSION,
+        **{key: video.get(key) for key in VIDEO_SNAPSHOT_KEYS},
     }
 
 
@@ -171,7 +164,7 @@ def create_run(
     video_id: str,
     clip_start_s: float = 0.0,
     clip_duration_s: float = 15.0,
-) -> dict[str, Any]:
+) -> RunPayload:
     """Crée un run d'extraction de segment dans l'état created."""
 
     ensure_project_layout()
@@ -200,17 +193,17 @@ def create_run(
         raise RuntimeError("Impossible de générer un identifiant de run unique")
 
     video_payload = _video_snapshot(video)
-    run_payload: dict[str, Any] = {
-        "schema_version": 1,
+    run_payload: RunPayload = {
+        "schema_version": RUN_SCHEMA_VERSION,
         "run_id": run_id,
         "video_id": video["id"],
         "video_filename": video["filename"],
         "video_relative_path": video["relative_path"],
         "created_at": created_at.isoformat(timespec="seconds"),
-        "status": "created",
+        "status": RUN_CREATED,
         "pipeline": {
-            "name": "motion_tracks_probe",
-            "version": 1,
+            "name": PIPELINE_NAME,
+            "version": PIPELINE_VERSION,
         },
         "configuration": {
             "clip_start_s": start_s,
@@ -301,14 +294,14 @@ def _extract_clip(
 
 
 def _build_clip_payload(
-    run_payload: dict[str, Any],
+    run_payload: RunPayload,
     clip_path: Path,
 ) -> dict[str, Any]:
     probe = probe_video(clip_path)
     configuration = run_payload["configuration"]
 
     return {
-        "schema_version": 1,
+        "schema_version": CLIP_SCHEMA_VERSION,
         "run_id": run_payload["run_id"],
         "video_id": run_payload["video_id"],
         "source_video_filename": run_payload["video_filename"],
@@ -335,12 +328,7 @@ def _tracking_descriptor(
             "Tracking result serialization must be an object."
         )
 
-    required_keys = (
-        "schema_version",
-        "engine",
-        "scorer_id",
-        "configuration",
-    )
+    required_keys = TRACKING_DESCRIPTOR_REQUIRED_KEYS
     missing_keys = [
         key
         for key in required_keys
@@ -373,7 +361,7 @@ def _tracking_descriptor(
 
 
 def _build_analysis(
-    run_payload: dict[str, Any],
+    run_payload: RunPayload,
     video_payload: dict[str, Any],
     clip_payload: dict[str, Any],
     candidate_metrics: dict[str, Any],
@@ -382,7 +370,7 @@ def _build_analysis(
     generated_at: datetime,
 ) -> dict[str, Any]:
     return {
-        "schema_version": 4,
+        "schema_version": ANALYSIS_SCHEMA_VERSION,
         "run_id": run_payload["run_id"],
         "video_id": run_payload["video_id"],
         "pipeline": run_payload["pipeline"],
@@ -415,7 +403,7 @@ def _build_analysis(
     }
 
 
-def execute_run(run_id: str) -> dict[str, Any]:
+def execute_run(run_id: str) -> RunPayload:
     """Extrait le segment demandé et persiste le cycle d'état."""
 
     ensure_project_layout()
@@ -428,7 +416,7 @@ def execute_run(run_id: str) -> dict[str, Any]:
 
     current_status = run_payload.get("status")
 
-    if current_status != "created":
+    if current_status != RUN_CREATED:
         raise InvalidRunStateError(
             f"Run {run_id} non exécutable depuis l'état {current_status!r}"
         )
@@ -444,7 +432,7 @@ def execute_run(run_id: str) -> dict[str, Any]:
         raise FileNotFoundError(f"Vidéo source absente : {source_path}")
 
     started_at = datetime.now().astimezone()
-    run_payload["status"] = "running"
+    run_payload["status"] = RUN_RUNNING
     run_payload["started_at"] = started_at.isoformat(timespec="seconds")
     run_payload.pop("completed_at", None)
     run_payload.pop("failed_at", None)
@@ -497,7 +485,7 @@ def execute_run(run_id: str) -> dict[str, Any]:
         _write_json_atomic(analysis_path, analysis_payload)
 
         completed_at = datetime.now().astimezone()
-        run_payload["status"] = "completed"
+        run_payload["status"] = RUN_COMPLETED
         run_payload["completed_at"] = completed_at.isoformat(timespec="seconds")
         run_payload["artifacts"].update(
             {
@@ -518,7 +506,7 @@ def execute_run(run_id: str) -> dict[str, Any]:
         _write_json_atomic(run_path, run_payload)
     except Exception as exc:
         failed_at = datetime.now().astimezone()
-        run_payload["status"] = "failed"
+        run_payload["status"] = RUN_FAILED
         run_payload["failed_at"] = failed_at.isoformat(timespec="seconds")
         run_payload["error"] = {
             "type": type(exc).__name__,
@@ -534,7 +522,7 @@ def create_and_execute_clip_run(
     video_id: str,
     clip_start_s: float,
     clip_duration_s: float,
-) -> dict[str, Any]:
+) -> RunPayload:
     """Crée puis exécute immédiatement un run d'extraction."""
 
     created_run = create_run(
@@ -626,7 +614,7 @@ def delete_run(run_id: str) -> dict[str, Any]:
     run_payload = _read_json_object(run_dir / "run.json")
     current_status = run_payload.get("status")
 
-    if current_status == "running":
+    if current_status == RUN_RUNNING:
         raise InvalidRunStateError(
             f"Le run {run_id} est encore en cours d'exécution."
         )
