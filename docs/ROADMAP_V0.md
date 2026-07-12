@@ -11,6 +11,8 @@ d?clar?e valid?e en pr?cision.
 
 L'?tape active est R5B : persistance optionnelle du contexte de sc?ne.
 
+Le chantier de refactor est clos et identifié par le tag `refactor-closed-2026-07-12`.
+
 ## Jalons termin?s
 
 - [x] V0.0 ? Socle propre et biblioth?que vid?o
@@ -23,6 +25,7 @@ L'?tape active est R5B : persistance optionnelle du contexte de sc?ne.
 - [x] R1 ? R3 ? API et modules internes du tracking
 - [x] R4A ? R4G ? Modularisation du pipeline et des runs
 - [x] R5A ? Contrats minimaux de sc?ne 2D
+- [x] Cleanup post-refactor — audit, smoke tests et clôture formelle
 
 ## Baseline balle 2D ? ?tat fig?
 
