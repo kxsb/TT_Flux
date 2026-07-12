@@ -1,119 +1,175 @@
 # Roadmap TTFlux V0
 
-## État
+## Statut global
 
-- [x] V0.0 — Socle propre et bibliothèque vidéo
-- [x] V0.1 — Contrat des runs metadata-only
-- [x] V0.1.1 — Exécution et cycle d'état metadata-only
-- [x] V0.1.2 — Extraction reproductible d'un segment
-- [x] V0.1.3 — Réservoir brut de candidats balle
-- [x] V0.1.4 — Pistes temporelles exploratoires
-- [ ] V0.2 — Baseline balle 2D sélectionnée — prévalidation I15A3
-- [ ] V0.3 — Review humaine
-- [ ] V0.4 — Contexte table
+Statut officiel du moteur de balle :
 
-## V0.0 — Socle propre
+    BALL_TRACKING_BASELINE_FROZEN_EXPLORATORY
 
-- package Python installable ;
-- diagnostic de l'environnement ;
-- catalogue des vidéos ;
-- interface de lecture locale.
+La baseline balle est fig?e comme fondation exploratoire. Elle n'est pas
+d?clar?e valid?e en pr?cision.
 
-## V0.1 — Contrat des analyses
+L'?tape active est R5A : contrats minimaux de compr?hension de sc?ne 2D.
 
-- création d'un run ;
-- configuration sauvegardée ;
-- métadonnées vidéo ;
-- état du traitement ;
-- historique des analyses.
+## Jalons termin?s
 
-## V0.1.1 — Exécution metadata-only
+- [x] V0.0 ? Socle propre et biblioth?que vid?o
+- [x] V0.1 ? Contrat des runs metadata-only
+- [x] V0.1.1 ? Ex?cution et cycle d'?tat
+- [x] V0.1.2 ? Extraction reproductible d'un segment
+- [x] V0.1.3 ? R?servoir brut de candidats balle
+- [x] V0.1.4 ? Pistes temporelles exploratoires
+- [x] I12 ? I16 ? Instrumentation et gel exploratoire de la baseline
+- [x] R1 ? R3 ? API et modules internes du tracking
+- [x] R4A ? R4G ? Modularisation du pipeline et des runs
 
-- cycle `created → running → completed / failed` ;
-- écriture atomique des états ;
-- production de `analysis.json` ;
-- persistance d'une erreur structurée en cas d'échec.
+## Baseline balle 2D ? ?tat fig?
 
-## V0.1.2 — Segment d'analyse
+Le travail exp?rimental a produit :
 
-- début et durée choisis depuis le lecteur ;
-- validation d'une plage de 1 à 60 secondes ;
-- extraction FFmpeg H.264 ;
-- production de `source_clip.mp4` et `clip.json` ;
-- lecture du segment depuis l'historique.
+- un benchmark humain gel? de 450 images ;
+- 416 images avec balle visible et 34 sans balle visible ;
+- un r?servoir cap 24 de 10 299 candidats ;
+- 258 succ?s top-1 sur 416 images visibles ;
+- 322 succ?s oracle dans le r?servoir cap 24 ;
+- 340 succ?s dans le r?servoir ?tendu ;
+- des audits de d?terminisme et de connectabilit? ;
+- des diagnostics sur les faux positifs et les abstentions ;
+- un contrat interchangeable `BallCandidateScorer` ;
+- une conservation exacte de `heuristic_v1` ;
+- un manifeste candidat d?terministe ;
+- des labels `ball / not_ball / ignore` ;
+- 81 hard negatives temporels ;
+- des overlays et rapports reproductibles.
 
-## V0.1.3 — Réservoir de candidats
+Ces r?sultats mesurent le potentiel et les limites du r?servoir. Ils ne
+constituent pas une validation finale du tracker.
 
-- différence temporelle symétrique sur trois images ;
-- filtrage de petits composants mobiles ;
-- classement local par score ;
-- `candidates.csv` ;
-- `candidates_metrics.json` ;
-- `overlay_candidates.mp4`.
+Les exp?riences de reranking I14 et les essais TTNet restent document?s,
+mais aucun de ces mod?les n'est d?clar? moteur canonique valid?.
 
-## V0.1.4 — Pistes temporelles exploratoires
+## D?cision de gel
 
-- recherche en faisceau bornée ;
-- connexion entre images voisines ;
-- prédiction par vitesse récente ;
-- tolérance de trois images manquantes ;
-- conservation de plusieurs pistes concurrentes ;
-- `tracks_probe.csv` ;
-- `tracks_metrics.json` ;
-- `overlay_tracks_probe.mp4`.
+La piste consistant ? s?lectionner imm?diatement un nouveau scorer est
+suspendue.
 
-## V0.2 — Baseline balle 2D sélectionnée
+Motifs :
 
-### Prévalidation terminée
+- la sc?ne produit encore de nombreux objets concurrents ;
+- les faux positifs li?s aux joueurs et ? l'environnement restent
+  structurants ;
+- une optimisation locale du scorer risque d'apprendre l'identit? du
+  corpus plut?t que celle de la balle ;
+- le contexte de table et de sc?ne doit ?tre mesur? s?par?ment avant
+  r?int?gration.
 
-- [x] benchmark humain gelé de 450 images ;
-- [x] comparaison top-1, cap 24 et réservoir étendu ;
-- [x] audit de déterminisme du générateur de candidats ;
-- [x] audit de connectabilité temporelle ;
-- [x] audit des faux positifs et des abstentions ;
-- [x] diagnostics visuels des trajectoires ;
-- [x] contrat interchangeable `BallCandidateScorer` ;
-- [x] non-régression exacte de `heuristic_v1` ;
-- [x] manifeste candidat déterministe ;
-- [x] labels `ball / not_ball / ignore` ;
-- [x] identification de 81 hard negatives temporels.
+Le r?servoir brut, les m?triques et la baseline d?terministe restent
+inchang?s afin de servir de r?f?rence.
 
-### Travail restant avant validation V0.2
+## Refactor R1 ? R4 ? termin?
 
-- [ ] fixer la géométrie locale et contextuelle des crops ;
-- [ ] exporter les crops `t-1 / t / t+1` ;
-- [ ] contrôler visuellement les crops et les labels ;
-- [ ] comparer les scorers en leave-one-clip-out ;
-- [ ] sélectionner le scorer final ;
-- [ ] intégrer le gagnant sans dégrader la baseline gelée ;
-- [ ] geler les métriques de couverture, gaps et erreurs ;
-- [ ] produire le MP4 comparatif de validation ;
-- [ ] déclarer la baseline V0.2 validée.
+### R1 et R2
 
-### Critères de sortie
+- [x] API publique du tracking ;
+- [x] contrats des r?sultats et artefacts ;
+- [x] d?pendances historiques prot?g?es.
 
-- une trajectoire canonique est sélectionnée ;
-- les métriques sont comparées au benchmark humain ;
-- les règles de rejet et d'abstention sont explicites ;
-- les résultats sont reproductibles ;
-- le contrôle visuel final est validé.
+### R3
 
-## V0.3 — Review humaine
+- [x] scorers sous `tracking.candidates.scorers` ;
+- [x] g?n?rateur sous `tracking.candidates.generator` ;
+- [x] tracklets sous `tracking.temporal.tracklets` ;
+- [x] imports publics paresseux.
 
-- navigation frame par frame ;
-- correct / wrong / missing / invisible ;
-- corrections manuelles ;
-- export d'annotations.
+### R4
 
-Le benchmark gelé I12 prépare cette étape, mais ne remplace pas encore
-l'interface complète de review et de correction.
+- [x] orchestration d?plac?e sous `pipeline.runs` ;
+- [x] contrats et ?tats extraits ;
+- [x] stockage JSON extrait ;
+- [x] artefacts et maintenance extraits ;
+- [x] gestion des clips extraite ;
+- [x] reporting extrait ;
+- [x] catalogue des runs extrait ;
+- [x] formats des runs pr?serv?s ;
+- [x] suite de tests pr?serv?e.
 
-## V0.4 — Contexte table
+## R5 ? Compr?hension de sc?ne 2D
 
-- coins de table ;
-- homographie ;
-- vue top-down ;
-- contraintes géométriques légères.
+### R5A ? Contrats de sc?ne
 
-Le contexte table ne doit être réintégré au moteur canonique qu'après la
-validation de la baseline balle V0.2.
+Objectif actuel et unique :
+
+- [ ] cr?er `src/ttflux/scene/` ;
+- [ ] d?finir un contrat de g?om?trie de table 2D ;
+- [ ] repr?senter provenance, validit? et incertitude ;
+- [ ] d?finir une s?rialisation stable ;
+- [ ] tester les invariants g?om?triques ;
+- [ ] ne modifier ni `BallTrackingEngine` ni les artefacts actuels.
+
+Crit?res de sortie R5A :
+
+- le package est importable sans d?pendance lourde ;
+- les contrats sont ind?pendants de l'interface web ;
+- aucune inf?rence n'est ex?cut?e ;
+- aucun nouvel artefact n'est encore impos? aux runs ;
+- les tests historiques restent verts.
+
+### R5B ? Persistance du contexte
+
+Apr?s validation de R5A seulement :
+
+- associer un contexte de sc?ne optionnel ? un run ;
+- d?finir un artefact versionn? ;
+- pr?server les runs historiques d?pourvus de contexte.
+
+### R5C ? Observation de la table
+
+Apr?s validation de R5B seulement :
+
+- importer, annoter ou d?tecter les points de table ;
+- agr?ger les observations d'une cam?ra fixe ;
+- mesurer erreurs et taux d'abstention ind?pendamment du tracking balle.
+
+### R5D ? Int?gration exp?rimentale
+
+Apr?s mesure ind?pendante de la sc?ne :
+
+- injecter le contexte par une interface optionnelle ;
+- comparer contre la baseline gel?e ;
+- conserver un mode strictement sans contexte ;
+- accepter uniquement une am?lioration mesur?e et reproductible.
+
+## ?tapes diff?r?es
+
+Ces chantiers ne doivent pas ?tre ouverts pendant R5A :
+
+- interface compl?te de review humaine ;
+- analyse du scoreboard ;
+- pose et biom?canique des joueurs ;
+- reconstruction 3D ;
+- estimation du spin ;
+- moteur physique ;
+- entra?nement d'un nouveau scorer balle.
+
+## Contrat canonique d'un run
+
+    runs/<run_id>/
+    ??? run.json
+    ??? video.json
+    ??? source_clip.mp4
+    ??? clip.json
+    ??? candidates.csv
+    ??? candidates_metrics.json
+    ??? overlay_candidates.mp4
+    ??? tracks_probe.csv
+    ??? tracks_metrics.json
+    ??? overlay_tracks_probe.mp4
+    ??? analysis.json
+
+R5A ne modifie pas ce contrat.
+
+## Documents historiques
+
+Les fichiers sous `docs/experiments/` sont des rapports immuables des
+exp?riences r?alis?es. Ils peuvent contenir des conclusions interm?diaires
+qui ne repr?sentent plus la direction active du projet.
