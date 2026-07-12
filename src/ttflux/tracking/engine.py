@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any
 
 from ttflux.analysis.candidate_scorers import (
     BallCandidateScorer,
@@ -16,131 +14,15 @@ from ttflux.analysis.tracks import (
     TrackConfig,
     analyze_tracks,
 )
+from ttflux.tracking.artifacts import (
+    BallTrackingArtifacts,
+)
 from ttflux.tracking.config import BallTrackingConfig
-
-
-ENGINE_NAME = "ball_tracking_engine"
-ENGINE_VERSION = 1
-
-
-@dataclass(frozen=True)
-class BallTrackingArtifacts:
-    """Canonical artifacts produced by the ball tracking engine."""
-
-    candidates: Path
-    candidate_metrics: Path
-    candidate_overlay: Path
-    tracks: Path
-    track_metrics: Path
-    track_overlay: Path
-
-    @classmethod
-    def in_directory(
-        cls,
-        output_dir: Path,
-    ) -> "BallTrackingArtifacts":
-        return cls(
-            candidates=output_dir / "candidates.csv",
-            candidate_metrics=(
-                output_dir / "candidates_metrics.json"
-            ),
-            candidate_overlay=(
-                output_dir / "overlay_candidates.mp4"
-            ),
-            tracks=output_dir / "tracks_probe.csv",
-            track_metrics=(
-                output_dir / "tracks_metrics.json"
-            ),
-            track_overlay=(
-                output_dir / "overlay_tracks_probe.mp4"
-            ),
-        )
-
-    def all_paths(self) -> tuple[Path, ...]:
-        return (
-            self.candidates,
-            self.candidate_metrics,
-            self.candidate_overlay,
-            self.tracks,
-            self.track_metrics,
-            self.track_overlay,
-        )
-
-    def as_dict(self) -> dict[str, str]:
-        return {
-            "candidates": self.candidates.name,
-            "candidate_metrics": self.candidate_metrics.name,
-            "candidate_overlay": self.candidate_overlay.name,
-            "tracks": self.tracks.name,
-            "track_metrics": self.track_metrics.name,
-            "track_overlay": self.track_overlay.name,
-        }
-
-
-@dataclass(frozen=True)
-class BallTrackingResult:
-    """Structured result returned by the tracking engine."""
-
-    status: str
-    clip_path: Path
-    output_dir: Path
-    scorer_id: str
-    candidate_config: CandidateConfig
-    track_config: TrackConfig
-    candidate_metrics: dict[str, Any]
-    track_metrics: dict[str, Any]
-    artifacts: BallTrackingArtifacts
-
-    @property
-    def candidate_summary(self) -> dict[str, Any]:
-        summary = self.candidate_metrics.get("summary")
-
-        if not isinstance(summary, dict):
-            raise TypeError(
-                "Candidate metrics do not contain a summary object."
-            )
-
-        return dict(summary)
-
-    @property
-    def track_summary(self) -> dict[str, Any]:
-        summary = self.track_metrics.get("summary")
-
-        if not isinstance(summary, dict):
-            raise TypeError(
-                "Track metrics do not contain a summary object."
-            )
-
-        return dict(summary)
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "schema_version": 1,
-            "status": self.status,
-            "engine": {
-                "name": ENGINE_NAME,
-                "version": ENGINE_VERSION,
-            },
-            "scorer_id": self.scorer_id,
-            "clip": {
-                "path": str(self.clip_path),
-                "filename": self.clip_path.name,
-            },
-            "output_dir": str(self.output_dir),
-            "configuration": {
-                "candidates": asdict(
-                    self.candidate_config
-                ),
-                "tracks": asdict(
-                    self.track_config
-                ),
-            },
-            "metrics": {
-                "candidates": self.candidate_summary,
-                "tracks": self.track_summary,
-            },
-            "artifacts": self.artifacts.as_dict(),
-        }
+from ttflux.tracking.metadata import (
+    ENGINE_NAME,
+    ENGINE_VERSION,
+)
+from ttflux.tracking.result import BallTrackingResult
 
 
 class BallTrackingEngine:
@@ -296,21 +178,7 @@ class BallTrackingEngine:
                 "Track analysis returned an invalid result."
             )
 
-        missing_artifacts = [
-            path
-            for path in artifacts.all_paths()
-            if not path.is_file()
-        ]
-
-        if missing_artifacts:
-            missing_names = ", ".join(
-                path.name
-                for path in missing_artifacts
-            )
-            raise RuntimeError(
-                "Tracking engine did not produce all "
-                f"canonical artifacts: {missing_names}"
-            )
+        artifacts.validate_created()
 
         result = BallTrackingResult(
             status="completed",

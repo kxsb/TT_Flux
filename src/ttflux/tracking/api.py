@@ -4,12 +4,12 @@ from ttflux.analysis.candidate_scorers import (
 )
 from ttflux.analysis.candidates import CandidateConfig
 from ttflux.analysis.tracks import TrackConfig
-from ttflux.tracking.config import BallTrackingConfig
-from ttflux.tracking.engine import (
+from ttflux.tracking.artifacts import (
     BallTrackingArtifacts,
-    BallTrackingEngine,
-    BallTrackingResult,
 )
+from ttflux.tracking.config import BallTrackingConfig
+from ttflux.tracking.engine import BallTrackingEngine
+from ttflux.tracking.result import BallTrackingResult
 
 __all__ = [
     "BallCandidateScorer",
