@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -9,60 +10,102 @@ import ttflux.analysis.runs as run_store
 
 
 @pytest.fixture(autouse=True)
-def stub_candidate_analysis(
+def stub_tracking_engine(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    def fake_analyze(
-        video_path: Path,
-        csv_path: Path,
-        metrics_path: Path,
-        overlay_path: Path,
-        config=None,
-    ) -> dict[str, object]:
-        summary = {
-            "analyzed_frames": 498,
-            "frames_with_candidates": 400,
-            "coverage_ratio": 0.803213,
-            "total_candidates": 1200,
-            "mean_candidates_per_frame": 2.41,
-            "median_candidates_per_frame": 2.0,
-            "max_candidates_per_frame": 8,
-            "mean_candidate_score": 0.5,
-            "max_candidate_score": 0.9,
-        }
-        csv_path.write_text("candidate_id,frame\n", encoding="utf-8")
-        metrics_path.write_text(
-            json.dumps({"summary": summary}),
-            encoding="utf-8",
-        )
-        overlay_path.write_bytes(b"overlay")
-        return {"summary": summary}
+    candidate_summary = {
+        "analyzed_frames": 498,
+        "frames_with_candidates": 400,
+        "coverage_ratio": 0.803213,
+        "total_candidates": 1200,
+        "mean_candidates_per_frame": 2.41,
+        "median_candidates_per_frame": 2.0,
+        "max_candidates_per_frame": 8,
+        "mean_candidate_score": 0.5,
+        "max_candidate_score": 0.9,
+    }
+    track_summary = {
+        "input_candidates": 1200,
+        "generated_tracks": 3,
+        "track_count": 3,
+        "selected_tracks": 3,
+        "selected_track_count": 3,
+        "tracked_points": 42,
+        "covered_frames": 36,
+        "coverage_ratio": 0.072,
+        "longest_track_points": 20,
+        "longest_track_span_frames": 24,
+        "mean_track_points": 14.0,
+        "median_track_points": 14.0,
+    }
+
+    class FakeBallTrackingEngine:
+        def run(
+            self,
+            *,
+            clip_path: Path,
+            output_dir: Path,
+        ) -> SimpleNamespace:
+            assert clip_path.name == "source_clip.mp4"
+
+            output_dir.mkdir(
+                parents=True,
+                exist_ok=True,
+            )
+
+            (
+                output_dir / "candidates.csv"
+            ).write_text(
+                "candidate_id,frame\n",
+                encoding="utf-8",
+            )
+            (
+                output_dir / "candidates_metrics.json"
+            ).write_text(
+                json.dumps({
+                    "summary": candidate_summary,
+                }),
+                encoding="utf-8",
+            )
+            (
+                output_dir / "overlay_candidates.mp4"
+            ).write_bytes(
+                b"candidate-overlay"
+            )
+            (
+                output_dir / "tracks_probe.csv"
+            ).write_text(
+                "track_id,frame\n",
+                encoding="utf-8",
+            )
+            (
+                output_dir / "tracks_metrics.json"
+            ).write_text(
+                json.dumps({
+                    "summary": track_summary,
+                }),
+                encoding="utf-8",
+            )
+            (
+                output_dir / "overlay_tracks_probe.mp4"
+            ).write_bytes(
+                b"track-overlay"
+            )
+
+            return SimpleNamespace(
+                scorer_id="heuristic_v1",
+                candidate_metrics={
+                    "summary": candidate_summary,
+                },
+                track_metrics={
+                    "summary": track_summary,
+                },
+            )
 
     monkeypatch.setattr(
         run_store,
-        "analyze_candidates",
-        fake_analyze,
-    )
-
-    monkeypatch.setattr(
-        run_store,
-        "analyze_tracks",
-        lambda *args, **kwargs: {
-            "summary": {
-                "input_candidates": 1200,
-                "generated_tracks": 3,
-                "track_count": 3,
-                "selected_tracks": 3,
-                "selected_track_count": 3,
-                "tracked_points": 42,
-                "covered_frames": 36,
-                "coverage_ratio": 0.072,
-                "longest_track_points": 20,
-                "longest_track_span_frames": 24,
-                "mean_track_points": 14.0,
-                "median_track_points": 14.0,
-            }
-        },
+        "BallTrackingEngine",
+        FakeBallTrackingEngine,
     )
 
 
@@ -237,6 +280,10 @@ def test_execute_run_extracts_clip_and_completes(
     )
     assert (run_dir / "candidates_metrics.json").is_file()
     assert (run_dir / "overlay_candidates.mp4").is_file()
+    assert saved_run["track_metrics"]["selected_tracks"] == 3
+    assert (run_dir / "tracks_probe.csv").is_file()
+    assert (run_dir / "tracks_metrics.json").is_file()
+    assert (run_dir / "overlay_tracks_probe.mp4").is_file()
 
 
 def test_running_state_is_persisted_before_extraction(

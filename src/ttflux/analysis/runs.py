@@ -10,9 +10,8 @@ from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
-from ttflux.analysis.candidates import analyze_candidates
-from ttflux.analysis.tracks import analyze_tracks
 from ttflux.core.paths import RUNS_DIR, ensure_project_layout
+from ttflux.tracking import BallTrackingEngine
 from ttflux.video.catalog import find_video, probe_video
 
 
@@ -403,12 +402,6 @@ def execute_run(run_id: str) -> dict[str, Any]:
 
     clip_path = run_dir / "source_clip.mp4"
     clip_json_path = run_dir / "clip.json"
-    candidates_path = run_dir / "candidates.csv"
-    candidate_metrics_path = run_dir / "candidates_metrics.json"
-    candidate_overlay_path = run_dir / "overlay_candidates.mp4"
-    tracks_path = run_dir / "tracks_probe.csv"
-    track_metrics_path = run_dir / "tracks_metrics.json"
-    track_overlay_path = run_dir / "overlay_tracks_probe.mp4"
     analysis_path = run_dir / "analysis.json"
 
     try:
@@ -426,18 +419,15 @@ def execute_run(run_id: str) -> dict[str, Any]:
         )
         _write_json_atomic(clip_json_path, clip_payload)
 
-        candidate_metrics = analyze_candidates(
-            clip_path,
-            candidates_path,
-            candidate_metrics_path,
-            candidate_overlay_path,
+        tracking_result = BallTrackingEngine().run(
+            clip_path=clip_path,
+            output_dir=run_dir,
         )
-        track_metrics = analyze_tracks(
-            candidates_path,
-            clip_path,
-            tracks_path,
-            track_metrics_path,
-            track_overlay_path,
+        candidate_metrics = (
+            tracking_result.candidate_metrics
+        )
+        track_metrics = (
+            tracking_result.track_metrics
         )
 
         generated_at = datetime.now().astimezone()
