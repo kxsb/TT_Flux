@@ -14,11 +14,9 @@ from ttflux.pipeline.clips import (
     extract_clip as _extract_clip_impl,
 )
 from ttflux.pipeline.contracts import (
-    ANALYSIS_SCHEMA_VERSION,
     PIPELINE_NAME,
     PIPELINE_VERSION,
     RUN_SCHEMA_VERSION,
-    TRACKING_DESCRIPTOR_REQUIRED_KEYS,
     VIDEO_SNAPSHOT_KEYS,
     VIDEO_SNAPSHOT_SCHEMA_VERSION,
     RunPayload,
@@ -48,6 +46,10 @@ from ttflux.pipeline.artifacts import (
 )
 from ttflux.pipeline.maintenance import (
     delete_run as _delete_run,
+)
+from ttflux.pipeline.reporting import (
+    build_analysis as _build_analysis_impl,
+    tracking_descriptor as _tracking_descriptor_impl,
 )
 from ttflux.tracking import BallTrackingEngine
 from ttflux.video.catalog import find_video, probe_video
@@ -241,45 +243,9 @@ def _build_clip_payload(
 def _tracking_descriptor(
     tracking_result: Any,
 ) -> dict[str, Any]:
-    """Extracts portable provenance from a tracking result."""
-
-    payload = tracking_result.to_dict()
-
-    if not isinstance(payload, dict):
-        raise TypeError(
-            "Tracking result serialization must be an object."
-        )
-
-    required_keys = TRACKING_DESCRIPTOR_REQUIRED_KEYS
-    missing_keys = [
-        key
-        for key in required_keys
-        if key not in payload
-    ]
-
-    if missing_keys:
-        joined = ", ".join(missing_keys)
-        raise ValueError(
-            "Tracking result is missing provenance fields: "
-            f"{joined}"
-        )
-
-    if not isinstance(payload["engine"], dict):
-        raise TypeError(
-            "Tracking engine provenance must be an object."
-        )
-
-    if not isinstance(payload["configuration"], dict):
-        raise TypeError(
-            "Tracking configuration must be an object."
-        )
-
-    return {
-        "schema_version": payload["schema_version"],
-        "engine": dict(payload["engine"]),
-        "scorer_id": payload["scorer_id"],
-        "configuration": dict(payload["configuration"]),
-    }
+    return _tracking_descriptor_impl(
+        tracking_result
+    )
 
 
 def _build_analysis(
@@ -291,38 +257,15 @@ def _build_analysis(
     tracking: dict[str, Any],
     generated_at: datetime,
 ) -> dict[str, Any]:
-    return {
-        "schema_version": ANALYSIS_SCHEMA_VERSION,
-        "run_id": run_payload["run_id"],
-        "video_id": run_payload["video_id"],
-        "pipeline": run_payload["pipeline"],
-        "tracking": tracking,
-        "generated_at": generated_at.isoformat(timespec="seconds"),
-        "source": {
-            "filename": run_payload["video_filename"],
-            "frame_count": video_payload.get("frame_count"),
-            "duration_s": video_payload.get("duration_s"),
-            "fps": video_payload.get("fps"),
-            "resolution": {
-                "width": video_payload.get("width"),
-                "height": video_payload.get("height"),
-            },
-        },
-        "clip": {
-            "artifact": clip_payload["artifact"],
-            "requested_start_s": clip_payload["requested_start_s"],
-            "requested_duration_s": clip_payload["requested_duration_s"],
-            "actual_duration_s": clip_payload.get("duration_s"),
-            "frame_count": clip_payload.get("frame_count"),
-            "fps": clip_payload.get("fps"),
-            "resolution": {
-                "width": clip_payload.get("width"),
-                "height": clip_payload.get("height"),
-            },
-        },
-        "candidates": candidate_metrics["summary"],
-        "tracks_probe": track_metrics["summary"],
-    }
+    return _build_analysis_impl(
+        run_payload,
+        video_payload,
+        clip_payload,
+        candidate_metrics,
+        track_metrics,
+        tracking,
+        generated_at,
+    )
 
 
 def execute_run(run_id: str) -> RunPayload:
