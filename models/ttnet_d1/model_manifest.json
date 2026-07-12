@@ -1,0 +1,85 @@
+{
+    "schema_version":  1,
+    "model_id":  "ttnet-d1-blurball-foundation",
+    "status":  "frozen_foundation",
+    "foundation_tag":  "ttflux-d1-foundation-20260712",
+    "scope":  {
+                  "primary_domain":  "BlurBall",
+                  "task":  "2D table-tennis ball tracking",
+                  "deployment_status":  "foundation",
+                  "universal_competition_model":  false
+              },
+    "artifact":  {
+                     "relative_path":  "models/ttnet_d1/ttnet_d1_blurball_foundation.pth",
+                     "storage":  "git_lfs",
+                     "size_bytes":  64464651,
+                     "sha256":  "1a165c5775e9edb3c9953c59b26ca7683b72503bf68c70d998f5ec5c97f515d8"
+                 },
+    "architecture":  {
+                         "base":  "TTNet",
+                         "global_ball_stage":  "adapted on BlurBall train games 00-19",
+                         "local_ball_stage":  "historical TTNet local stage retained",
+                         "events_stage":  "unchanged",
+                         "segmentation_stage":  "unchanged",
+                         "sequence_frames":  9,
+                         "network_input_width":  320,
+                         "network_input_height":  128
+                     },
+    "inference_policy":  {
+                             "policy":  "refined_only",
+                             "global_threshold":  0.05,
+                             "local_threshold":  0.05,
+                             "success_distance_px":  20,
+                             "policy_file":  "scripts/dataset_training/blurball_d1_inference_policy.json"
+                         },
+    "final_test":  {
+                       "split":  "BlurBall test",
+                       "match_ids":  [
+                                         22,
+                                         23,
+                                         24,
+                                         25
+                                     ],
+                       "rallies":  80,
+                       "evaluated_frames":  12137,
+                       "precision_at_20px":  0.8201598579040853,
+                       "recall_at_20px":  0.48376113148245153,
+                       "f1_at_20px":  0.60856672158154856,
+                       "raw_recall_at_20px":  0.59280600663523664,
+                       "median_valid_error_px":  4.5616,
+                       "p90_valid_error_px":  40.824060000000074,
+                       "false_positive_rate_invisible":  0.13030746705710103,
+                       "test_recalibration_allowed":  false
+                   },
+    "original_checkpoint_baseline":  {
+                                         "precision_at_20px":  0.90222222222222237,
+                                         "recall_at_20px":  0.017723066177754498,
+                                         "f1_at_20px":  0.034763250278277251,
+                                         "valid_predictions":  225
+                                     },
+    "visual_transfer_probe":  {
+                                  "interpretation":  "qualitative visualization diagnostic, not a benchmark",
+                                  "dataset_source":  "reduced_fps.mp4",
+                                  "dataset_frames":  900,
+                                  "dataset_acceptance_rate":  0.43888888888888888,
+                                  "raw_competition_source":  "game_2.mp4",
+                                  "raw_competition_frames":  3600,
+                                  "raw_competition_acceptance_rate":  0.0575,
+                                  "raw_competition_transfer_status":  "fragile"
+                              },
+    "reproducibility":  {
+                            "training_script":  "scripts/dataset_training/train_blurball_global_full_d1c.py",
+                            "validation_script":  "scripts/dataset_training/evaluate_global_d1c_local_legacy_d1d0.py",
+                            "calibration_script":  "scripts/dataset_training/calibrate_global_local_d1d1.py",
+                            "final_test_script":  "scripts/dataset_training/evaluate_blurball_final_test_d1e.py",
+                            "visualization_script":  "scripts/visualization/render_ttr_demo_d1f.py",
+                            "final_test_result":  "scripts/dataset_training/blurball_d1_final_test_result.json"
+                        },
+    "limitations":  [
+                        "The model is adapted primarily to the BlurBall visual domain.",
+                        "Transfer to raw competition footage remains fragile.",
+                        "The final test split must not be reused to recalibrate D1.",
+                        "False positives remain present on invisible-ball annotations.",
+                        "Match and camera variability remain significant."
+                    ]
+}
