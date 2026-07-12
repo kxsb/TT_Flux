@@ -39,6 +39,14 @@ from ttflux.pipeline.storage import (
     try_read_json_object as _try_read_json_object,
     write_json_atomic as _write_json_atomic,
 )
+from ttflux.pipeline.artifacts import (
+    get_run_clip_path as _get_run_clip_path,
+    get_run_overlay_path as _get_run_overlay_path,
+    get_run_tracks_overlay_path as _get_run_tracks_overlay_path,
+)
+from ttflux.pipeline.maintenance import (
+    delete_run as _delete_run,
+)
 from ttflux.tracking import BallTrackingEngine
 from ttflux.video.catalog import find_video, probe_video
 
@@ -507,100 +515,34 @@ def create_and_execute_clip_run(
 
 
 def get_run_clip_path(run_id: str) -> Path:
-    """Retourne le clip d'un run terminé."""
-
-    run_dir = _resolve_run_dir(run_id)
-    run_payload = _read_json_object(run_dir / "run.json")
-    artifact_name = (
-        run_payload.get("artifacts", {}).get("source_clip")
+    return _get_run_clip_path(
+        run_id,
+        RUNS_DIR,
     )
-
-    if artifact_name != "source_clip.mp4":
-        raise FileNotFoundError(
-            f"Aucun segment vidéo disponible pour le run {run_id}."
-        )
-
-    clip_path = run_dir / artifact_name
-
-    if not clip_path.is_file():
-        raise FileNotFoundError(
-            f"Artefact absent pour le run {run_id}."
-        )
-
-    return clip_path
 
 
 def get_run_overlay_path(run_id: str) -> Path:
-    """Retourne l’overlay des candidats d’un run terminé."""
-
-    run_dir = _resolve_run_dir(run_id)
-    run_payload = _read_json_object(run_dir / "run.json")
-    artifact_name = (
-        run_payload.get("artifacts", {}).get("candidate_overlay")
+    return _get_run_overlay_path(
+        run_id,
+        RUNS_DIR,
     )
 
-    if artifact_name != "overlay_candidates.mp4":
-        raise FileNotFoundError(
-            f"Aucun overlay candidat disponible pour le run {run_id}."
-        )
 
-    overlay_path = run_dir / artifact_name
-
-    if not overlay_path.is_file():
-        raise FileNotFoundError(
-            f"Overlay candidat absent pour le run {run_id}."
-        )
-
-    return overlay_path
-
-
-def get_run_tracks_overlay_path(run_id: str) -> Path:
-    """Retourne l'overlay des pistes temporelles exploratoires."""
-
-    run_dir = _resolve_run_dir(run_id)
-    run_payload = _read_json_object(run_dir / "run.json")
-    artifact_name = (
-        run_payload.get("artifacts", {}).get("track_overlay")
+def get_run_tracks_overlay_path(
+    run_id: str,
+) -> Path:
+    return _get_run_tracks_overlay_path(
+        run_id,
+        RUNS_DIR,
     )
-
-    if artifact_name != "overlay_tracks_probe.mp4":
-        raise FileNotFoundError(
-            f"Aucun overlay de pistes disponible pour le run {run_id}."
-        )
-
-    overlay_path = run_dir / artifact_name
-
-    if not overlay_path.is_file():
-        raise FileNotFoundError(
-            f"Overlay de pistes absent pour le run {run_id}."
-        )
-
-    return overlay_path
-
 
 
 def delete_run(run_id: str) -> dict[str, Any]:
-    # Supprime un run local sans toucher à sa vidéo source.
-
     ensure_project_layout()
-    run_dir = _resolve_run_dir(run_id)
-    run_payload = _read_json_object(run_dir / "run.json")
-    current_status = run_payload.get("status")
-
-    if current_status == RUN_RUNNING:
-        raise InvalidRunStateError(
-            f"Le run {run_id} est encore en cours d'exécution."
-        )
-
-    deleted = {
-        "run_id": run_id,
-        "status": current_status,
-        "video_id": run_payload.get("video_id"),
-        "video_filename": run_payload.get("video_filename"),
-    }
-
-    shutil.rmtree(run_dir)
-    return deleted
+    return _delete_run(
+        run_id,
+        RUNS_DIR,
+    )
 
 
 def _created_label(value: Any) -> str:
