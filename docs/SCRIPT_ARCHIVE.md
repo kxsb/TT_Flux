@@ -63,3 +63,84 @@ Les rapports et prédictions restent locaux dans :
 
 Ce retrait représente 3 246 lignes et ne modifie ni le runtime, ni les
 tests, ni les protocoles I13, I14A, I14B ou I14C.
+
+## Protocoles I13B à I14C
+
+Les six protocoles expérimentaux I13B, I13C, I13D, I14A, I14B et I14C
+ont été retirés de l'arbre actif pendant l'allègement `LIGHT L3C4D`.
+
+Leur version exacte est conservée dans le tag :
+
+`ttflux-light-i13-i14-protocols-20260713`
+
+### I13B — oracle du réservoir
+
+Sur 416 frames avec balle visible :
+
+- top-1 à 20 px : 258 hits, soit un rappel de 0,620192 ;
+- oracle cap 24 : 322 hits, soit un rappel de 0,774038 ;
+- 64 frames sont récupérables au-delà du rang 1 ;
+- 8 frames visibles ont un réservoir vide.
+
+### I13C — capacité du réservoir
+
+Courbe des hits à 20 px :
+
+| Cap | 1 | 3 | 5 | 10 | 24 | 48 | 96 | 4096 |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Hits | 258 | 284 | 296 | 312 | 322 | 334 | 340 | 340 |
+
+Le gain devient faible au-delà du cap 48 et plafonne à 340 hits.
+
+### I13D — déterminisme
+
+- divergence de préfixe : 0 frame ;
+- divergence entre répétitions : 0 frame ;
+- égalité au rang 1 : 0 frame ;
+- égalité à la frontière cap 24 : 2 frames.
+
+Le générateur est déterministe pour le protocole mesuré.
+
+### I14A — connectabilité temporelle
+
+| Cap | Mode | Hits | Hits couverts | Plus long chemin |
+|---:|---|---:|---:|---:|
+| 6 | seeds courants | 299 | 265 | 41 points |
+| 6 | oracle libre | 299 | 282 | 42 points |
+| 24 | seeds courants | 322 | 287 | 43 points |
+| 24 | oracle libre | 322 | 312 | 45 points |
+| 4096 | seeds courants | 340 | 309 | 43 points |
+| 4096 | oracle libre | 340 | 329 | 45 points |
+
+Le réservoir contient donc des séquences temporellement connectables,
+mais le mode à seeds courants ne couvre pas tous les hits disponibles.
+
+### I14B — reranking statique
+
+- baseline courante top-1 : 258 ;
+- modèle fondé sur les caractéristiques intrinsèques : 281 ;
+- modèle intrinsèque avec réinjection du score courant : 239.
+
+Les caractéristiques intrinsèques améliorent le classement, tandis que
+la réinjection du score heuristique courant dégrade le résultat.
+
+### I14C — reranking, abstention et temporalité
+
+| Stratégie | Précision | Rappel | F0.5 | Couverture |
+|---|---:|---:|---:|---:|
+| classement courant | 0,583710 | 0,620192 | 0,590659 | 0,982222 |
+| top-1 intrinsèque | 0,635747 | 0,675481 | 0,643315 | 0,982222 |
+| abstention statique | 0,735119 | 0,593750 | 0,701705 | 0,746667 |
+| abstention temporelle | 0,732673 | 0,533654 | 0,681818 | 0,673333 |
+
+L'abstention statique offre le meilleur F0.5. L'abstention temporelle
+réduit le taux de prédiction sur frames invisibles à 0,676471 et la plus
+longue séquence fausse à 16 frames, au prix d'un rappel plus faible.
+
+Aucune stratégie I14B ou I14C n'a été promue comme moteur canonique.
+
+Les rapports et tableaux détaillés restent locaux dans leurs
+répertoires `runs/_ball_*_003D_I13*` et `runs/_ball_*_003D_I14*`.
+
+Ce retrait représente 9 085 lignes et ne modifie ni le runtime, ni les
+tests, ni le modèle D1 figé.
