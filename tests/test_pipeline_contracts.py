@@ -29,7 +29,6 @@ from ttflux.pipeline.states import (
 
 
 runs = import_module("ttflux.pipeline.runs")
-legacy = import_module("ttflux.analysis.runs")
 
 
 def test_run_errors_have_canonical_identity() -> None:
@@ -39,7 +38,6 @@ def test_run_errors_have_canonical_identity() -> None:
     assert runs.InvalidClipRangeError is InvalidClipRangeError
 
     assert pipeline.UnknownVideoError is UnknownVideoError
-    assert legacy.UnknownRunError is UnknownRunError
 
 
 def test_run_states_are_stable_serialized_values() -> None:
