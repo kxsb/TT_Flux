@@ -12,7 +12,7 @@ from typing import Any
 import cv2
 import numpy as np
 
-from ttflux.analysis.candidates import (
+from ttflux.tracking.candidates.generator import (
     CandidateConfig,
     detect_frame_candidates,
 )

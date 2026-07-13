@@ -6,7 +6,7 @@ import numpy as np
 from ttflux.tracking.candidates.scorers import (
     HeuristicV1BallCandidateScorer,
 )
-from ttflux.analysis.candidates import (
+from ttflux.tracking.candidates.generator import (
     CandidateConfig,
     detect_frame_candidates,
     summarize_candidate_counts,

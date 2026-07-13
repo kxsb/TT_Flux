@@ -6,7 +6,7 @@ from typing import Any
 import pytest
 
 import ttflux.tracking.engine as engine_module
-from ttflux.analysis.candidates import CandidateConfig
+from ttflux.tracking.candidates.generator import CandidateConfig
 from ttflux.analysis.tracks import TrackConfig
 from ttflux.tracking import BallTrackingEngine
 
