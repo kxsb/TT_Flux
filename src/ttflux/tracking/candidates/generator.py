@@ -420,24 +420,20 @@ def analyze_candidates(
     scorer: BallCandidateScorer | None = None,
 ) -> dict[str, Any]:
     """Produit le réservoir brut de candidats et son overlay diagnostic."""
-
     resolved = config or CandidateConfig()
     resolved.validate()
     resolved_scorer = scorer or HeuristicV1BallCandidateScorer()
 
     capture = cv2.VideoCapture(str(video_path))
-
     if not capture.isOpened():
         raise RuntimeError(f"Impossible d'ouvrir le segment : {video_path}")
 
     fps = float(capture.get(cv2.CAP_PROP_FPS))
-
     if not math.isfinite(fps) or fps <= 0:
         fps = 30.0
 
     width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
-
     if width <= 0 or height <= 0:
         capture.release()
         raise RuntimeError("Dimensions vidéo invalides.")
@@ -454,7 +450,6 @@ def analyze_candidates(
         fps,
         (width, height),
     )
-
     if not writer.isOpened():
         capture.release()
         raise RuntimeError("Impossible de créer la vidéo overlay intermédiaire.")
@@ -471,117 +466,69 @@ def analyze_candidates(
         if not ok_previous:
             raise RuntimeError("Le segment ne contient aucune image.")
 
-        writer.write(
-            _draw_overlay(
-                previous_frame,
-                0,
-                [],
-            )
-        )
+        writer.write(_draw_overlay(previous_frame, 0, []))
         processed_frames = 1
 
-        if not ok_current:
-            writer.release()
-            _transcode_overlay(intermediate_path, overlay_path)
-            summary = summarize_candidate_counts([], [])
-            metrics = {
-                "schema_version": 1,
-                "algorithm": {
-                    "name": "triple_frame_motion_components",
-                    "version": 1,
-                },
-                "parameters": asdict(resolved),
-                "video": {
-                    "fps": round(fps, 6),
-                    "width": width,
-                    "height": height,
-                    "processed_frames": processed_frames,
-                },
-                "summary": summary,
-                "artifacts": {
-                    "candidates": csv_path.name,
-                    "overlay": overlay_path.name,
-                },
-            }
-            _write_candidates_csv(csv_path, rows)
-            _atomic_write_json(metrics_path, metrics)
-            return metrics
-
-        previous_gray = _prepare_gray(
-            previous_frame,
-            resolved.blur_kernel,
-        )
-        current_gray = _prepare_gray(
-            current_frame,
-            resolved.blur_kernel,
-        )
-        frame_index = 1
-
-        while True:
-            ok_next, next_frame = capture.read()
-
-            if not ok_next:
-                writer.write(
-                    _draw_overlay(
-                        current_frame,
-                        frame_index,
-                        [],
-                    )
-                )
-                processed_frames += 1
-                break
-
-            next_gray = _prepare_gray(
-                next_frame,
+        if ok_current:
+            previous_gray = _prepare_gray(
+                previous_frame,
                 resolved.blur_kernel,
             )
-            candidates = detect_frame_candidates(
-                previous_gray,
-                current_gray,
-                next_gray,
-                resolved,
-                resolved_scorer,
+            current_gray = _prepare_gray(
+                current_frame,
+                resolved.blur_kernel,
             )
+            frame_index = 1
 
-            counts.append(len(candidates))
+            while True:
+                ok_next, next_frame = capture.read()
+                if not ok_next:
+                    writer.write(
+                        _draw_overlay(current_frame, frame_index, [])
+                    )
+                    processed_frames += 1
+                    break
 
-            for rank, candidate in enumerate(candidates, start=1):
-                score = float(candidate["score"])
-                scores.append(score)
-                rows.append(
-                    {
-                        "candidate_id": (
-                            f"f{frame_index:06d}_c{rank:02d}"
-                        ),
-                        "frame": frame_index,
-                        "time_s": round(frame_index / fps, 6),
-                        "rank": rank,
-                        **candidate,
-                    }
+                next_gray = _prepare_gray(
+                    next_frame,
+                    resolved.blur_kernel,
                 )
-
-            writer.write(
-                _draw_overlay(
-                    current_frame,
-                    frame_index,
-                    candidates,
+                candidates = detect_frame_candidates(
+                    previous_gray,
+                    current_gray,
+                    next_gray,
+                    resolved,
+                    resolved_scorer,
                 )
-            )
-            processed_frames += 1
+                counts.append(len(candidates))
 
-            previous_gray = current_gray
-            current_gray = next_gray
-            previous_frame = current_frame
-            current_frame = next_frame
-            frame_index += 1
+                for rank, candidate in enumerate(candidates, start=1):
+                    score = float(candidate["score"])
+                    scores.append(score)
+                    rows.append(
+                        {
+                            "candidate_id": f"f{frame_index:06d}_c{rank:02d}",
+                            "frame": frame_index,
+                            "time_s": round(frame_index / fps, 6),
+                            "rank": rank,
+                            **candidate,
+                        }
+                    )
+
+                writer.write(
+                    _draw_overlay(current_frame, frame_index, candidates)
+                )
+                processed_frames += 1
+                previous_gray = current_gray
+                current_gray = next_gray
+                current_frame = next_frame
+                frame_index += 1
 
         writer.release()
         capture.release()
-
         _write_candidates_csv(csv_path, rows)
         _transcode_overlay(intermediate_path, overlay_path)
 
-        summary = summarize_candidate_counts(counts, scores)
         metrics = {
             "schema_version": 1,
             "algorithm": {
@@ -595,7 +542,7 @@ def analyze_candidates(
                 "height": height,
                 "processed_frames": processed_frames,
             },
-            "summary": summary,
+            "summary": summarize_candidate_counts(counts, scores),
             "artifacts": {
                 "candidates": csv_path.name,
                 "overlay": overlay_path.name,
