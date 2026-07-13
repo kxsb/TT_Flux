@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ttflux.analysis.candidate_sampling import (
+from ttflux.tracking.candidates.sampling import (
     HARD_NEGATIVE_CATEGORY,
     INVISIBLE_CATEGORY,
     POSITIVE_CATEGORY,

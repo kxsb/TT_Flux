@@ -18,7 +18,7 @@ SOURCE_ROOT = PROJECT_ROOT / "src"
 if str(SOURCE_ROOT) not in sys.path:
     sys.path.insert(0, str(SOURCE_ROOT))
 
-from ttflux.analysis.candidate_sampling import (  # noqa: E402
+from ttflux.tracking.candidates.sampling import (  # noqa: E402
     HARD_NEGATIVE_CATEGORY,
     IGNORE_CATEGORY,
     INVISIBLE_CATEGORY,
