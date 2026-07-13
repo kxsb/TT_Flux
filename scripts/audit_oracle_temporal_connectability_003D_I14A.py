@@ -16,7 +16,7 @@ from ttflux.tracking.candidates.generator import (
     CandidateConfig,
     detect_frame_candidates,
 )
-from ttflux.analysis.tracks import (
+from ttflux.tracking.temporal import (
     CandidatePoint,
     Hypothesis,
     TrackConfig,

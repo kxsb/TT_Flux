@@ -2,11 +2,11 @@ from ttflux.tracking.candidates.scorers import (
     HeuristicV1BallCandidateScorer,
 )
 from ttflux.tracking.candidates.generator import CandidateConfig
-from ttflux.analysis.tracks import TrackConfig
+from ttflux.tracking.temporal import TrackConfig
 from ttflux.tracking import BallTrackingEngine
 
 
-def test_public_and_track_legacy_imports_resolve() -> None:
+def test_public_tracking_imports_resolve() -> None:
     candidate_config = CandidateConfig()
     track_config = TrackConfig()
     scorer = HeuristicV1BallCandidateScorer()

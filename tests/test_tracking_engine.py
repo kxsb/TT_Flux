@@ -7,7 +7,7 @@ import pytest
 
 import ttflux.tracking.engine as engine_module
 from ttflux.tracking.candidates.generator import CandidateConfig
-from ttflux.analysis.tracks import TrackConfig
+from ttflux.tracking.temporal import TrackConfig
 from ttflux.tracking import BallTrackingEngine
 
 

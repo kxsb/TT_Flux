@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from ttflux.analysis.tracks import (
+from ttflux.tracking.temporal import (
     CandidatePoint,
     Hypothesis,
     TrackConfig,
