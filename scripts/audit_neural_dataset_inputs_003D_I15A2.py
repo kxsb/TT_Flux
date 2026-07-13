@@ -11,7 +11,7 @@ from typing import Any
 
 import cv2
 
-from ttflux.analysis.candidate_scorers import (
+from ttflux.tracking.candidates.scorers import (
     BallCandidateScoringInput,
 )
 

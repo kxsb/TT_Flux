@@ -3,7 +3,7 @@ from __future__ import annotations
 import cv2
 import numpy as np
 
-from ttflux.analysis.candidate_scorers import (
+from ttflux.tracking.candidates.scorers import (
     HeuristicV1BallCandidateScorer,
 )
 from ttflux.analysis.candidates import (
