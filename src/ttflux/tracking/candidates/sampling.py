@@ -158,71 +158,27 @@ def build_fold_plan(
     invisible_multiplier: int = 1,
 ) -> list[dict[str, Any]]:
     if same_frame_per_positive <= 0:
-        raise ValueError(
-            "same_frame_per_positive must be positive."
-        )
-
+        raise ValueError("same_frame_per_positive must be positive.")
     if visible_missing_multiplier < 0:
         raise ValueError(
             "visible_missing_multiplier cannot be negative."
         )
-
     if invisible_multiplier < 0:
-        raise ValueError(
-            "invisible_multiplier cannot be negative."
-        )
+        raise ValueError("invisible_multiplier cannot be negative.")
 
-    train_rows = [
-        row
-        for row in rows
-        if str(row["clip_id"]) != holdout_clip
-    ]
+    grouped: dict[Any, list[Mapping[str, Any]]] = defaultdict(list)
+    for row in rows:
+        if str(row["clip_id"]) != holdout_clip:
+            grouped[row["category"]].append(row)
 
     positives = sorted(
-        [
-            row
-            for row in train_rows
-            if row["category"] == POSITIVE_CATEGORY
-        ],
+        grouped[POSITIVE_CATEGORY],
         key=candidate_sort_key,
     )
-
     hard_negatives = sorted(
-        [
-            row
-            for row in train_rows
-            if (
-                row["category"]
-                == HARD_NEGATIVE_CATEGORY
-            )
-        ],
+        grouped[HARD_NEGATIVE_CATEGORY],
         key=candidate_sort_key,
     )
-
-    same_frame_rows = [
-        row
-        for row in train_rows
-        if (
-            row["category"]
-            == SAME_FRAME_CATEGORY
-        )
-    ]
-
-    visible_missing_rows = [
-        row
-        for row in train_rows
-        if (
-            row["category"]
-            == VISIBLE_MISSING_CATEGORY
-        )
-    ]
-
-    invisible_rows = [
-        row
-        for row in train_rows
-        if row["category"] == INVISIBLE_CATEGORY
-    ]
-
     positive_frames = {
         frame_key(row)
         for row in positives
@@ -233,61 +189,35 @@ def build_fold_plan(
             "Expected one positive candidate per frame."
         )
 
-    same_frame_selected = (
-        select_lowest_rank_per_frame(
-            same_frame_rows,
-            frame_keys=positive_frames,
-            per_frame=same_frame_per_positive,
-        )
+    same_frame_selected = select_lowest_rank_per_frame(
+        grouped[SAME_FRAME_CATEGORY],
+        frame_keys=positive_frames,
+        per_frame=same_frame_per_positive,
     )
-
-    visible_missing_budget = min(
-        visible_missing_multiplier
-        * len(positives),
-        len(visible_missing_rows),
+    visible_missing_selected = select_round_robin_by_frame(
+        grouped[VISIBLE_MISSING_CATEGORY],
+        budget=min(
+            visible_missing_multiplier * len(positives),
+            len(grouped[VISIBLE_MISSING_CATEGORY]),
+        ),
     )
-
-    invisible_budget = min(
-        invisible_multiplier
-        * len(positives),
-        len(invisible_rows),
-    )
-
-    visible_missing_selected = (
-        select_round_robin_by_frame(
-            visible_missing_rows,
-            budget=visible_missing_budget,
-        )
-    )
-
-    invisible_selected = (
-        select_round_robin_by_frame(
-            invisible_rows,
-            budget=invisible_budget,
-        )
+    invisible_selected = select_round_robin_by_frame(
+        grouped[INVISIBLE_CATEGORY],
+        budget=min(
+            invisible_multiplier * len(positives),
+            len(grouped[INVISIBLE_CATEGORY]),
+        ),
     )
 
     category_groups = (
-        (
-            positives,
-            "all_positive",
-        ),
-        (
-            hard_negatives,
-            "all_hard_negative",
-        ),
-        (
-            same_frame_selected,
-            "top_rank_same_frame",
-        ),
+        (positives, "all_positive"),
+        (hard_negatives, "all_hard_negative"),
+        (same_frame_selected, "top_rank_same_frame"),
         (
             visible_missing_selected,
             "round_robin_visible_missing",
         ),
-        (
-            invisible_selected,
-            "round_robin_invisible",
-        ),
+        (invisible_selected, "round_robin_invisible"),
     )
 
     plan: list[dict[str, Any]] = []
@@ -295,9 +225,7 @@ def build_fold_plan(
 
     for selected_rows, reason in category_groups:
         for row in selected_rows:
-            manifest_index = int(
-                row["manifest_index"]
-            )
+            manifest_index = int(row["manifest_index"])
 
             if manifest_index in seen_manifest_indices:
                 raise RuntimeError(
@@ -305,10 +233,7 @@ def build_fold_plan(
                     f"{manifest_index}"
                 )
 
-            seen_manifest_indices.add(
-                manifest_index
-            )
-
+            seen_manifest_indices.add(manifest_index)
             plan.append({
                 **dict(row),
                 "selection_reason": reason,
@@ -318,20 +243,10 @@ def build_fold_plan(
         row["sample_order"] = sample_order
         row["holdout_clip"] = holdout_clip
 
-    if any(
-        str(row["clip_id"]) == holdout_clip
-        for row in plan
-    ):
-        raise RuntimeError(
-            "Holdout leakage detected."
-        )
+    if any(str(row["clip_id"]) == holdout_clip for row in plan):
+        raise RuntimeError("Holdout leakage detected.")
 
-    if any(
-        row["category"] == IGNORE_CATEGORY
-        for row in plan
-    ):
-        raise RuntimeError(
-            "Ignore candidate selected."
-        )
+    if any(row["category"] == IGNORE_CATEGORY for row in plan):
+        raise RuntimeError("Ignore candidate selected.")
 
     return plan
