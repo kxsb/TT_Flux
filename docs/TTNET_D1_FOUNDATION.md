@@ -27,6 +27,15 @@ sur toutes les vidéos de compétition.
 - aucune recalibration à partir du test D1E ;
 - script visuel D1F-R2 versionné dans scripts/visualization/render_ttr_demo_d1f.py.
 
+## Historique des diagnostics pré-D1
+
+Les scripts expérimentaux TTNet I8 à I12 ne font plus partie de
+l'arbre actif. Ils restent consultables dans le tag
+`ttflux-d1-foundation-20260712` et dans l'historique Git.
+
+Ce retrait ne modifie ni l'artefact D1, ni son protocole figé, ni le
+script visuel D1F-R2.
+
 ## Test final BlurBall
 
 | Mesure | TTNet original | TTNet D1 |
