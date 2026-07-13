@@ -4,7 +4,7 @@ from pathlib import Path
 
 import numpy as np
 
-from ttflux.analysis.crop_dataset import (
+from ttflux.tracking.candidates.crop_dataset import (
     CONTEXT_SIZE_PX,
     LOCAL_SIZE_PX,
     SHARD_KEYS,

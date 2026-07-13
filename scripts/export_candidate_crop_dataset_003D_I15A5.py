@@ -21,7 +21,7 @@ SOURCE_ROOT = PROJECT_ROOT / "src"
 if str(SOURCE_ROOT) not in sys.path:
     sys.path.insert(0, str(SOURCE_ROOT))
 
-from ttflux.analysis.crop_dataset import (  # noqa: E402
+from ttflux.tracking.candidates.crop_dataset import (  # noqa: E402
     CONTEXT_SIZE_PX,
     LABEL_TO_ID,
     LOCAL_SIZE_PX,
