@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ttflux.analysis.ranking_protocol import (
+from ttflux.tracking.candidates.ranking import (
     distance_hit,
     evaluate_ranking_frame,
     select_canonical_top1,

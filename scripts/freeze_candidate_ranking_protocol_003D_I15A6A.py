@@ -16,7 +16,7 @@ SOURCE_ROOT = PROJECT_ROOT / "src"
 if str(SOURCE_ROOT) not in sys.path:
     sys.path.insert(0, str(SOURCE_ROOT))
 
-from ttflux.analysis.ranking_protocol import (  # noqa: E402
+from ttflux.tracking.candidates.ranking import (  # noqa: E402
     HIT_RADIUS_PX,
     evaluate_ranking_frame,
 )
