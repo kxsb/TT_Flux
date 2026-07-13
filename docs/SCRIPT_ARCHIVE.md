@@ -25,3 +25,41 @@ Les sorties validées restent locales dans :
 
 Ce retrait ne modifie aucun protocole I13/I14, aucun artefact suivi par
 Git et aucune fonction du moteur TTFlux.
+
+## Diagnostics spatiaux I14E et I14F
+
+Les diagnostics spatiaux I14E et I14F ont été retirés de l'arbre actif
+pendant l'allègement `LIGHT L3C3C`.
+
+### I14E — densité locale
+
+- baseline courante top-1 : 258 ;
+- modèle intrinsèque top-1 : 281 ;
+- meilleure caractéristique spatiale :
+  `spatial_nearest_log`, AUC de séparation 0,824089 ;
+- ajout des caractéristiques de densité :
+  17 corrections, 31 régressions, gain net -14.
+
+### I14F — occupation globale
+
+- baseline courante top-1 : 258 ;
+- modèle intrinsèque top-1 : 281 ;
+- meilleure caractéristique d'occupation :
+  `global_density_32`, AUC de séparation 0,779026 ;
+- ajout des caractéristiques d'occupation :
+  9 corrections, 31 régressions, gain net -22.
+
+Les caractéristiques spatiales contiennent donc un signal descriptif,
+mais leur ajout au modèle intrinsèque dégrade les résultats. Elles ne
+sont pas retenues dans le scorer actif.
+
+Les sources restent disponibles dans le tag
+`ttflux-d1-foundation-20260712`.
+
+Les rapports et prédictions restent locaux dans :
+
+- `runs/_ball_candidate_density_003D_I14E/` ;
+- `runs/_ball_candidate_global_occupancy_003D_I14F/`.
+
+Ce retrait représente 3 246 lignes et ne modifie ni le runtime, ni les
+tests, ni les protocoles I13, I14A, I14B ou I14C.
