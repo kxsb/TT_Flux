@@ -1118,8 +1118,8 @@ def main() -> None:
                 ),
             "implementation":
                 (
-                    "ttflux.analysis."
-                    "candidates."
+                    "ttflux.tracking."
+                    "candidates.generator."
                     "detect_frame_candidates"
                 ),
             "parameters":
