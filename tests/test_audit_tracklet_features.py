@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from ttflux.analysis.audit_tracklet_features import (
+from ttflux.review.audit_tracklet_features import (
     audit,
     validate_label_rows,
 )
