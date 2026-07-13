@@ -4,7 +4,7 @@ import csv
 import json
 from pathlib import Path
 
-from ttflux.analysis.review_tracklets import (
+from ttflux.review.tracklets import (
     _transcode_review_clip,
     build_rows,
     load_metrics,
@@ -68,7 +68,7 @@ def test_transcode_review_clip_uses_h264(
     clip.write_bytes(b"mp4v")
 
     monkeypatch.setattr(
-        "ttflux.analysis.review_tracklets.shutil.which",
+        "ttflux.review.tracklets.shutil.which",
         lambda name: "ffmpeg" if name == "ffmpeg" else None,
     )
 
@@ -78,7 +78,7 @@ def test_transcode_review_clip_uses_h264(
         Path(command[-1]).write_bytes(b"h264")
 
     monkeypatch.setattr(
-        "ttflux.analysis.review_tracklets.subprocess.run",
+        "ttflux.review.tracklets.subprocess.run",
         fake_run,
     )
 
