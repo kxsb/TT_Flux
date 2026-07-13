@@ -78,3 +78,29 @@ D1 reste immuable.
 Les améliorations de généralisation devront être réalisées dans une nouvelle
 phase et avec un nouveau protocole de validation. Elles ne modifieront pas
 rétroactivement les résultats D1.
+
+## Paquet d'entraînement D1 conservé
+
+L'audit `LIGHT L3D2B` a examiné les sept scripts situés dans
+`scripts/dataset_training/`, soit 10 968 lignes.
+
+Ce paquet reste dans l'arbre actif pour les raisons suivantes :
+
+- il constitue la chaîne de reproductibilité du checkpoint D1 ;
+- `models/ttnet_d1/model_manifest.json` référence les scripts
+  d'entraînement, de validation, de calibration et de test final ;
+- `scripts/dataset_training/README.md` décrit la séquence historique
+  des étapes BlurBall D1 ;
+- aucun de ces scripts n'est importé par le runtime ou par les tests ;
+- leur version est identique au tag
+  `ttflux-d1-foundation-20260712`.
+
+Ces scripts sont donc conservés comme paquet figé de reproductibilité.
+Ils ne constituent pas le moteur runtime de TTFlux et ne doivent pas
+recevoir de nouvelles expérimentations.
+
+Toute nouvelle adaptation neuronale devra utiliser une nouvelle phase,
+de nouveaux scripts et un nouveau protocole de validation, sans modifier
+rétroactivement D1.
+
+Décision : `D1_TRAINING_BUNDLE_FROZEN_RETAINED`.
