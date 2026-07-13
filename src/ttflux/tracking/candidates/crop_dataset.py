@@ -207,109 +207,67 @@ def validate_shard_arrays(
         )
 
     local = arrays["local_rgb"]
-    context = arrays["context_rgb"]
-
     if local.ndim != 5:
         raise ValueError(
             "local_rgb must have five dimensions."
         )
 
     row_count = int(local.shape[0])
-
-    expected_shapes = {
+    vector_shape = (row_count,)
+    schema = {
         "local_rgb": (
-            row_count,
-            3,
-            LOCAL_SIZE_PX,
-            LOCAL_SIZE_PX,
-            3,
+            (row_count, 3, LOCAL_SIZE_PX, LOCAL_SIZE_PX, 3),
+            np.dtype(np.uint8),
         ),
         "context_rgb": (
-            row_count,
-            3,
-            CONTEXT_SIZE_PX,
-            CONTEXT_SIZE_PX,
-            3,
+            (row_count, 3, CONTEXT_SIZE_PX, CONTEXT_SIZE_PX, 3),
+            np.dtype(np.uint8),
         ),
-        "label": (row_count,),
-        "hard_negative": (row_count,),
-        "manifest_index": (row_count,),
-        "candidate_id": (row_count,),
-        "clip_id": (row_count,),
-        "local_frame": (row_count,),
-        "source_frame": (row_count,),
-        "rank": (row_count,),
-        "x": (row_count,),
-        "y": (row_count,),
+        "label": (vector_shape, np.dtype(np.int8)),
+        "hard_negative": (vector_shape, np.dtype(np.uint8)),
+        "manifest_index": (vector_shape, np.dtype(np.int32)),
+        "candidate_id": (vector_shape, None),
+        "clip_id": (vector_shape, None),
+        "local_frame": (vector_shape, np.dtype(np.int32)),
+        "source_frame": (vector_shape, np.dtype(np.int32)),
+        "rank": (vector_shape, np.dtype(np.int16)),
+        "x": (vector_shape, np.dtype(np.float32)),
+        "y": (vector_shape, np.dtype(np.float32)),
     }
 
-    expected_dtypes = {
-        "local_rgb": np.dtype(np.uint8),
-        "context_rgb": np.dtype(np.uint8),
-        "label": np.dtype(np.int8),
-        "hard_negative": np.dtype(np.uint8),
-        "manifest_index": np.dtype(np.int32),
-        "local_frame": np.dtype(np.int32),
-        "source_frame": np.dtype(np.int32),
-        "rank": np.dtype(np.int16),
-        "x": np.dtype(np.float32),
-        "y": np.dtype(np.float32),
-    }
-
-    for key in SHARD_KEYS:
+    for key, (expected_shape, expected_dtype) in schema.items():
         array = arrays[key]
 
-        if array.shape != expected_shapes[key]:
+        if array.shape != expected_shape:
             raise ValueError(
                 f"{key}: unexpected shape "
-                f"{array.shape}, expected "
-                f"{expected_shapes[key]}."
+                f"{array.shape}, expected {expected_shape}."
             )
-
         if array.dtype.hasobject:
             raise ValueError(
                 f"{key}: object dtype is forbidden."
             )
-
-        expected_dtype = expected_dtypes.get(key)
-
-        if (
-            expected_dtype is not None
-            and array.dtype != expected_dtype
-        ):
+        if expected_dtype is not None and array.dtype != expected_dtype:
             raise ValueError(
                 f"{key}: unexpected dtype "
-                f"{array.dtype}, expected "
-                f"{expected_dtype}."
+                f"{array.dtype}, expected {expected_dtype}."
             )
 
-    if arrays["candidate_id"].dtype.kind != "U":
-        raise ValueError(
-            "candidate_id must use a fixed unicode dtype."
-        )
+    for key in ("candidate_id", "clip_id"):
+        if arrays[key].dtype.kind != "U":
+            raise ValueError(
+                f"{key} must use a fixed unicode dtype."
+            )
 
-    if arrays["clip_id"].dtype.kind != "U":
-        raise ValueError(
-            "clip_id must use a fixed unicode dtype."
-        )
-
-    if not set(
-        arrays["label"].tolist()
-    ).issubset({-1, 0, 1}):
-        raise ValueError(
-            "Invalid label values in shard."
-        )
-
-    if not set(
-        arrays["hard_negative"].tolist()
-    ).issubset({0, 1}):
-        raise ValueError(
-            "Invalid hard_negative values."
-        )
+    allowed_values = {
+        "label": ({-1, 0, 1}, "Invalid label values in shard."),
+        "hard_negative": ({0, 1}, "Invalid hard_negative values."),
+    }
+    for key, (allowed, message) in allowed_values.items():
+        if not set(arrays[key].tolist()).issubset(allowed):
+            raise ValueError(message)
 
     return row_count
-
-
 def write_npz_compressed(
     path: Path,
     arrays: Mapping[str, np.ndarray],
